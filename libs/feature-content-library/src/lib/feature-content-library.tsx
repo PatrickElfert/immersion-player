@@ -1,10 +1,10 @@
 
 /* eslint-disable-next-line */
-export interface FeatureContentLibraryProps {}
 
-export function FeatureContentLibrary(props: FeatureContentLibraryProps) {
+
+export function FeatureContentLibrary() {
   return (
-      <h1>Welcome to FeatureContentLibrary!</h1>
+    <div>FeatureContentLibrary</div>
   );
 }
 
