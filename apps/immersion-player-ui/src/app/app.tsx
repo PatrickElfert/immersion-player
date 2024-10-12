@@ -1,13 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css';
 
-import NxWelcome from './nx-welcome';
+import {Button, FluentProvider, webLightTheme} from '@fluentui/react-components';
 
 export function App() {
   return (
-    <div>
-      <NxWelcome title="immersion-player-ui" />
-    </div>
+    <FluentProvider theme={webLightTheme}>
+      <div>
+        <Button appearance={"primary"}>Get Started</Button>
+      </div>
+    </FluentProvider>
   );
 }
 
