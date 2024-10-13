@@ -102,6 +102,36 @@ const deinflectionTests: DeinflectionTest[] = [
     output: ["忙しい"],
     description: "negative of い adjectives",
   },
+  {
+    input: "食べたい",
+    output: ["食べる"],
+    description: "desire of ichidan verbs",
+  },
+  {
+    input: "入りたい",
+    output: ["入る"],
+    description: "desire of godan verbs",
+  },
+  {
+    input: "行こう",
+    output: ["行く"],
+    description: "volitional of godan verbs",
+  },
+  {
+    input: "食べよう",
+    output: ["食べる"],
+    description: "volitional of ichidan verbs",
+  },
+  {
+    input: "行きましよう",
+    output: ["行く"],
+    description: "polite volitional of godan verbs",
+  },
+  {
+    input: "食べましよう",
+    output: ["食べる"],
+    description: "polite volitional of ichidan verbs",
+  },
 ];
 
 test.each(deinflectionTests)("$description", ({ input, output }) => {
