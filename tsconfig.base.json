@@ -17,6 +17,9 @@
     "paths": {
       "@immersion-player/feature-content-library": [
         "libs/feature-content-library/src/index.ts"
+      ],
+      "@immersion-player/feature-dictionary-lookup": [
+        "libs/feature-dictionary-lookup/src/index.ts"
       ]
     }
   },
