@@ -1,4 +1,4 @@
-import { runOnInflectionRoots } from "./deinflect";
+import { getDeinflections } from "./deinflect";
 
 type DeinflectionTest = {
   input: string;
@@ -137,7 +137,7 @@ const deinflectionTests: DeinflectionTest[] = [
 test.each(deinflectionTests)("$description", ({ input, output }) => {
   /** the deinflection result can deliver more result which might be invalid,
    * this might not be a problem since we won't find them in a dictionary anyway **/
-  const deinflected = runOnInflectionRoots(input);
+  const deinflected = getDeinflections(input);
   expect(
     output.every((expected) => deinflected.includes(expected)),
   ).toBeTruthy();

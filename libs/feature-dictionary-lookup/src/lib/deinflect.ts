@@ -19,15 +19,14 @@ export function deinflect(
   return term;
 }
 
-export function runOnInflectionRoots(term:string) {
+export function getDeinflections(token:string) {
   const result = [];
 
   for (const root of inflections as Inflection[]) {
-    const deinflected = deinflect(term, [root], [root]);
-    if (deinflected !== term) {
+    const deinflected = deinflect(token, [root], [root]);
+    if (deinflected !== token) {
       result.push(deinflected);
     }
   }
-
   return result;
 }
