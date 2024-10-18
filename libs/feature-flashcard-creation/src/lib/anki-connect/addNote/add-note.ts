@@ -1,10 +1,5 @@
 import axios from 'axios';
-import {ankiConnectUrl, version} from "./config";
-
-export interface BasicModel {
-  Front: string;
-  Back: string;
-}
+import {ankiConnectUrl, version} from "../config";
 
 interface StoreMediaFile {
   path: string;
@@ -14,12 +9,13 @@ interface StoreMediaFile {
 
 export interface AddNotePayload {
   deckName: string;
-  fields: BasicModel;
+  fields: object;
   options: {
     allowDuplicate: boolean;
   }
   picture?: StoreMediaFile[];
   audio?: StoreMediaFile[];
+  modelName: string;
 }
 
 export interface AddNoteResult {
@@ -33,7 +29,6 @@ export async function addNote(payload: AddNotePayload): Promise<AddNoteResult> {
     version,
     params: {
       note: {
-        modelName: 'Basic',
         ...payload,
       }
     },

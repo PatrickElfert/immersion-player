@@ -3,9 +3,9 @@ import {addNote} from './add-note';
 it('should create a new note in anki', async () => {
   const response = await addNote({
     deckName: 'Test',
+    modelName: 'TestModel1',
     fields: {
-      Front: 'Whats this again ?',
-      Back: 'Another Test !',
+      Sentence: 'Whats this again ?',
     },
     options: {
       allowDuplicate: false
