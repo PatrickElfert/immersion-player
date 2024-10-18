@@ -20,6 +20,9 @@
       ],
       "@immersion-player/feature-dictionary-lookup": [
         "libs/feature-dictionary-lookup/src/index.ts"
+      ],
+      "@immersion-player/feature-flashcard-creation": [
+        "libs/feature-flashcard-creation/src/index.ts"
       ]
     }
   },

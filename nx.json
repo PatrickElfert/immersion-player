@@ -66,5 +66,12 @@
     }
   },
   "nxCloudAccessToken": "YWIxMDU3NjQtZWFjYi00NzJkLTlhNGYtOWMyNzAxMWNmMTVifHJlYWQtd3JpdGU=",
-  "defaultProject": "immersion-player-desktop"
+  "defaultProject": "immersion-player-desktop",
+  "targetDefaults": {
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    }
+  }
 }
