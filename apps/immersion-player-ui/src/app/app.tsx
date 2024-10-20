@@ -1,19 +1,17 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 import { FeatureContentLibrary } from '@immersion-player/feature-content-library';
-import Navbar from "./navbar/navbar";
-import {makeStyles} from "@fluentui/react-components";
-
-const useStyles = makeStyles({
-  layout: {display: 'grid', gridTemplateColumns: '70px 1fr', height: '100vh'},
-})
+import Menu from "./menu/menu";
+import {Navbar} from "./navbar/navbar";
 
 export function App() {
-  const classes = useStyles();
 
-  return <div className={classes.layout}>
-    <Navbar/>
-    <FeatureContentLibrary/>
+  return <div className="grid grid-cols-root h-screen">
+    <Menu/>
+    <div className="grid grid-rows-content h-screen">
+      <Navbar/>
+      <FeatureContentLibrary/>
+    </div>
   </div>;
 }
 
