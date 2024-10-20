@@ -7,3 +7,13 @@
 body {
   margin: 0;
 }
+
+@layer components {
+  .cutout {
+    @apply relative; /* Tailwind utility for positioning */
+    mask: url('assets/menu-cutout.svg');
+    mask-size: cover;
+    -webkit-mask: url('assets/menu-cutout.svg');
+    -webkit-mask-size: cover;
+  }
+}
