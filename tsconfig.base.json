@@ -15,8 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@immersion-player/feature-content-library": [
-        "libs/feature-content-library/src/index.ts"
+      "@immersion-player/feature-content-library-ui": [
+        "libs/feature-content-library-ui/src/index.ts"
+      ],
       ],
       "@immersion-player/feature-dictionary-lookup": [
         "libs/feature-dictionary-lookup/src/index.ts"
