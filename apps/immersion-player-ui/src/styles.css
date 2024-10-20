@@ -17,3 +17,14 @@ body {
     -webkit-mask-size: cover;
   }
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-primary-gradient;
+  border-radius: 5px;
+}
