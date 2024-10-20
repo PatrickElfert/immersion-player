@@ -27,6 +27,10 @@ module.exports = {
           'colors.primary'
         )}, ${theme('colors.secondary')})`,
       }),
+      boxShadow: {
+        "inner-glow": "4px 0 30px rgba(255,255,255,0.08) inset",
+        "left-glow": "2px -35px 30px 15px rgba(255,255,255,0.08)"
+      },
       gridTemplateColumns: {
         root: '250px 1fr',
       },

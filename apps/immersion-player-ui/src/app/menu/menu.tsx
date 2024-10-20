@@ -35,7 +35,7 @@ function MenuItem({
 
 export function Menu() {
   return (
-    <div className="bg-plum flex flex-col items-end">
+    <div className="pt-20 bg-plum flex flex-col items-end shadow-white-right">
       <MenuItem icon={home} active={true} label={'Library'}></MenuItem>
       <MenuItem icon={settings} active={false} label={'Settings'}></MenuItem>
     </div>
