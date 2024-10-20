@@ -5,6 +5,7 @@
 
 import { app, ipcMain } from 'electron';
 import { environment } from '../../environments/environment';
+import {loadLibrary} from "@immersion-player/feature-content-provider";
 
 export default class ElectronEvents {
   static bootstrapElectronEvents(): Electron.IpcMain {
@@ -17,6 +18,10 @@ ipcMain.handle('get-app-version', (event) => {
   console.log(`Fetching application version... [v${environment.version}]`);
 
   return environment.version;
+});
+
+ipcMain.handle('get-library', (event, folderPath: string) => {
+  return loadLibrary(folderPath);
 });
 
 // Handle App termination
