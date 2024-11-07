@@ -18,9 +18,9 @@ module.exports = {
     },
     extend: {
       colors: {
-        plum: '#0A0024',
-        primary: '#ED1E79',
-        secondary: '#F7CA40',
+        surface: '#202124',
+        primary: '#08CF65',
+        secondary: '#FFD042',
       },
       backgroundImage: (theme) => ({
         'primary-gradient': `linear-gradient(to bottom right, ${theme(

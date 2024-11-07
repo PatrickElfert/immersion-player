@@ -26,7 +26,8 @@
       ],
       "@immersion-player/feature-flashcard-creation": [
         "libs/feature-flashcard-creation/src/index.ts"
-      ]
+      ],
+      "@immersion-player/shared-utils": ["libs/shared-utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

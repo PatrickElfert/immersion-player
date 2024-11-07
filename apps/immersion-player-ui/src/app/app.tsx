@@ -6,7 +6,7 @@ import { Navbar } from './navbar/navbar';
 
 export function App() {
   return (
-    <div className="grid grid-cols-root h-screen bg-plum">
+    <div className="grid grid-cols-root h-screen bg-surface">
       <Menu />
       <div className="grid grid-rows-content h-screen">
         <Navbar />
