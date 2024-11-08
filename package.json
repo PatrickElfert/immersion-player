@@ -4,14 +4,16 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "make": "npx nx run-many --target=build --all && npx nx run immersion-player-desktop:make"
+    "make": "npx nx run-many --target=build --all --skip-cache && npx nx run immersion-player-desktop:make --skip-cache"
   },
   "build": {
     "productName": "ImmersionPlayer",
     "asarUnpack": [
       "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
       "node_modules/ffmpeg-static/index.js",
-      "node_modules/ffmpeg-static/package.json"
+      "node_modules/ffmpeg-static/package.json",
+      "node_modules/ffprobe-static/index.js",
+      "node_modules/ffprobe-static/package.json"
     ]
   },
   "private": true,

@@ -1,11 +1,11 @@
 import { readdir, lstat } from 'fs/promises';
 import { homedir } from 'os';
 import { extname, join, parse } from 'path';
-import {existsSync} from 'fs'
+import { existsSync } from 'fs';
 import * as ffmpeg from 'fluent-ffmpeg';
-import ffmpegPath from 'ffmpeg-static'
-import {path as ffprobePath}  from 'ffprobe-static'
-import * as path from "node:path";
+import ffmpegPath from 'ffmpeg-static';
+import { path as ffprobePath } from 'ffprobe-static';
+import * as path from 'node:path';
 
 export interface LanguageFile {
   path: string;
@@ -19,7 +19,15 @@ export interface LibraryItem {
   thumbnail: string;
 }
 
-const videoExtensions = ['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4', '.mkv'];
+const videoExtensions = [
+  '.mpg',
+  '.mp2',
+  '.mpeg',
+  '.mpe',
+  '.mpv',
+  '.mp4',
+  '.mkv',
+];
 
 function createThumbnail(outputPath: string, videoPath: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -45,16 +53,12 @@ export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
   const libraryFolder = await readdir(absolutePath);
   const result: LibraryItem[] = [];
 
-  if(ffmpegPath && ffprobePath) {
-    ffmpeg.setFfmpegPath(ffmpegPath.replace(
-      'app.asar',
-      'app.asar.unpacked'
-    ))
-    ffmpeg.setFfprobePath(ffprobePath);
+  if (ffmpegPath && ffprobePath) {
+    ffmpeg.setFfmpegPath(ffmpegPath.replace('app.asar', 'app.asar.unpacked'));
+    ffmpeg.setFfprobePath(ffprobePath.replace('app.asar', 'app.asar.unpacked'));
   }
 
   for (const item of libraryFolder) {
-
     const folderPath = path.join(absolutePath, item);
     const isDirectory = (await lstat(folderPath)).isDirectory();
 
@@ -65,15 +69,15 @@ export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
         videoExtensions.includes(extname(s))
       );
 
-      const srtFiles = folderContent.filter(s => extname(s) === '.srt');
+      const srtFiles = folderContent.filter((s) => extname(s) === '.srt');
 
-      if(path.length > 0) {
+      if (path.length > 0) {
         /** For now just take the first file **/
         const mediaPath = path[0];
 
         const videoPath = join(folderPath, mediaPath);
 
-        if(!existsSync(join(folderPath, 'thumbnail.png'))) {
+        if (!existsSync(join(folderPath, 'thumbnail.png'))) {
           await createThumbnail(folderPath, videoPath);
         }
 
@@ -82,10 +86,10 @@ export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
           path: videoPath,
           language: srtFiles.map((srtFile) => ({
             path: join(folderPath, srtFile),
-            languageCode: srtFile.split('.')[2]
+            languageCode: srtFile.split('.')[2],
           })),
-          thumbnail: join('media://',folderPath, 'thumbnail.png')
-        })
+          thumbnail: join('media://', folderPath, 'thumbnail.png'),
+        });
       }
     }
   }
