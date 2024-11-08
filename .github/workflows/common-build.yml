@@ -1,0 +1,29 @@
+ name: Common Build Workflow
+
+on:
+  workflow_call:
+    inputs:
+      platform-name:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ${{ inputs.platform-name }}
+    env:
+      NX_SKIP_NX_CACHE: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron App
+        run: npm run make
