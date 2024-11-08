@@ -8,6 +8,9 @@ jobs:
   build:
     runs-on: macos-latest
 
+    env:
+      NX_SKIP_NX_CACHE: true
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "make": "npx nx run-many --target=build --all --skip-cache && npx nx run immersion-player-desktop:make --skip-cache"
+    "make": "npx nx run-many --target=build --all && npx nx run immersion-player-desktop:make"
   },
   "build": {
     "productName": "ImmersionPlayer",
