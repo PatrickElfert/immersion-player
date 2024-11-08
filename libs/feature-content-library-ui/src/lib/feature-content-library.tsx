@@ -3,6 +3,7 @@
 import SearchField from './search-field';
 import useLibrary from './hooks/useLibrary';
 import { cn } from '@immersion-player/shared-utils';
+import {useState} from "react";
 
 function MediaCard({ name, thumbnail }: { name: string; thumbnail: string }) {
   return (
@@ -21,9 +22,12 @@ function MediaCard({ name, thumbnail }: { name: string; thumbnail: string }) {
 }
 
 export function FeatureContentLibrary() {
-  const library = useLibrary();
+  const [searchTerm, setSearchTerm] = useState<string | undefined>();
+  const library = useLibrary(searchTerm);
 
-  function handleOnChange(searchTerm: string) {}
+  function handleOnChange(searchTerm: string) {
+    setSearchTerm(searchTerm);
+  }
 
   return (
     <div className="h-full gap-7 flex flex-col">
