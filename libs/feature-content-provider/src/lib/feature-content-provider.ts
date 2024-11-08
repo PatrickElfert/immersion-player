@@ -1,11 +1,11 @@
 import { readdir, lstat } from 'fs/promises';
 import { homedir } from 'os';
 import { extname, join, parse } from 'path';
+import {existsSync} from 'fs'
 import * as ffmpeg from 'fluent-ffmpeg';
 import ffmpegPath from 'ffmpeg-static'
 import {path as ffprobePath}  from 'ffprobe-static'
 import * as path from "node:path";
-import {fileExists} from "nx/src/utils/fileutils";
 
 export interface LanguageFile {
   path: string;
@@ -73,7 +73,7 @@ export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
 
         const videoPath = join(folderPath, mediaPath);
 
-        if(!fileExists(join(folderPath, 'thumbnail.png'))) {
+        if(!existsSync(join(folderPath, 'thumbnail.png'))) {
           await createThumbnail(folderPath, videoPath);
         }
 
