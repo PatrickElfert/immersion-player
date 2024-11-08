@@ -1,5 +1,5 @@
-import {FormEvent} from "react";
-import {cn} from "@immersion-player/shared-utils";
+import {ChangeEvent, FormEvent} from 'react';
+import search from './search-normal.svg';
 
 export interface SearchFieldProps {
   onChange: (value: string) => void;
@@ -8,11 +8,24 @@ export interface SearchFieldProps {
 }
 
 export default function SearchField(props: SearchFieldProps) {
-  function handleOnInput(event: FormEvent<HTMLInputElement>) {
+  function handleOnInput(event: ChangeEvent<HTMLInputElement>) {
     setTimeout(() => {
-      props.onChange(event.currentTarget.value);
+      props.onChange(event.target.value);
     }, props.debounce ?? 0);
   }
 
-  return <input className={cn(props.className, 'h-[3rem]')} placeholder="Test" onInput={handleOnInput}/>
+  return (
+    <div className="relative flex items-center mt-2">
+      <button className="absolute right-0 focus:outline-none rtl:left-0 rtl:right-auto">
+        <img className="pr-4" src={search} />
+      </button>
+
+      <input
+        onChange={handleOnInput}
+        type="text"
+        placeholder="Search"
+        className="block w-full py-2.5 placeholder-white text-white bg-white bg-opacity-5 placeholder-opacity-50 pl-5 pr-11 outline-none"
+      />
+    </div>
+  );
 }
