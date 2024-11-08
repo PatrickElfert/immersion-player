@@ -1,8 +1,20 @@
-import { BrowserWindow, shell, screen } from 'electron';
+import { BrowserWindow, shell, screen, protocol, net } from 'electron';
 import { rendererAppName, rendererAppPort } from './constants';
 import { environment } from '../environments/environment';
 import { join } from 'path';
 import { format } from 'url';
+import * as process from "node:process";
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'media',
+    privileges: {
+      secure: true,
+      supportFetchAPI: true,
+      bypassCSP: true
+    }
+  }
+]);
 
 export default class App {
   // Keep a global reference of the window object, if you don't, the window will
@@ -10,6 +22,7 @@ export default class App {
   static mainWindow: Electron.BrowserWindow;
   static application: Electron.App;
   static BrowserWindow;
+
 
   public static isDevelopmentMode() {
     const isEnvironmentSet: boolean = 'ELECTRON_IS_DEV' in process.env;
@@ -48,6 +61,11 @@ export default class App {
       App.initMainWindow();
       App.loadMainWindow();
     }
+
+    protocol.handle('media', (req) => {
+      const pathToMedia = new URL(req.url).pathname;
+      return net.fetch(`file://${pathToMedia}`);
+    });
   }
 
   private static onActivate() {
