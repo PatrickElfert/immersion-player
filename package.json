@@ -7,6 +7,10 @@
     "make": "npx nx run-many --target=build --all && npx nx run immersion-player-desktop:make"
   },
   "build": {
+    "linux": {
+      "executableName": "ImmersionPlayer",
+      "artifactName": "${productName}-${version}.${ext}"
+    },
     "productName": "ImmersionPlayer",
     "asarUnpack": [
       "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
