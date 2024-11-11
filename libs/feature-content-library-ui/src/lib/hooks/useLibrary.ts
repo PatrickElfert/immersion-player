@@ -7,7 +7,7 @@ export default function useLibrary(searchTerm?: string) {
   useEffect(() => {
     // @ts-ignore
     window.electron
-      .getLibrary('/Documents/Animes/Shikimori is Not Just a Cutie')
+      .getLibrary('/ImmersionPlayer')
       .then((library: LibraryItem[]) => setLibrary(library));
   }, []);
 

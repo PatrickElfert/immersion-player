@@ -1,7 +1,7 @@
 import { readdir, lstat } from 'fs/promises';
 import { homedir } from 'os';
 import { extname, join, parse } from 'path';
-import { existsSync } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 import * as ffmpeg from 'fluent-ffmpeg';
 import ffmpegPath from 'ffmpeg-static';
 import { path as ffprobePath } from 'ffprobe-static';
@@ -49,8 +49,13 @@ function createThumbnail(outputPath: string, videoPath: string): Promise<void> {
 }
 
 export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
-  const absolutePath = join(homedir(), folderPath);
-  const libraryFolder = await readdir(absolutePath);
+  const mediaFolder = join(homedir(), folderPath);
+
+  if(!existsSync(mediaFolder)) {
+    mkdirSync(mediaFolder);
+  }
+
+  const libraryFolder = await readdir(mediaFolder);
   const result: LibraryItem[] = [];
 
   if (ffmpegPath && ffprobePath) {
@@ -59,7 +64,7 @@ export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
   }
 
   for (const item of libraryFolder) {
-    const folderPath = path.join(absolutePath, item);
+    const folderPath = path.join(mediaFolder, item);
     const isDirectory = (await lstat(folderPath)).isDirectory();
 
     if (isDirectory) {
