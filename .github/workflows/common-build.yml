@@ -57,6 +57,13 @@ jobs:
         with:
           name: build-artifacts
 
+      - name: Create Library folder
+        run: mkdir -p ${{ runner.home }}/ImmersionPlayer
+
+      - name: Copy Test files
+        run: cp .\Example\ E01.mp4 .\Example\ E02.mp4 ${{ runner.home }}/ImmersionPlayer/
+        shell: bash
+
       - name: Run playwright tests
         run: npx nx e2e immersion-player-desktop
 
