@@ -57,7 +57,7 @@ jobs:
       - name: Restore build artifacts
         uses: actions/download-artifact@v3
         with:
-          name: build-artifacts
+          name: build-artifacts-${{inputs.platform-name}}
 
       - name: Create Library folder
         run: mkdir -p ${{ runner.home }}/ImmersionPlayer
