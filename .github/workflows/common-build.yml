@@ -33,6 +33,7 @@ jobs:
         with:
           name: build-artifacts-${{inputs.platform-name}}
           path: dist/
+          retention-days: 1
 
   test:
     runs-on: ${{ inputs.platform-name }}
