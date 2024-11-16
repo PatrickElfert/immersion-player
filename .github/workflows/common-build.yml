@@ -27,3 +27,40 @@ jobs:
 
       - name: Build Electron App
         run: npm run make
+
+      - name: Save build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: dist/
+
+  test:
+    runs-on: ${{ inputs.platform-name }}
+    env:
+      NX_SKIP_NX_CACHE: true
+      PLATFORM: ${{ inputs.platform-name }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Restore build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+
+      - name: Run playwright tests
+        run: npx nx e2e immersion-player-desktop
+
+
+
+
+
