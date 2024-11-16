@@ -35,8 +35,8 @@ function MenuItem({
 
 export function Menu() {
   return (
-    <div className="pt-20 bg-surface flex flex-col items-end shadow-white-right">
-      <MenuItem icon={home} active={true} label={'Library'}></MenuItem>
+    <div data-testid="menu" className="pt-20 bg-surface flex flex-col items-end shadow-white-right">
+      <MenuItem data-testid="item" icon={home} active={true} label={'Library'}></MenuItem>
       <MenuItem icon={settings} active={false} label={'Settings'}></MenuItem>
     </div>
   );

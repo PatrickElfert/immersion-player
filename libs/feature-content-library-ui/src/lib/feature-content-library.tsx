@@ -7,7 +7,7 @@ import {useState} from "react";
 
 function MediaCard({ name, thumbnail }: { name: string; thumbnail: string }) {
   return (
-    <div
+    <div data-testid="media"
       className={cn(
         'relative h-[345px] w-[300px] bg-cover flex items-end rounded'
       )}

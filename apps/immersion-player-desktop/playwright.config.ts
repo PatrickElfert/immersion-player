@@ -17,19 +17,4 @@ import { nxE2EPreset } from '@nx/playwright/preset';
 export default defineConfig({
   ...nxE2EPreset(__filename, { testDir: './e2e' }),
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  webServer: {
-    command: 'npx nx run-many --target=build --all && npx nx serve immersion-player-ui',
-    url: 'http://localhost:4200',
-    reuseExistingServer: true,
-  },
-  use: {
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-  },
-  projects: [
-    {
-
-      name: 'electron'
-    },
-  ],
 });

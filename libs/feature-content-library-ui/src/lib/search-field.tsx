@@ -21,6 +21,7 @@ export default function SearchField(props: SearchFieldProps) {
       </button>
 
       <input
+        data-testid="search"
         onChange={handleOnInput}
         type="text"
         placeholder="Search"
