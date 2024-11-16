@@ -37,6 +37,7 @@ jobs:
 
   test:
     runs-on: ${{ inputs.platform-name }}
+    needs: [build]
     env:
       NX_SKIP_NX_CACHE: true
       PLATFORM: ${{ inputs.platform-name }}
