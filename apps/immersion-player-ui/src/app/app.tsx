@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
-import { FeatureContentLibrary } from '@immersion-player/feature-content-library-ui';
 import Menu from './menu/menu';
 import { Navbar } from './navbar/navbar';
+import {Outlet} from "react-router-dom";
 
 export function App() {
   return (
@@ -12,7 +12,7 @@ export function App() {
         <Navbar />
         <div className="shadow-inner-glow h-full min-h-0">
           <div className="py-6 px-8 h-full">
-            <FeatureContentLibrary />
+            <Outlet></Outlet>
           </div>
         </div>
       </div>

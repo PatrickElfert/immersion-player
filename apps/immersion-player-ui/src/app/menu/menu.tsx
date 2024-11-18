@@ -2,6 +2,7 @@
 import home from '../../assets/home.svg';
 import settings from '../../assets/settings.svg';
 import {cn} from "@immersion-player/shared-utils";
+import {useLocation} from "react-router-dom";
 
 function MenuItem({
   label,
@@ -34,10 +35,12 @@ function MenuItem({
 }
 
 export function Menu() {
+  const pathname = useLocation().pathname;
+
   return (
     <div data-testid="menu" className="pt-20 bg-surface flex flex-col items-end shadow-white-right">
-      <MenuItem data-testid="item" icon={home} active={true} label={'Library'}></MenuItem>
-      <MenuItem icon={settings} active={false} label={'Settings'}></MenuItem>
+      <MenuItem data-testid="item" icon={home} active={pathname === '/content-library'} label={'Library'}></MenuItem>
+      <MenuItem icon={settings} active={pathname === '/settings'} label={'Settings'}></MenuItem>
     </div>
   );
 }
