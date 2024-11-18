@@ -32,7 +32,7 @@ jobs:
         run: mkdir -p $HOME/ImmersionPlayer
 
       - name: Copy Test files
-        run: cp ./Example/E01.mp4 ./Example/E02.mp4 $HOME/ImmersionPlayer
+        run: cp "./Example E01.mp4" "./Example E02.mp4" "$HOME/ImmersionPlayer"
         shell: bash
 
       - name: Run playwright tests
