@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  build:
+  build_and_test:
     runs-on: ${{ inputs.platform-name }}
     env:
       NX_SKIP_NX_CACHE: true
@@ -28,47 +28,15 @@ jobs:
       - name: Build Electron App
         run: npm run make
 
-      - name: Save build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts-${{inputs.platform-name}}
-          path: dist/
-          retention-days: 1
-
-  test:
-    runs-on: ${{ inputs.platform-name }}
-    needs: [build]
-    env:
-      NX_SKIP_NX_CACHE: true
-      PLATFORM: ${{ inputs.platform-name }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Restore build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build-artifacts-${{inputs.platform-name}}
-
       - name: Create Library folder
-        run: mkdir -p ${{ runner.home }}/ImmersionPlayer
+        run: mkdir -p $HOME/ImmersionPlayer
 
       - name: Copy Test files
-        run: cp .\Example\ E01.mp4 .\Example\ E02.mp4 ${{ runner.home }}/ImmersionPlayer/
+        run: cp ./Example/E01.mp4 ./Example/E02.mp4 $HOME/ImmersionPlayer
         shell: bash
 
       - name: Run playwright tests
         run: npx nx e2e immersion-player-desktop
-
 
 
 
