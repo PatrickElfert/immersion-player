@@ -12,6 +12,7 @@ jobs:
     runs-on: ${{ inputs.platform-name }}
     env:
       NX_SKIP_NX_CACHE: true
+      PLATFORM: ${{ inputs.platform-name }}
 
     steps:
       - name: Checkout code
