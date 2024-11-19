@@ -1,6 +1,7 @@
 import { workspaceRoot } from '@nx/devkit';
 import { _electron, ElectronApplication } from '@playwright/test';
 import * as path from 'node:path';
+import {readdirSync} from "node:fs";
 
 const platforms = {
   "macos-latest": 'dist/executables/mac-arm64/ImmersionPlayer.app/Contents/MacOS/ImmersionPlayer',
@@ -9,6 +10,9 @@ const platforms = {
 };
 
 export async function launchElectron(): Promise<ElectronApplication> {
+
+  console.log(readdirSync(path.join(workspaceRoot,'dist', 'executables')))
+
   const videoPath = path.resolve(workspaceRoot, 'e2e-recordings');
   return await _electron.launch({
     executablePath: path.join(
