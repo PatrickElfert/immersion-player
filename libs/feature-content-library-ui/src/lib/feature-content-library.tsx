@@ -4,6 +4,7 @@ import SearchField from './search-field';
 import useLibrary from './hooks/useLibrary';
 import { cn } from '@immersion-player/shared-utils';
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 function MediaCard({ name, thumbnail }: { name: string; thumbnail: string }) {
   return (
@@ -38,7 +39,9 @@ export function FeatureContentLibrary() {
       />
       <div className="h-full flex flex-row flex-wrap gap-4 min-h-0 overflow-auto">
         {library.map((l) => (
-          <MediaCard name={l.name} thumbnail={l.thumbnail} key={l.name} />
+          <Link to={'Player'}>
+            <MediaCard name={l.name} thumbnail={l.thumbnail} key={l.name} />
+          </Link>
         ))}
       </div>
     </div>

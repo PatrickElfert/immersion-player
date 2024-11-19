@@ -39,8 +39,8 @@ export function Menu() {
 
   return (
     <div data-testid="menu" className="pt-20 bg-surface flex flex-col items-end shadow-white-right">
-      <MenuItem data-testid="item" icon={home} active={pathname === '/content-library'} label={'Library'}></MenuItem>
-      <MenuItem icon={settings} active={pathname === '/settings'} label={'Settings'}></MenuItem>
+      <MenuItem data-testid="item" icon={home} active={pathname.includes('Library')} label={'Library'}></MenuItem>
+      <MenuItem icon={settings} active={pathname === '/Settings'} label={'Settings'}></MenuItem>
     </div>
   );
 }

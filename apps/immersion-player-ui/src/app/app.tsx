@@ -3,6 +3,7 @@
 import Menu from './menu/menu';
 import { Navbar } from './navbar/navbar';
 import {Outlet} from "react-router-dom";
+import {Breadcrumb} from "./breadcrumb/breadcrumb";
 
 export function App() {
   return (
@@ -10,9 +11,12 @@ export function App() {
       <Menu />
       <div className="grid grid-rows-content h-screen">
         <Navbar />
-        <div className="shadow-inner-glow h-full min-h-0">
-          <div className="py-6 px-8 h-full">
-            <Outlet></Outlet>
+        <div className="shadow-inner-glow flex flex-col h-[calc(100% - 80px)] min-h-0">
+          <div className="py-6 px-8 flex-1 flex flex-col min-h-0">
+            <Breadcrumb/>
+            <div className="overflow-auto flex-1">
+              <Outlet></Outlet>
+            </div>
           </div>
         </div>
       </div>

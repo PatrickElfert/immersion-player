@@ -1,26 +1,26 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './app/app';
-import {createBrowserRouter, Navigate, RouterProvider} from 'react-router-dom';
-import {FeatureContentLibrary} from "@immersion-player/feature-content-library-ui";
-import {FeatureMediaPlayerUi} from "@immersion-player/feature-media-player-ui";
+import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
+import { FeatureContentLibrary } from '@immersion-player/feature-content-library-ui';
+import { FeatureMediaPlayerUi } from '@immersion-player/feature-media-player-ui';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <App />,
     children: [
       {
-        index: true,
-        element: <Navigate to="/content-library"/>
+        path: '/',
+        element: <Navigate to="Library" replace={true} />,
       },
       {
-        path: 'content-library',
-        element: <FeatureContentLibrary/>
+        path: 'Library',
+        element: <FeatureContentLibrary />,
       },
       {
-        path: 'media-player',
-        element: <FeatureMediaPlayerUi/>
+        path: 'Library/Player',
+        element: <FeatureMediaPlayerUi />,
       },
     ],
   },
@@ -31,6 +31,6 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <StrictMode>
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   </StrictMode>
 );
