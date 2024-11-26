@@ -1,11 +1,21 @@
-import inflections from './inflections.json'
+import baseInflections from './inflections.json';
+import iAdjective from './deinflections/iAdjectives/inflections.json';
+import godanVerbs from './deinflections/godanVerbs/inflections.json';
+import ichidanVerbs from './deinflections/ichidanVerbs/inflections.json';
 
 type Inflection = [string, string, Inflection[]];
+
+const inflections = [
+  ...baseInflections,
+  ...iAdjective,
+  ...godanVerbs,
+  ...ichidanVerbs,
+];
 
 export function deinflect(
   term: string,
   inflections: Inflection[],
-  root: Inflection[],
+  root: Inflection[]
 ) {
   for (const [deinflected, inflected, subInflections] of inflections) {
     if (term.endsWith(inflected)) {
@@ -19,7 +29,7 @@ export function deinflect(
   return term;
 }
 
-export function getDeinflections(token:string) {
+export function getDeinflections(token: string) {
   const result = [];
 
   for (const root of inflections as Inflection[]) {
