@@ -118,7 +118,7 @@ const tests: DeinflectionTest[] = [
     description: "past tense する",
   },
   {
-    input: "た",
+    input: "きた",
     output: ["くる"],
     description: "past tense くる",
   },
@@ -126,6 +126,46 @@ const tests: DeinflectionTest[] = [
     input: "行った",
     output: ["行く"],
     description: "past tense いく",
+  },
+  {
+    input: "話さなかった",
+    output: ["話す"],
+    description: "negative past す",
+  },
+  {
+    input: "書かなかった",
+    output: ["書く"],
+    description: "negative past く",
+  },
+  {
+    input: "泳がなかった",
+    output: ["泳ぐ"],
+    description: "negative past ぐ",
+  },
+  {
+    input: "遊ばなかった",
+    output: ["遊ぶ"],
+    description: "negative past ぶ",
+  },
+  {
+    input: "持たなかった",
+    output: ["持つ"],
+    description: "negative past つ",
+  },
+  {
+    input: "歩まなかった",
+    output: ["歩む"],
+    description: "negative む",
+  },
+  {
+    input: "死ななかった",
+    output: ["死ぬ"],
+    description: "negative past ぬ",
+  },
+  {
+    input: "買わなかった",
+    output: ["買う"],
+    description: "past negative う",
   },
 ];
 
