@@ -6,6 +6,7 @@ import * as ffmpeg from 'fluent-ffmpeg';
 import ffmpegPath from 'ffmpeg-static';
 import { path as ffprobePath } from 'ffprobe-static';
 import * as path from 'node:path';
+import {v4} from "uuid";
 
 export interface LanguageFile {
   path: string;
@@ -17,6 +18,7 @@ export interface LibraryItem {
   path: string;
   language: LanguageFile[];
   thumbnail: string;
+  id: string;
 }
 
 const videoExtensions = [
@@ -49,6 +51,8 @@ function createThumbnail(outputPath: string, videoPath: string): Promise<void> {
 }
 
 export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
+  console.log('called')
+
   const mediaFolder = join(homedir(), folderPath);
 
   if(!existsSync(mediaFolder)) {
@@ -88,12 +92,13 @@ export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
 
         result.push({
           name: parse(mediaPath).name,
-          path: videoPath,
+          path: join('media://', videoPath),
           language: srtFiles.map((srtFile) => ({
             path: join(folderPath, srtFile),
             languageCode: srtFile.split('.')[2],
           })),
           thumbnail: join('media://', folderPath, 'thumbnail.png'),
+          id: v4()
         });
       }
     }

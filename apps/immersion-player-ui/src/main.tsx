@@ -4,6 +4,7 @@ import App from './app/app';
 import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { FeatureContentLibrary } from '@immersion-player/feature-content-library-ui';
 import { FeatureMediaPlayerUi } from '@immersion-player/feature-media-player-ui';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 const router = createHashRouter([
   {
@@ -26,11 +27,21 @@ const router = createHashRouter([
   },
 ]);
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+});
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <StrictMode>
+    <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
+    </QueryClientProvider>
   </StrictMode>
 );

@@ -1,15 +1,20 @@
-import {useEffect, useState} from "react";
 import {LibraryItem} from "@immersion-player/feature-content-provider";
+import {useQuery} from "react-query";
 
 export default function useLibrary(searchTerm?: string) {
-  const [library, setLibrary] = useState<LibraryItem[]>([]);
-
-  useEffect(() => {
+  const {data, error, isLoading} = useQuery<LibraryItem[]>(
+    ['library'],
     // @ts-ignore
-    window.electron
-      .getLibrary('ImmersionPlayer')
-      .then((library: LibraryItem[]) => setLibrary(library));
-  }, []);
+    () => window.electron
+      .getLibrary('ImmersionPlayer'),
+    {
+      staleTime: 1000 * 60 * 5,
+      cacheTime: 1000 * 60 * 30
+    }
+  )
 
-  return library.filter(l => searchTerm ?  l.name.includes(searchTerm): true);
+
+  const library = data?.filter(l => searchTerm ?  l.name.includes(searchTerm): true);
+
+  return library ?? [];
 }

@@ -39,7 +39,7 @@ export function FeatureContentLibrary() {
       />
       <div className="h-full flex flex-row flex-wrap gap-4 min-h-0 overflow-auto">
         {library.map((l) => (
-          <Link to={'Player'}>
+          <Link to={`Player?id=${l.id}`}>
             <MediaCard name={l.name} thumbnail={l.thumbnail} key={l.name} />
           </Link>
         ))}

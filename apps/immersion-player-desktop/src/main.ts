@@ -13,7 +13,8 @@ export default class Main {
         privileges: {
           secure: true,
           supportFetchAPI: true,
-          bypassCSP: true
+          bypassCSP: true,
+          stream: true
         }
       }
     ]);
