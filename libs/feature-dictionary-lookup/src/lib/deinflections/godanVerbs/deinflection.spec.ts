@@ -167,6 +167,26 @@ const tests: DeinflectionTest[] = [
     output: ["買う"],
     description: "past negative う",
   },
+  {
+    input: "切らなかった",
+    output: ["切る"],
+    description: "past negative る"
+  },
+  {
+    input: "しなかった",
+    output: ["する"],
+    description: "past negative する",
+  },
+  {
+    input: "こなかった",
+    output: ["くる"],
+    description: "past negative くる",
+  },
+  {
+    input: "なかった",
+    output: ["ある"],
+    description: "past negative ある"
+  }
 ];
 
 describe('Deinflection of godan verbs', () => {

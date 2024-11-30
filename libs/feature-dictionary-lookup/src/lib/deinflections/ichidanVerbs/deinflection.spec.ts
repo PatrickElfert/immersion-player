@@ -10,8 +10,13 @@ const tests: DeinflectionTest[] = [
   {
     input: "食べた",
     output: ["食べる"],
-    description: "negative past",
+    description: "past",
   },
+  {
+    input: "食べなかった",
+    output: ["食べる"],
+    description: "negative past"
+  }
 ]
 
 describe('Deinflection of ichidan verbs', () => {
