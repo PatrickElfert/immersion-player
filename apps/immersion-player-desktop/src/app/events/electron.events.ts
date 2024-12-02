@@ -6,6 +6,7 @@
 import { app, ipcMain } from 'electron';
 import { environment } from '../../environments/environment';
 import {loadLibrary} from "@immersion-player/feature-content-provider";
+import {parseSrt} from "@immersion-player/feature-dictionary-lookup";
 
 export default class ElectronEvents {
   static bootstrapElectronEvents(): Electron.IpcMain {
@@ -22,6 +23,10 @@ ipcMain.handle('get-app-version', (event) => {
 
 ipcMain.handle('get-library', (event, folderPath: string) => {
   return loadLibrary(folderPath);
+});
+
+ipcMain.handle('parse-srt', (event, srtPath: string) => {
+  return parseSrt(srtPath);
 });
 
 // Handle App termination

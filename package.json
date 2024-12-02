@@ -34,6 +34,7 @@
     "react-dom": "18.2.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.11.2",
+    "srt-parser-2": "^1.2.3",
     "tailwind-merge": "^2.5.4",
     "tslib": "^2.3.0",
     "typeface-inter": "^3.18.1",

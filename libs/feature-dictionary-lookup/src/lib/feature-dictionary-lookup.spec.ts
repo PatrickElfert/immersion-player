@@ -1,4 +1,4 @@
-import { Parser } from './feature-dictionary-lookup';
+import { Parser } from './parser';
 
 const parser = new Parser('./jmdict-all-3.5.0.json');
 
