@@ -5,6 +5,8 @@ import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { FeatureContentLibrary } from '@immersion-player/feature-content-library-ui';
 import { FeatureMediaPlayerUi } from '@immersion-player/feature-media-player-ui';
 import {QueryClient, QueryClientProvider} from 'react-query';
+import {persistQueryClient} from "react-query/persistQueryClient-experimental";
+import {createWebStoragePersistor} from "react-query/createWebStoragePersistor-experimental";
 
 const router = createHashRouter([
   {
@@ -34,6 +36,13 @@ const queryClient = new QueryClient({
     }
   }
 });
+
+const localStoragePersistor = createWebStoragePersistor({storage: window.localStorage})
+
+persistQueryClient({
+  queryClient,
+  persistor: localStoragePersistor,
+})
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
