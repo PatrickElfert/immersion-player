@@ -1,10 +1,10 @@
 /* eslint-disable-next-line */
 
 import SearchField from './search-field';
-import useLibrary from './hooks/useLibrary';
 import { cn } from '@immersion-player/shared-utils';
 import {useState} from "react";
 import {Link} from "react-router-dom";
+import {useLibrary} from "./hooks/useLibrary";
 
 function MediaCard({ name, thumbnail }: { name: string; thumbnail: string }) {
   return (
@@ -25,6 +25,8 @@ function MediaCard({ name, thumbnail }: { name: string; thumbnail: string }) {
 export function FeatureContentLibrary() {
   const [searchTerm, setSearchTerm] = useState<string | undefined>();
   const library = useLibrary(searchTerm);
+
+  console.log(library)
 
   function handleOnChange(searchTerm: string) {
     setSearchTerm(searchTerm);

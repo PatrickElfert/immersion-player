@@ -7,19 +7,7 @@ import ffmpegPath from 'ffmpeg-static';
 import { path as ffprobePath } from 'ffprobe-static';
 import * as path from 'node:path';
 import {v4} from "uuid";
-
-export interface LanguageFile {
-  path: string;
-  languageCode: string;
-}
-
-export interface LibraryItem {
-  name: string;
-  path: string;
-  language: LanguageFile[];
-  thumbnail: string;
-  id: string;
-}
+import {LibraryItem} from "@immersion-player/shared-types";
 
 const videoExtensions = [
   '.mpg',

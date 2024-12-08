@@ -4,16 +4,5 @@
   "sourceRoot": "libs/feature-content-provider/src",
   "projectType": "library",
   "tags": [],
-  "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/libs/feature-content-provider",
-        "main": "libs/feature-content-provider/src/index.ts",
-        "tsConfig": "libs/feature-content-provider/tsconfig.lib.json",
-        "assets": ["libs/feature-content-provider/*.md"]
-      }
-    }
-  }
+  "targets": {}
 }

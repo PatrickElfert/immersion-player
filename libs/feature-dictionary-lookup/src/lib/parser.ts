@@ -1,24 +1,17 @@
 import { JMdict, JMdictWord } from '@scriptin/jmdict-simplified-types';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import { KuromojiToken, tokenize } from 'kuromojin';
 import { getDeinflections } from './deinflect';
+import { jmdict } from './dictionaries';
+import {LookupResult} from "@immersion-player/shared-types";
 
-export interface LookupResult {
-  dictionary: 'JMdict';
-  translations: string[];
-}
 
 export type DictionaryWordMap = { [word: string]: JMdictWord[] };
-export type DictionaryResultMap = { [word: string]: LookupResult[] };
 
 export class Parser {
   dictionary: DictionaryWordMap;
 
-  constructor(path: string) {
-    this.dictionary = this.createMapFromDictionary(
-      JSON.parse(readFileSync(join(__dirname, path), { encoding: 'utf8' }))
-    );
+  constructor() {
+    this.dictionary = this.createMapFromDictionary(jmdict);
   }
 
   async parseSentence(sentence: string, scanLength = 4) {
@@ -26,7 +19,7 @@ export class Parser {
     return this.getLookupResults(morphemes, scanLength);
   }
 
-  getLookupResults(morphemes: KuromojiToken[], scanLength: number) {
+  getLookupResults(morphemes: KuromojiToken[], scanLength: number): LookupResult[] {
     const morphemeGroups = this.getMorphemeGroups(morphemes, scanLength);
     const lookupResults = [];
 
@@ -50,13 +43,12 @@ export class Parser {
         const dictionaryLookup = this.lookupTokensInDictionary(lookupTokens);
 
         if (dictionaryLookup.length > 0) {
-
           /** remove the currently processed group **/
           morphemeGroups.shift();
 
-          if(remainingMorphemes.length > 0) {
+          if (remainingMorphemes.length > 0) {
             /** create a new group to be processed if there are remaining morphemes **/
-            morphemeGroups.unshift(remainingMorphemes)
+            morphemeGroups.unshift(remainingMorphemes);
           }
 
           lookupResults.push(...dictionaryLookup);

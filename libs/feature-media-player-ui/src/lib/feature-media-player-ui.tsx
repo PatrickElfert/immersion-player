@@ -1,13 +1,17 @@
 /* eslint-disable-next-line */
-import useLibrary from '../../../feature-content-library-ui/src/lib/hooks/useLibrary';
 import { useLocation } from 'react-router-dom';
+import useSubtitles from './hooks/useSubtitles';
+import { useLibrary } from '@immersion-player/feature-content-library-ui';
 
-export interface FeatureMediaPlayerUiProps {}
-
-export function FeatureMediaPlayerUi(props: FeatureMediaPlayerUiProps) {
+export function FeatureMediaPlayerUi() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const media = useLibrary().find((entry) => entry.id === params.get('id'));
+  const japaneseLanguage = media?.language.find((l) => l.languageCode === 'ja');
+
+  const { subtitles, isLoading } = useSubtitles(japaneseLanguage?.path);
+
+  console.log(subtitles);
 
   if (media) {
     return (

@@ -1,11 +1,11 @@
 import { Parser } from '@immersion-player/feature-dictionary-lookup';
 import { readFileSync } from 'fs';
-import srtParser2 from 'srt-parser-2';
 
-const parser = new Parser('./jmdict-all-3.5.0.json');
-const srtParser = new srtParser2();
+const parser = new Parser();
 
 export async function parseSrt(path: string) {
+  const srtParser2 = await import('srt-parser-2');
+  const srtParser = new srtParser2.default();
   const srtFile = readFileSync(path, 'utf8');
   const result = srtParser.fromSrt(srtFile);
 

@@ -1,7 +1,7 @@
-import {LibraryItem} from "@immersion-player/feature-content-provider";
 import {useQuery} from "react-query";
+import {LibraryItem} from "@immersion-player/shared-types";
 
-export default function useLibrary(searchTerm?: string) {
+export function useLibrary(searchTerm?: string) {
   const {data, error, isLoading} = useQuery<LibraryItem[]>(
     ['library'],
     // @ts-ignore
