@@ -2,7 +2,7 @@ import { readdir, lstat } from 'fs/promises';
 import { homedir } from 'os';
 import { extname, join, parse } from 'path';
 import { existsSync, mkdirSync } from 'fs';
-import * as ffmpeg from 'fluent-ffmpeg';
+import ffmpeg from 'fluent-ffmpeg';
 import ffmpegPath from 'ffmpeg-static';
 import { path as ffprobePath } from 'ffprobe-static';
 import * as path from 'node:path';
@@ -83,7 +83,7 @@ export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
           path: join('media://', videoPath),
           language: srtFiles.map((srtFile) => ({
             path: join(folderPath, srtFile),
-            languageCode: srtFile.split('.')[2],
+            languageCode: srtFile.split('.')[1],
           })),
           thumbnail: join('media://', folderPath, 'thumbnail.png'),
           id: v4()

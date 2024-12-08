@@ -1,10 +1,14 @@
 import { Parser } from './parser';
+import { join } from 'path';
+import * as path from "node:path";
 
-const parser = new Parser('./jmdict-all-3.5.0.json');
+const parser = new Parser(
+  join(path.resolve(__dirname, '../../../../'), 'jmdict-all-3.5.0.json')
+);
 
 describe('featureDictionaryLookup', () => {
   it('parses a sentence', async () => {
-    let result = await parser.parseSentence('今日は友達と学校に行きます');
+    const result = await parser.parseSentence('今日は友達と学校に行きます');
     expect(result.map((r) => r.token)).toEqual([
       '今日',
       'は',

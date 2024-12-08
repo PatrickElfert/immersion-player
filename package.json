@@ -7,6 +7,12 @@
     "make": "npx nx run-many --target=build --all && npx nx run immersion-player-desktop:make"
   },
   "build": {
+    "extraResources": [
+      {
+        "from": "extraResources",
+        "to": "resources"
+      }
+    ],
     "linux": {
       "executableName": "ImmersionPlayer",
       "artifactName": "${productName}-${version}.${ext}"
@@ -34,6 +40,8 @@
     "react-dom": "18.2.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.11.2",
+    "simple-subtitle-parser": "^2.0.0",
+    "srt-file-parser": "^1.0.0",
     "srt-parser-2": "^1.2.3",
     "tailwind-merge": "^2.5.4",
     "tslib": "^2.3.0",
