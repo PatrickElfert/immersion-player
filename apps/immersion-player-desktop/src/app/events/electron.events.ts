@@ -21,11 +21,11 @@ ipcMain.handle('get-app-version', (event) => {
   return environment.version;
 });
 
-ipcMain.handle('get-library', (event, folderPath: string) => {
+ipcMain.handle('get-library', async (event, folderPath: string) => {
   return loadLibrary(folderPath);
 });
 
-ipcMain.handle('parse-srt', (event, srtPath: string) => {
+ipcMain.handle('parse-srt', async (event, srtPath: string) => {
   return parseSrt(srtPath);
 });
 
