@@ -4,7 +4,7 @@ import {LookupResult} from "@immersion-player/shared-types";
 export default function useSubtitles(srtPath?: string) {
   const {data, error, isLoading} = useQuery<LookupResult[]>(
     ['subtitles', srtPath],
-    // @ts-ignore
+    // @ts-expect-error window.electron is not typed
     () => window.electron
       .parseSubtitles(srtPath),
     {

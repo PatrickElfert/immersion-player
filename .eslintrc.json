@@ -13,8 +13,12 @@
             "allow": [],
             "depConstraints": [
               {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "sourceTag": "ui",
+                "onlyDependOnLibsWithTags": ["shared", "ui"]
+              },
+              {
+                "sourceTag": "electron",
+                "onlyDependOnLibsWithTags": ["shared", "electron"]
               }
             ]
           }

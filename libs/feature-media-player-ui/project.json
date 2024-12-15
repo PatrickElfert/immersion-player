@@ -3,7 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/feature-media-player-ui/src",
   "projectType": "library",
-  "tags": [],
+  "tags": ["ui"],
   "// targets": "to see all targets run: nx show project feature-media-player-ui --web",
   "targets": {}
 }

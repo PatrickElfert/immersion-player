@@ -3,7 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/feature-dictionary-lookup/src",
   "projectType": "library",
-  "tags": [],
+  "tags": ["electron"],
   "// targets": "to see all targets run: nx show project feature-dictionary-lookup --web",
   "targets": {}
 }

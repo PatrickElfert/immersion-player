@@ -4,8 +4,8 @@ import {LibraryItem} from "@immersion-player/shared-types";
 export function useLibrary(searchTerm?: string) {
   const {data, error, isLoading} = useQuery<LibraryItem[]>(
     ['library'],
-    // @ts-ignore
-    () => window.electron
+    // @ts-expect-error window.electron is not typed
+      () => window.electron
       .getLibrary('ImmersionPlayer'),
     {
       staleTime: 1000 * 60 * 5,

@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/immersion-player-desktop/src",
   "projectType": "application",
+  "tags": ["electron"],
   "targets": {
     "build": {
       "executor": "nx-electron:build",
