@@ -16,7 +16,7 @@ export class Parser {
   }
 
   async parseSentence(sentence: string, scanLength = 4) {
-    const morphemes = await this.getMorphemes(sentence);
+    const morphemes = structuredClone(await this.getMorphemes(sentence));
     return this.getLookupResults(morphemes, scanLength);
   }
 
