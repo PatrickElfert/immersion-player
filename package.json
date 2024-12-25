@@ -47,7 +47,8 @@
     "tailwind-merge": "^2.5.4",
     "tslib": "^2.3.0",
     "typeface-inter": "^3.18.1",
-    "uuid": "^11.0.3"
+    "uuid": "^11.0.3",
+    "wanakana": "^5.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.5",

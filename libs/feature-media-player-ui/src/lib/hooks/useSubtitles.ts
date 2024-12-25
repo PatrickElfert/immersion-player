@@ -9,10 +9,10 @@ export default function useSubtitles(srtPath?: string) {
       .parseSubtitles(srtPath),
     {
       enabled: !!srtPath,
-      staleTime: 1000 * 60 * 5,
-      cacheTime: 1000 * 60 * 30
     }
   )
+
+  console.log(error, isLoading, data)
 
   return {subtitles: data, isLoading, error};
 }

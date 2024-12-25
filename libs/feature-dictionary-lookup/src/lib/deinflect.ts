@@ -5,6 +5,23 @@ import ichidanVerbs from './deinflections/ichidanVerbs/inflections.json';
 
 type Inflection = [string, string, Inflection[]];
 
+export enum Types {
+  Verb = 'Verb',
+  Noun = 'Noun',
+  Adjective = 'Adjective',
+}
+
+export type InflectionRule = {
+  suffix: string,
+  replaceWith: string,
+  dict: {
+    type: Types[],
+    lookup: boolean,
+  }
+}
+
+//function createInflection(value: {forInput: any, apply: any})
+
 const inflections = [
   ...baseInflections,
   ...iAdjective,
