@@ -5,20 +5,28 @@ import ichidanVerbs from './deinflections/ichidanVerbs/inflections.json';
 
 type Inflection = [string, string, Inflection[]];
 
-export enum Types {
-  Verb = 'Verb',
-  Noun = 'Noun',
-  Adjective = 'Adjective',
-}
+type DeinflectionOutput =
+  | 'VERB_TE_FORM'
+  | 'VERB_NEGATIVE'
+  | 'VERB_BASE'
+  | 'VERB_PAST'
+  | 'VERB_PAST_NEGATIVE'
+  | 'ADJECTIVE_BASE'
+  | 'ADJECTIVE_PAST'
+  | 'ADJECTIVE_NEGATIVE'
+  | 'ADJECTIVE_PAST_NEGATIVE';
 
-export type InflectionRule = {
-  suffix: string,
-  replaceWith: string,
-  dict: {
-    type: Types[],
-    lookup: boolean,
-  }
-}
+export type Rule = {
+  applyTo: DeinflectionOutput[];
+  replace: string;
+  with: string;
+};
+
+export type Ruleset = {
+  description: string;
+  produces: DeinflectionOutput;
+  rules: Rule[];
+};
 
 //function createInflection(value: {forInput: any, apply: any})
 
