@@ -1,67 +1,72 @@
-import baseInflections from './inflections.json';
-import iAdjective from './deinflections/iAdjectives/inflections.json';
-import godanVerbs from './deinflections/godanVerbs/inflections.json';
-import ichidanVerbs from './deinflections/ichidanVerbs/inflections.json';
+import { rulesets as verbRulesets } from './deinflections/verbs/inflections';
+import { rulesets as adjectiveRuleset } from './deinflections/adjectives/inflections';
 
-type Inflection = [string, string, Inflection[]];
-
-type DeinflectionOutput =
+type Types =
+  | 'NEW'
+  | 'UNKNOWN'
   | 'VERB_TE_FORM'
   | 'VERB_NEGATIVE'
   | 'VERB_BASE'
   | 'VERB_PAST'
+  | 'VERB_POLITE'
+  | 'VERB_POLITE_NEGATIVE'
   | 'VERB_PAST_NEGATIVE'
+  | 'VERB_VOLITIONAL'
+  | 'VERB_VOLITIONAL_POLITE'
+  | 'VERB_DESIRE'
   | 'ADJECTIVE_BASE'
   | 'ADJECTIVE_PAST'
   | 'ADJECTIVE_NEGATIVE'
   | 'ADJECTIVE_PAST_NEGATIVE';
 
 export type Rule = {
-  applyTo: DeinflectionOutput[];
+  applyTo: Types[];
   replace: string;
   with: string;
 };
 
 export type Ruleset = {
   description: string;
-  produces: DeinflectionOutput;
+  produces: Types[];
   rules: Rule[];
 };
 
-//function createInflection(value: {forInput: any, apply: any})
+type DeinflectionTarget = {
+  type: Types;
+  term: string;
+  appliedRules: Rule[];
+};
 
-const inflections = [
-  ...baseInflections,
-  ...iAdjective,
-  ...godanVerbs,
-  ...ichidanVerbs,
-];
+const rulesets = [...verbRulesets, ...adjectiveRuleset];
+const baseTypes: Types[] = ['ADJECTIVE_BASE', 'VERB_BASE'];
 
-export function deinflect(
-  term: string,
-  inflections: Inflection[],
-  root: Inflection[]
-) {
-  for (const [deinflected, inflected, subInflections] of inflections) {
-    if (term.endsWith(inflected)) {
-      const newTerm = term.slice(0, -inflected.length) + deinflected;
-      return deinflect(newTerm, root, root);
-    }
-    if (subInflections.length > 0) {
-      return deinflect(term, subInflections, root);
-    }
+export function getDeinflections(term: string) {
+  let targets: DeinflectionTarget[] = [{ type: 'UNKNOWN', term, appliedRules: [] }];
+
+  while (targets.some((r) => !baseTypes.includes(r.type))) {
+    targets = targets.map((target) => (!baseTypes.includes(target.type) ? deinflect(target) : target)).flat();
   }
-  return term;
+  return targets.map((r) => r.term);
 }
 
-export function getDeinflections(token: string) {
-  const result = [];
+function deinflect(target: DeinflectionTarget) {
+  const result: DeinflectionTarget[] = [];
 
-  for (const root of inflections as Inflection[]) {
-    const deinflected = deinflect(token, [root], [root]);
-    if (deinflected !== token) {
-      result.push(deinflected);
+  for (const ruleset of rulesets) {
+    for (const rule of ruleset.rules) {
+      if (target.term.endsWith(rule.replace) && (target.type === 'UNKNOWN' || rule.applyTo.includes(target.type))) {
+        const newTerm = target.term.slice(0, -rule.replace.length) + rule.with;
+
+        const deinflections = ruleset.produces.map((newType) => ({
+          term: newTerm,
+          type: newType,
+          appliedRules: [...target.appliedRules, rule],
+        }));
+
+        result.push(...deinflections);
+      }
     }
   }
+
   return result;
 }

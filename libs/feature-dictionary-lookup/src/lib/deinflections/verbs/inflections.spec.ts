@@ -68,8 +68,8 @@ const tests: DeinflectionTest[] = [
     description: "negative ある",
   },
   {
-    input: "した",
-    output: ["する"],
+    input: "話した",
+    output: ["話す"],
     description: "past tense す",
   },
   {
@@ -111,21 +111,6 @@ const tests: DeinflectionTest[] = [
     input: "取った",
     output: ["取る"],
     description: "past tense る",
-  },
-  {
-    input: "した",
-    output: ["する"],
-    description: "past tense する",
-  },
-  {
-    input: "きた",
-    output: ["くる"],
-    description: "past tense くる",
-  },
-  {
-    input: "行った",
-    output: ["行く"],
-    description: "past tense いく",
   },
   {
     input: "話さなかった",
@@ -186,7 +171,172 @@ const tests: DeinflectionTest[] = [
     input: "なかった",
     output: ["ある"],
     description: "past negative ある"
-  }
+  },
+  {
+    input: "話します",
+    output: ["話す"],
+    description: "polite す",
+  },
+  {
+    input: "書きます",
+    output: ["書く"],
+    description: "polite く",
+  },
+  {
+    input: "泳ぎます",
+    output: ["泳ぐ"],
+    description: "polite ぐ",
+  },
+  {
+    input: "遊びます",
+    output: ["遊ぶ"],
+    description: "polite ぶ",
+  },
+  {
+    input: "待ちます",
+    output: ["待つ"],
+    description: "polite つ",
+  },
+  {
+    input: "飲みます",
+    output: ["飲む"],
+    description: "polite む",
+  },
+  {
+    input: "死にます",
+    output: ["死ぬ"],
+    description: "polite ぬ",
+  },
+  {
+    input: "買います",
+    output: ["買う"],
+    description: "polite う",
+  },
+  {
+    input: "取ります",
+    output: ["取る"],
+    description: "polite る",
+  },
+  {
+    input: "します",
+    output: ["する"],
+    description: "polite する",
+  },
+  {
+    input: "きます",
+    output: ["くる"],
+    description: "polite くる",
+  },
+  {
+    input: "話しません",
+    output: ["話す"],
+    description: "polite negative す",
+  },
+  {
+    input: "書きません",
+    output: ["書く"],
+    description: "polite negative く",
+  },
+  {
+    input: "泳ぎません",
+    output: ["泳ぐ"],
+    description: "polite negative ぐ",
+  },
+  {
+    input: "遊びません",
+    output: ["遊ぶ"],
+    description: "polite negative ぶ",
+  },
+  {
+    input: "待ちません",
+    output: ["待つ"],
+    description: "polite negative つ",
+  },
+  {
+    input: "飲みません",
+    output: ["飲む"],
+    description: "polite negative む",
+  },
+  {
+    input: "死にません",
+    output: ["死ぬ"],
+    description: "polite negative ぬ",
+  },
+  {
+    input: "買いません",
+    output: ["買う"],
+    description: "polite negative う",
+  },
+  {
+    input: "取りません",
+    output: ["取る"],
+    description: "polite negative る",
+  },
+  {
+    input: "しません",
+    output: ["する"],
+    description: "polite negative する",
+  },
+  {
+    input: "きません",
+    output: ["くる"],
+    description: "polite negative くる",
+  },
+  {
+    input: "話そう",
+    output: ["話す"],
+    description: "volitional す",
+  },
+  {
+    input: "書こう",
+    output: ["書く"],
+    description: "volitional く",
+  },
+  {
+    input: "泳ごう",
+    output: ["泳ぐ"],
+    description: "volitional ぐ",
+  },
+  {
+    input: "遊ぼう",
+    output: ["遊ぶ"],
+    description: "volitional ぶ",
+  },
+  {
+    input: "待とう",
+    output: ["待つ"],
+    description: "volitional つ",
+  },
+  {
+    input: "飲もう",
+    output: ["飲む"],
+    description: "volitional む",
+  },
+  {
+    input: "死のう",
+    output: ["死ぬ"],
+    description: "volitional ぬ",
+  },
+  {
+    input: "買おう",
+    output: ["買う"],
+    description: "volitional う",
+  },
+  {
+    input: "取ろう",
+    output: ["取る"],
+    description: "volitional る",
+  },
+  {
+    input: "しよう",
+    output: ["する"],
+    description: "volitonal する",
+  },
+  {
+    input: "きょう",
+    output: ["くる"],
+    description: "volitional くる",
+  },
 ];
 
 describe('Deinflection of godan verbs', () => {

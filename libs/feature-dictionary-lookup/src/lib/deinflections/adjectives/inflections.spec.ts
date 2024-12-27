@@ -17,6 +17,21 @@ const tests: DeinflectionTest[] = [
     output: ["高い"],
     description: "past negative",
   },
+  {
+    input: "いきたくない",
+    output: ["いく"],
+    description: "desire negative",
+  },
+  {
+    input: "いきたかった",
+    output: ["いく"],
+    description: "desire past",
+  },
+  {
+    input: "いきたくなかった",
+    output: ["いく"],
+    description: "desire past negative",
+  },
 ]
 
 describe('Deinflection of い adjectives', () => {

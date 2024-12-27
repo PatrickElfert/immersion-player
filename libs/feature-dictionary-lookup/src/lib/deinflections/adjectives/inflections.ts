@@ -1,14 +1,14 @@
-import { Ruleset } from '../../deinflect';
+import { Rule, Ruleset } from '../../deinflect';
 
 export const negative: Ruleset = {
   description: '',
-  produces: 'ADJECTIVE_BASE',
+  produces: ['ADJECTIVE_BASE', 'VERB_DESIRE'],
   rules: [{ replace: 'くない', with: 'い', applyTo: ['ADJECTIVE_NEGATIVE'] }],
 };
 
 export const past: Ruleset = {
   description: '',
-  produces: 'ADJECTIVE_BASE',
+  produces: ['ADJECTIVE_BASE', 'VERB_DESIRE'],
   rules: [
     {
       replace: 'かった',
@@ -20,7 +20,7 @@ export const past: Ruleset = {
 
 export const pastNegative: Ruleset = {
   description: '',
-  produces: 'ADJECTIVE_NEGATIVE',
+  produces: ['ADJECTIVE_NEGATIVE'],
   rules: [
     {
       replace: 'かった',
@@ -29,3 +29,29 @@ export const pastNegative: Ruleset = {
     },
   ],
 };
+
+
+const U_VERB_ENDINGS = ['す', 'く', 'ぐ', 'ぶ', 'つ', 'む', 'う', 'る', 'ぬ'];
+const STEM_ENDINGS = ['し', 'き', 'ぎ', 'び', 'ち', 'み', 'い', 'り', 'に'];
+
+const godanDesire: Rule[] = STEM_ENDINGS.map((stem_verbEnding, i) => ({
+  replace: `${stem_verbEnding}たい`,
+  with: U_VERB_ENDINGS[i],
+  applyTo: ['VERB_DESIRE'],
+}));
+
+export const desire: Ruleset = {
+  description: '',
+  produces: ['VERB_BASE'],
+  rules: [
+    ...godanDesire,
+    {
+      replace: 'たい',
+      with: 'る',
+      applyTo: ['VERB_DESIRE'],
+    },
+  ],
+};
+
+export const rulesets = [pastNegative, past, negative, desire];
+
