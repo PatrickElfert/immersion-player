@@ -24,14 +24,16 @@ export const negative: Ruleset = {
   ],
 };
 
+const godanTe: Rule[] = TE_ENDINGS.map((te_verbEnding, i) => ({
+  replace: te_verbEnding,
+  with: U_VERB_ENDINGS[i],
+  applyTo: ['VERB_TE_FORM'],
+}));
+
 export const te: Ruleset = {
   description: '',
   produces: ['VERB_BASE'],
-  rules: TE_ENDINGS.map((te_verbEnding, i) => ({
-    replace: te_verbEnding,
-    with: U_VERB_ENDINGS[i],
-    applyTo: ['VERB_TE_FORM'],
-  })),
+  rules: [...godanTe, { replace: 'て', with: 'る', applyTo: ['VERB_TE_FORM'] }],
 };
 
 export const past: Ruleset = {
@@ -60,9 +62,26 @@ export const polite: Ruleset = {
   produces: ['VERB_BASE'],
   rules: [
     ...godanPolite,
-    { replace: 'る', with: 'ます', applyTo: ['VERB_POLITE'] },
+    { replace: 'ます', with: 'る', applyTo: ['VERB_POLITE'] },
     { replace: 'きます', with: 'くる', applyTo: ['VERB_POLITE'] },
     { replace: 'します', with: 'する', applyTo: ['VERB_POLITE'] },
+  ],
+};
+
+const godanPolitePast: Rule[] = STEM_ENDINGS.map((stem_verbEnding, i) => ({
+  applyTo: ['VERB_PAST_POLITE'],
+  replace: `${stem_verbEnding}ました`,
+  with: U_VERB_ENDINGS[i],
+}));
+
+export const politePast: Ruleset = {
+  description: '',
+  produces: ['VERB_BASE'],
+  rules: [
+    ...godanPolitePast,
+    { replace: 'ました', with: 'る', applyTo: ['VERB_PAST_POLITE'] },
+    { replace: 'きました', with: 'くる', applyTo: ['VERB_PAST_POLITE'] },
+    { replace: 'しました', with: 'する', applyTo: ['VERB_PAST_POLITE'] },
   ],
 };
 
@@ -77,9 +96,26 @@ export const politeNegative: Ruleset = {
   produces: ['VERB_BASE'],
   rules: [
     ...godanPoliteNegative,
-    { replace: 'る', with: 'ません', applyTo: ['VERB_POLITE'] },
-    { replace: 'きません', with: 'くる', applyTo: ['VERB_POLITE'] },
-    { replace: 'しません', with: 'する', applyTo: ['VERB_POLITE'] },
+    { replace: 'ません', with: 'る', applyTo: ['VERB_POLITE_NEGATIVE'] },
+    { replace: 'きません', with: 'くる', applyTo: ['VERB_POLITE_NEGATIVE'] },
+    { replace: 'しません', with: 'する', applyTo: ['VERB_POLITE_NEGATIVE'] },
+  ],
+};
+
+const godanPolitePastNegative: Rule[] = STEM_ENDINGS.map((stem_verbEnding, i) => ({
+  applyTo: ['VERB_PAST_POLITE_NEGATIVE'],
+  replace: `${stem_verbEnding}ませんでした`,
+  with: U_VERB_ENDINGS[i],
+}));
+
+export const politePastNegative: Ruleset = {
+  description: '',
+  produces: ['VERB_BASE'],
+  rules: [
+    ...godanPolitePastNegative,
+    { replace: 'ませんでした', with: 'る', applyTo: ['VERB_PAST_POLITE_NEGATIVE'] },
+    { replace: 'きませんでした', with: 'くる', applyTo: ['VERB_PAST_POLITE_NEGATIVE'] },
+    { replace: 'しませんでした', with: 'する', applyTo: ['VERB_PAST_POLITE_NEGATIVE'] },
   ],
 };
 
@@ -117,5 +153,15 @@ export const politeVolitional: Ruleset = {
   ],
 };
 
-
-export const rulesets = [pastNegative, past, te, negative, polite, politeNegative, volitional, politeVolitional];
+export const rulesets = [
+  pastNegative,
+  past,
+  te,
+  negative,
+  polite,
+  politeNegative,
+  volitional,
+  politeVolitional,
+  politePast,
+  politePastNegative,
+];
