@@ -3,6 +3,11 @@ import { RefObject } from 'react';
 import { usePlayback } from '../hooks/usePlayback';
 import {cn} from "@immersion-player/shared-utils";
 
+function Dictionary() {
+  return <div className="h-80 bg-red-600">
+  </div>
+}
+
 export function Subtitles({
   subtitles,
   videoPlayerRef,
@@ -16,9 +21,9 @@ export function Subtitles({
 
   if (subtitles) {
     return (
-      <div className={cn('flex flex-row text-white', className)}>
+      <div className={cn('flex flex-row text-white text-2xl', className)}>
         {currentSubtitle?.tokens.map((token, index) => (
-          <div key={index}>{token.token}</div>
+          <div className={"hover:text-primary"} key={index}>{token.token}</div>
         ))}
       </div>
     );
