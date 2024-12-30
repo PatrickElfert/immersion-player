@@ -26,8 +26,6 @@ export function FeatureContentLibrary() {
   const [searchTerm, setSearchTerm] = useState<string | undefined>();
   const library = useLibrary(searchTerm);
 
-  console.log(library)
-
   function handleOnChange(searchTerm: string) {
     setSearchTerm(searchTerm);
   }

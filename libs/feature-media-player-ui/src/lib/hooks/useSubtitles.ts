@@ -11,8 +11,5 @@ export default function useSubtitles(srtPath?: string) {
       enabled: !!srtPath,
     }
   )
-
-  console.log(error, isLoading, data)
-
   return {subtitles: data, isLoading, error};
 }

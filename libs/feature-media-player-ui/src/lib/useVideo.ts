@@ -35,7 +35,6 @@ export default function useVideo(videoRef: RefObject<HTMLVideoElement>) {
   };
 
   const play = () => {
-    console.log(videoRef.current)
     videoRef.current?.play();
   };
 
