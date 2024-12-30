@@ -1,18 +1,13 @@
-import { JMdict, JMdictWord } from '@scriptin/jmdict-simplified-types';
 import { KuromojiToken, tokenize } from 'kuromojin';
 import { getDeinflections } from './deinflect';
-import { LookupResult } from '@immersion-player/shared-types';
-import { readFileSync } from 'fs';
-
-export type DictionaryWordMap = { [word: string]: JMdictWord[] };
+import { JmDictionary } from './dictionaries/JmDict';
+import { DictionaryEntry } from '@immersion-player/shared-types';
 
 export class Parser {
-  dictionary: DictionaryWordMap;
+  dictionary: JmDictionary
 
   constructor(path: string) {
-    this.dictionary = this.createMapFromDictionary(
-      JSON.parse(readFileSync(path, { encoding: 'utf8' }))
-    );
+    this.dictionary = new JmDictionary(path)
   }
 
   async parseSentence(sentence: string, scanLength = 4) {
@@ -23,9 +18,9 @@ export class Parser {
   getLookupResults(
     morphemes: KuromojiToken[],
     scanLength: number
-  ): LookupResult[] {
+  ): DictionaryEntry[] {
     const morphemeGroups = this.getMorphemeGroups(morphemes, scanLength);
-    const lookupResults = [];
+    const result: DictionaryEntry[] = [];
 
     while (morphemeGroups.length > 0) {
       const currentGroup = morphemeGroups[0];
@@ -44,9 +39,9 @@ export class Parser {
                 baseForm,
               }))
             : [{ token, baseForm: token }];
-        const dictionaryLookup = this.lookupTokensInDictionary(lookupTokens);
+        const dictionaryEntries = this.lookupTokensInDictionary(lookupTokens);
 
-        if (dictionaryLookup.length > 0) {
+        if (dictionaryEntries.length > 0) {
           /** remove the currently processed group **/
           morphemeGroups.shift();
 
@@ -55,7 +50,7 @@ export class Parser {
             morphemeGroups.unshift(remainingMorphemes);
           }
 
-          lookupResults.push(...dictionaryLookup);
+          result.push(...dictionaryEntries);
           break;
         }
 
@@ -67,15 +62,15 @@ export class Parser {
       }
     }
 
-    return lookupResults;
+    return result;
   }
 
   lookupTokensInDictionary(tokens: { token: string; baseForm: string }[]) {
-    const result = [];
+    const result: DictionaryEntry[] = [];
     for (const token of tokens) {
-      const lookupResult = this.dictionary[token.baseForm];
-      if (lookupResult) {
-        result.push({ token: token.token, lookupResult });
+      const dictionaryEntry = this.dictionary.getEntry(token.baseForm);
+      if (dictionaryEntry) {
+        result.push(dictionaryEntry);
       }
     }
     return result;
@@ -85,7 +80,6 @@ export class Parser {
   getMorphemeGroups(morphemes: KuromojiToken[], scanLength: number) {
     const morphemeGroups: string[][] = [];
     while (morphemes.length > 0) {
-      console.log(morphemes);
       const morphemesToGroup = morphemes.slice(0, scanLength);
       const groupedMorphemes = this.tryGroupMorphemes(morphemesToGroup);
 
@@ -127,26 +121,5 @@ export class Parser {
   /** Breaks sentence into morphemes using kuromoji **/
   private async getMorphemes(sentence: string) {
     return await tokenize(sentence);
-  }
-
-  private createMapFromDictionary(dictionary: JMdict) {
-    const map: { [word: string]: JMdictWord[] } = {};
-
-    for (const entry of dictionary.words) {
-      for (const kanji of entry.kanji) {
-        if (!map[kanji.text]) {
-          map[kanji.text] = [];
-        }
-        map[kanji.text].push(entry);
-      }
-      for (const kana of entry.kana) {
-        if (!map[kana.text]) {
-          map[kana.text] = [];
-        }
-        map[kana.text].push(entry);
-      }
-    }
-
-    return map;
   }
 }

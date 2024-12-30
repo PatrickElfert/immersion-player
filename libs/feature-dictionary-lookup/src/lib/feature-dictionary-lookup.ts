@@ -1,8 +1,9 @@
 import { readFileSync } from 'fs';
 import { Parser } from './parser';
 import {join} from "path";
+import { Subtitle } from '@immersion-player/shared-types';
 
-type Subtitle = {
+type SRT = {
   index: number;
   startTime: string;
   endTime: string;
@@ -11,7 +12,7 @@ type Subtitle = {
 
 const parser = new Parser(join(__dirname, 'jmdict-all-3.5.0.json'));
 
-export async function parseSrt(path: string) {
+export async function parseSrt(path: string): Promise<Subtitle[]> {
   const srtFile = readFileSync(path, 'utf8');
   const result = srtParse(srtFile);
 
@@ -29,7 +30,7 @@ export async function parseSrt(path: string) {
 }
 
 function srtParse(srt: string) {
-  const subtitles: Subtitle[] = [];
+  const subtitles: SRT[] = [];
 
   const blocks = srt.trim().split(/\n\n+/);
 

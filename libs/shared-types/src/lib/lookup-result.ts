@@ -1,6 +1,1 @@
-import {JMdictWord} from "@scriptin/jmdict-simplified-types";
-
-export interface LookupResult {
-  token: string;
-  lookupResult: JMdictWord[];
-}
+export type DictionaryEntry = { word: string; definitions: string[] };
