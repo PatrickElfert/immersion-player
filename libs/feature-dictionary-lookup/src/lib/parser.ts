@@ -1,7 +1,7 @@
 import { KuromojiToken, tokenize } from 'kuromojin';
 import { getDeinflections } from './deinflect';
 import { JmDictionary } from './dictionaries/JmDict';
-import { DictionaryEntry } from '@immersion-player/shared-types';
+import { LookupResult, PossibleDefinitions } from '@immersion-player/shared-types';
 
 export class Parser {
   dictionary: JmDictionary
@@ -18,9 +18,9 @@ export class Parser {
   getLookupResults(
     morphemes: KuromojiToken[],
     scanLength: number
-  ): DictionaryEntry[] {
+  ): LookupResult[] {
     const morphemeGroups = this.getMorphemeGroups(morphemes, scanLength);
-    const result: DictionaryEntry[] = [];
+    const result: LookupResult[] = [];
 
     while (morphemeGroups.length > 0) {
       const currentGroup = morphemeGroups[0];
@@ -32,16 +32,13 @@ export class Parser {
         const deinflectedTokens = getDeinflections(token);
 
         /** If we don't find any deinflections we expect the word is already in its base form **/
-        const lookupTokens =
+        const terms =
           deinflectedTokens.length > 0
-            ? deinflectedTokens.map((baseForm) => ({
-                token,
-                baseForm,
-              }))
-            : [{ token, baseForm: token }];
-        const dictionaryEntries = this.lookupTokensInDictionary(lookupTokens);
+            ? deinflectedTokens.map((baseForm) => baseForm)
+            : [token];
+        const possibleDefinitions = this.lookupTermsInDictionary(terms);
 
-        if (dictionaryEntries.length > 0) {
+        if (Object.keys(possibleDefinitions).length > 0) {
           /** remove the currently processed group **/
           morphemeGroups.shift();
 
@@ -50,7 +47,7 @@ export class Parser {
             morphemeGroups.unshift(remainingMorphemes);
           }
 
-          result.push(...dictionaryEntries);
+          result.push({token, definitions: possibleDefinitions});
           break;
         }
 
@@ -65,15 +62,18 @@ export class Parser {
     return result;
   }
 
-  lookupTokensInDictionary(tokens: { token: string; baseForm: string }[]) {
-    const result: DictionaryEntry[] = [];
-    for (const token of tokens) {
-      const dictionaryEntry = this.dictionary.getEntry(token.baseForm);
-      if (dictionaryEntry) {
-        result.push(dictionaryEntry);
+  lookupTermsInDictionary(terms: string[]) {
+    const possibleDefinitions : PossibleDefinitions = {};
+    for (const term of terms) {
+      const definitions = this.dictionary.getDefinitions(term);
+      if (definitions.length > 0) {
+        if(!possibleDefinitions[term]) {
+          possibleDefinitions[term] = [];
+        }
+        possibleDefinitions[term].push(...definitions);
       }
     }
-    return result;
+    return possibleDefinitions;
   }
 
   /** Returns multiple groups of morphemes which could represent a dictionary entry **/
@@ -112,6 +112,11 @@ export class Parser {
 
     /** Avoid joining anything with particles **/
     if (secondToken.pos === '助詞' || firstToken.pos === '助詞') {
+      return false;
+    }
+
+    /** Avoid joining anything with Symbols like 。or 、**/
+    if (secondToken.pos === '記号' || firstToken.pos === '記号') {
       return false;
     }
 

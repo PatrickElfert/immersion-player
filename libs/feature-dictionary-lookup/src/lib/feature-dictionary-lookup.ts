@@ -19,10 +19,10 @@ export async function parseSrt(path: string): Promise<Subtitle[]> {
   const parsedSentences = [];
 
   for (const sentence of result) {
-    const tokens = await parser.parseSentence(sentence.text[0]);
+    const lookupResult = await parser.parseSentence(sentence.text[0]);
     parsedSentences.push({
       ...sentence,
-      tokens,
+      lookupResult,
     });
   }
 

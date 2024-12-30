@@ -1,5 +1,4 @@
 import { readFileSync } from 'fs';
-import { DictionaryEntry } from '@immersion-player/shared-types';
 
 export type DictionaryModel = { [word: string]: { definitions: string[] } };
 
@@ -13,10 +12,10 @@ export abstract class Dictionary<T> {
 
   abstract initializeDictionary(dict: T): DictionaryModel;
 
-  getEntry(word: string): DictionaryEntry | null {
+  getDefinitions(word: string): string[]{
     if(this.wordMap[word]) {
-      return { word, definitions: this.wordMap[word].definitions };
+      return this.wordMap[word].definitions
     }
-    return null;
+    return [];
   }
 }

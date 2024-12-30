@@ -1,1 +1,5 @@
-export type DictionaryEntry = { word: string; definitions: string[] };
+export type LookupResult = {
+  token: string;
+  definitions: PossibleDefinitions
+}
+export type PossibleDefinitions = {[token: string]: string[]};
