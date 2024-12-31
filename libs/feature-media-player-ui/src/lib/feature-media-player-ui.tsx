@@ -15,14 +15,13 @@ export function FeatureMediaPlayerUi() {
 
   if (libraryItem) {
     return (
-      <div className="relative">
+      <div className="relative max-h-full aspect-video">
         <video
           ref={videoRef}
           controls
+          style={{width: "100%", height: "auto"}}
           controlsList={'nofullscreen'}
           src={libraryItem.path}
-          height="100%"
-          width="100%"
         ></video>
         {isLoading && <div className="absolute text-white bottom-[15%] right-1/2">Loading...</div>}
 

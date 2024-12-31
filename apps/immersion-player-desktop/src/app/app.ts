@@ -52,6 +52,8 @@ export default class App {
       App.loadMainWindow();
     }
 
+
+
     protocol.handle('media', (req) => {
       const pathToMedia = new URL(req.url).pathname;
       return net.fetch(`file://${pathToMedia}`);
@@ -82,6 +84,7 @@ export default class App {
         preload: join(__dirname, 'main.preload.js'),
       },
     });
+    App.mainWindow.setMinimumSize(1280, 720);
     App.mainWindow.setMenu(null);
     App.mainWindow.center();
 
