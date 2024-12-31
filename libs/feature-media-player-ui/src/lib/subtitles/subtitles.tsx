@@ -3,22 +3,52 @@ import { RefObject, useState } from 'react';
 import { usePlayback } from '../hooks/usePlayback';
 import { cn } from '@immersion-player/shared-utils';
 
+function DeinflectedTerm({
+  deinflectedTerm,
+  definitions,
+}: {
+  deinflectedTerm: string;
+  definitions: PossibleDefinitions;
+}) {
+  return (
+    <>
+      <div className="m-2 px-1 pt-0.5 pb-1 rounded bg-primary-gradient text-black font-normal">{deinflectedTerm}</div>
+      {definitions[deinflectedTerm].map((definition, index) => (
+        <Definition count={index + 1} definition={definition} className={'ml-4 my-1'} />
+      ))}
+    </>
+  );
+}
+
+function Definition({
+  definition,
+  className,
+  count
+}: {
+  definition: { text: string; description: string };
+  count: number
+  className?: string;
+}) {
+  return (
+    <div className={cn('flex flex-col', className)}>
+      <div className="flex flex-row">
+        <div>{count}.</div>
+        <label className="ml-2">{definition.text}</label>
+      </div>
+      {definition.description && <label className="ml-6 font-light text-sm text-gray-400">{definition.description}</label>}
+    </div>
+  );
+}
+
 function Dictionary(props: { definitions: PossibleDefinitions }) {
   return (
     <div className="w-full flex absolute left-0 bottom-0 items-center flex-col">
-      <div className="h-60 min-w-[14rem] w-14 bg-surface rounded flex flex-col text-white text-base font-extralight overflow-auto">
+      <div className="h-60 min-w-[19rem] w-19 bg-surface rounded flex flex-col text-white text-base font-extralight overflow-auto">
         {Object.keys(props.definitions).map((deinflectedTerm) => (
-          <>
-            <div className="m-2 px-1 pt-0.5 pb-1 rounded bg-primary-gradient text-black font-normal">
-              {deinflectedTerm}
-            </div>
-            {props.definitions[deinflectedTerm].map((definition) => (
-              <div className="ml-2 pl-1 my-1.5 rounded">{definition}</div>
-            ))}
-          </>
+          <DeinflectedTerm deinflectedTerm={deinflectedTerm} definitions={props.definitions} />
         ))}
       </div>
-      <div className="h-10 w-full bg-transparent"></div>
+      <div className="h-12 w-full bg-transparent"></div>
     </div>
   );
 }
