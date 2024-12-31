@@ -4,10 +4,11 @@ import { JmDictionary } from './dictionaries/JmDict';
 import { LookupResult, PossibleDefinitions } from '@immersion-player/shared-types';
 
 export class Parser {
-  dictionary: JmDictionary
+  dictionary: JmDictionary;
+  MAX_GROUPING_ATTEMPTS = 20;
 
   constructor(path: string) {
-    this.dictionary = new JmDictionary(path)
+    this.dictionary = new JmDictionary(path);
   }
 
   async parseSentence(sentence: string, scanLength = 4) {
@@ -15,10 +16,7 @@ export class Parser {
     return this.getLookupResults(morphemes, scanLength);
   }
 
-  getLookupResults(
-    morphemes: KuromojiToken[],
-    scanLength: number
-  ): LookupResult[] {
+  getLookupResults(morphemes: KuromojiToken[], scanLength: number): LookupResult[] {
     const morphemeGroups = this.getMorphemeGroups(morphemes, scanLength);
     const result: LookupResult[] = [];
 
@@ -26,16 +24,13 @@ export class Parser {
       const currentGroup = morphemeGroups[0];
 
       const remainingMorphemes: string[] = [];
-      while (currentGroup.length > 0) {
+      for (let i = 0; i < this.MAX_GROUPING_ATTEMPTS ; i++) {
         /** always start with the longest possible morpheme combination **/
         const token = currentGroup.join('');
         const deinflectedTokens = getDeinflections(token);
 
         /** If we don't find any deinflections we expect the word is already in its base form **/
-        const terms =
-          deinflectedTokens.length > 0
-            ? deinflectedTokens.map((baseForm) => baseForm)
-            : [token];
+        const terms = deinflectedTokens.length > 0 ? deinflectedTokens.map((baseForm) => baseForm) : [token];
         const possibleDefinitions = this.lookupTermsInDictionary(terms);
 
         if (Object.keys(possibleDefinitions).length > 0) {
@@ -47,15 +42,22 @@ export class Parser {
             morphemeGroups.unshift(remainingMorphemes);
           }
 
-          result.push({token, definitions: possibleDefinitions});
+          result.push({ token, definitions: possibleDefinitions });
           break;
         }
 
-        /** Save remaining morphemes that will not be processed with this group **/
-        remainingMorphemes.push(currentGroup[currentGroup.length - 1]);
+        if(currentGroup.length > 1) {
+          /** Save remaining morphemes that will not be processed with this group **/
+          remainingMorphemes.push(currentGroup[currentGroup.length - 1]);
 
-        /** remove the last morpheme from this group to find a smaller word **/
-        currentGroup.pop();
+          /** remove the last morpheme from this group to find a smaller word **/
+          currentGroup.pop();
+        } else {
+          /** we could not find a word for this item **/
+          morphemeGroups.shift();
+          result.push({token, definitions: {}})
+          break;
+        }
       }
     }
 
@@ -63,11 +65,11 @@ export class Parser {
   }
 
   lookupTermsInDictionary(terms: string[]) {
-    const possibleDefinitions : PossibleDefinitions = {};
+    const possibleDefinitions: PossibleDefinitions = {};
     for (const term of terms) {
       const definitions = this.dictionary.getDefinitions(term);
       if (definitions.length > 0) {
-        if(!possibleDefinitions[term]) {
+        if (!possibleDefinitions[term]) {
           possibleDefinitions[term] = [];
         }
         possibleDefinitions[term].push(...definitions);
@@ -93,10 +95,7 @@ export class Parser {
     const groupedMorphemes = [morphemes[0]];
     for (const [index, morpheme] of morphemes.entries()) {
       const morphemeToJoinWith = morphemes[index + 1];
-      if (
-        morphemeToJoinWith &&
-        this.canGroupMorphemes([morpheme, morphemeToJoinWith])
-      ) {
+      if (morphemeToJoinWith && this.canGroupMorphemes([morpheme, morphemeToJoinWith])) {
         groupedMorphemes.push(morphemeToJoinWith);
       } else {
         break;

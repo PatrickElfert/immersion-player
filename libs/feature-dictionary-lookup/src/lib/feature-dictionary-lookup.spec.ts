@@ -20,15 +20,20 @@ describe('featureDictionaryLookup', () => {
     ]);
   });
 
-  it('parses another sentence', async () => {
-    const result = await parser.parseSentence('明日はラーメンを食べたいです');
+  it('ignores special characters', async () => {
+    const result = await parser.parseSentence('明日は、友達とラーメンを食べたいです。');
     expect(result.map((r) => r.token)).toEqual([
       '明日',
       'は',
+      '、',
+      '友達',
+      'と',
       'ラーメン',
       'を',
       '食べたい',
       'です',
+      '。'
     ]);
   });
+
 });
