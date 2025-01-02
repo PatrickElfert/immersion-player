@@ -75,18 +75,22 @@ export function Subtitles({
 
   if (subtitles) {
     return (
-      <div className={cn('flex flex-row text-white text-2xl', className)}>
-        {currentSubtitle?.lookupResult.map((result, index) => (
-          <div
-            onMouseEnter={() => onMouseEnter(index)}
-            onMouseLeave={onMouseLeave}
-            className={'hover:text-primary relative'}
-            key={index}
-          >
-            {visibleDictionaryIndex === index && <Dictionary definitions={result.definitions} />}
-            {result.token}
+      <div className={className}>
+        {currentSubtitle &&
+          <div className="bg-surface/[.9] flex flex-row text-white text-2xl p-2 rounded">
+            {currentSubtitle.lookupResult.map((result, index) => (
+              <div
+                onMouseEnter={() => onMouseEnter(index)}
+                onMouseLeave={onMouseLeave}
+                className={'hover:text-primary relative'}
+                key={index}
+              >
+                {visibleDictionaryIndex === index && <Dictionary definitions={result.definitions} />}
+                {result.token}
+              </div>
+            ))}
           </div>
-        ))}
+        }
       </div>
     );
   }
