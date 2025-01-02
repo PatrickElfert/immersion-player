@@ -1,12 +1,10 @@
 import home from '../../assets/home-line.svg';
 import chevronRight from '../../assets/chevron-right.svg';
-import { useLocation } from 'react-router-dom';
 import { cn } from '@immersion-player/shared-utils';
+import { useBreadcrumbs } from './useBreadcrumbs';
 
 export const Breadcrumb = () => {
-  const breadcrumbs = useLocation()
-    .pathname.split('/')
-    .filter((s) => s !== '');
+  const {breadcrumbs} = useBreadcrumbs();
 
   return (
     <div className="text-white flex pb-4 items-center">
