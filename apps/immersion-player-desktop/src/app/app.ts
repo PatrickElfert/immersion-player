@@ -4,6 +4,7 @@ import { environment } from '../environments/environment';
 import { join } from 'path';
 import { format } from 'url';
 import * as process from "node:process";
+import * as path from 'node:path';
 
 export default class App {
   // Keep a global reference of the window object, if you don't, the window will
@@ -52,12 +53,12 @@ export default class App {
       App.loadMainWindow();
     }
 
-
-
-    protocol.handle('media', (req) => {
-      const pathToMedia = new URL(req.url).pathname;
-      return net.fetch(`file://${pathToMedia}`);
-    });
+    /** https://github.com/electron/electron/issues/38749 **/
+    protocol.registerFileProtocol("media", (request, callback) => {
+      const url = new URL(request.url);
+      const filePath = path.normalize(decodeURIComponent(url.pathname));
+      callback(filePath);
+    })
   }
 
   private static onActivate() {
