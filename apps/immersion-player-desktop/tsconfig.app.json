@@ -1,11 +1,8 @@
 {
   "extends": "./tsconfig.json",
+  "include": ["**/*.ts"],
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "types": ["node"],
-    "resolveJsonModule": true,
-    "esModuleInterop": true
-  },
-  "exclude": ["**/*.spec.ts", "**/*.test.ts"],
-  "include": ["**/*.ts"]
+    "composite": true,
+    "types": ["electron-vite/node"]
+  }
 }

@@ -1,7 +1,6 @@
 import { workspaceRoot } from '@nx/devkit';
 import { _electron, ElectronApplication } from '@playwright/test';
 import * as path from 'node:path';
-import {readdirSync} from "node:fs";
 
 const platforms = {
   "macos-latest": 'dist/executables/mac-arm64/ImmersionPlayer.app/Contents/MacOS/ImmersionPlayer',

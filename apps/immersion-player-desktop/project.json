@@ -5,57 +5,17 @@
   "projectType": "application",
   "tags": ["electron"],
   "targets": {
-    "build": {
-      "executor": "nx-electron:build",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/apps/immersion-player-desktop",
-        "main": "apps/immersion-player-desktop/src/main.ts",
-        "tsConfig": "apps/immersion-player-desktop/tsconfig.app.json",
-        "assets": ["apps/immersion-player-desktop/src/assets"]
-      },
-      "configurations": {
-        "production": {
-          "baseHref": "./",
-          "optimization": true,
-          "extractLicenses": true,
-          "inspect": false,
-          "fileReplacements": [
-            {
-              "replace": "apps/immersion-player-desktop/src/environments/environment.ts",
-              "with": "apps/immersion-player-desktop/src/environments/environment.prod.ts"
-            }
-          ]
-        }
-      }
-    },
     "serve": {
-      "executor": "nx-electron:execute",
+      "executor": "nx:run-commands",
       "options": {
-        "buildTarget": "immersion-player-desktop:build"
+        "command": "electron-vite dev --config apps/immersion-player-desktop/electron.vite.config.ts"
       }
     },
-    "package": {
-      "executor": "nx-electron:package",
+    "build": {
+      "executor": "nx:run-commands",
       "options": {
-        "name": "immersion-player-desktop",
-        "frontendProject": "immersion-player-ui",
-        "sourcePath": "dist/apps",
-        "outputPath": "dist/packages",
-        "prepackageOnly": true
+        "command": "electron-vite build --config apps/immersion-player-desktop/electron.vite.config.ts"
       }
-    },
-    "make": {
-      "executor": "nx-electron:make",
-      "options": {
-        "name": "immersion-player-desktop",
-        "frontendProject": "immersion-player-ui",
-        "sourcePath": "dist/apps",
-        "outputPath": "dist/executables"
-      }
-    },
-    "lint": {
-      "command": "eslint apps/immersion-player-desktop/**/*.ts"
     }
   }
 }

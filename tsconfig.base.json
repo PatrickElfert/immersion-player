@@ -15,21 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@immersion-player/feature-content-library-ui": [
-        "libs/feature-content-library-ui/src/index.ts"
-      ],
-      "@immersion-player/feature-content-provider": [
-        "libs/feature-content-provider/src/index.ts"
-      ],
-      "@immersion-player/feature-dictionary-lookup": [
-        "libs/feature-dictionary-lookup/src/index.ts"
-      ],
-      "@immersion-player/feature-flashcard-creation": [
-        "libs/feature-flashcard-creation/src/index.ts"
-      ],
-      "@immersion-player/feature-media-player-ui": [
-        "libs/feature-media-player-ui/src/index.ts"
-      ],
+      "@immersion-player/feature-content-library-ui": ["libs/feature-content-library-ui/src/index.ts"],
+      "@immersion-player/feature-content-provider": ["libs/feature-content-provider/src/index.ts"],
+      "@immersion-player/feature-dictionary-lookup": ["libs/feature-dictionary-lookup/src/index.ts"],
+      "@immersion-player/feature-flashcard-creation": ["libs/feature-flashcard-creation/src/index.ts"],
+      "@immersion-player/feature-media-player-ui": ["libs/feature-media-player-ui/src/index.ts"],
       "@immersion-player/shared-types": ["libs/shared-types/src/index.ts"],
       "@immersion-player/shared-utils": ["libs/shared-utils/src/index.ts"]
     }
