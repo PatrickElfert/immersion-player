@@ -13,11 +13,11 @@ files:
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
 asarUnpack:
   - resources/**
-  - "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
-  - "node_modules/ffmpeg-static/index.js",
-  - "node_modules/ffmpeg-static/package.json",
-  - "node_modules/ffprobe-static/index.js",
-  - "node_modules/ffprobe-static/package.json"
+  - node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg
+  - node_modules/ffmpeg-static/index.js
+  - node_modules/ffmpeg-static/package.json
+  - node_modules/ffprobe-static/index.js
+  - node_modules/ffprobe-static/package.json
 win:
   executableName: immersion-player
 nsis:
