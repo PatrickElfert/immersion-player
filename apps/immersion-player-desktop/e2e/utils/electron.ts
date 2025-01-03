@@ -3,15 +3,12 @@ import { _electron, ElectronApplication } from '@playwright/test';
 import * as path from 'node:path';
 
 const platforms = {
-  "macos-latest": 'dist/executables/mac-arm64/ImmersionPlayer.app/Contents/MacOS/ImmersionPlayer',
-  "windows-latest": 'dist/executables/win32/ImmersionPlayer.exe',
-  "ubuntu-latest": "dist/executables/linux-x64/ImmersionPlayer"
+  "macos-latest": 'dist/mac-arm64/immersion-player.app/Contents/MacOS/immersion-player',
+  "windows-latest": 'dist/win32/immersion-player.exe',
+  "ubuntu-latest": "dist/linux-x64/immersion-player"
 };
 
 export async function launchElectron(): Promise<ElectronApplication> {
-
-  console.log(platforms[process.env.PLATFORM])
-
   const videoPath = path.resolve(workspaceRoot, 'e2e-recordings');
   return await _electron.launch({
     executablePath: path.join(
