@@ -1,7 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
@@ -15,8 +14,5 @@
     {
       "path": "./tsconfig.lib.json"
     },
-    {
-      "path": "./tsconfig.spec.json"
-    }
   ]
 }

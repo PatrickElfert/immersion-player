@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react-swc';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 export default defineConfig({
+  base: './',
   root: __dirname,
   cacheDir: '../../node_modules/.vite/apps/immersion-player-ui',
 

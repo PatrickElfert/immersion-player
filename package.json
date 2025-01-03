@@ -2,29 +2,13 @@
   "name": "@immersion-player/source",
   "version": "0.0.0",
   "license": "MIT",
+  "type": "module",
+  "main": "dist/apps/immersion-player-desktop/main/index.js",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "make": "npx nx run-many --target=build --all && npx nx run immersion-player-desktop:make"
-  },
-  "build": {
-    "extraResources": [
-      {
-        "from": "extraResources",
-        "to": "resources"
-      }
-    ],
-    "linux": {
-      "executableName": "ImmersionPlayer",
-      "artifactName": "${productName}-${version}.${ext}"
-    },
-    "productName": "ImmersionPlayer",
-    "asarUnpack": [
-      "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
-      "node_modules/ffmpeg-static/index.js",
-      "node_modules/ffmpeg-static/package.json",
-      "node_modules/ffprobe-static/index.js",
-      "node_modules/ffprobe-static/package.json"
-    ]
+    "build:win": "npx nx run-many --target=build --projects=immersion-player-desktop,immersion-player-ui && electron-builder --win",
+    "build:mac": "npx nx run-many --target=build --projects=immersion-player-desktop,immersion-player-ui && electron-builder --mac",
+    "build:linux": "npx nx run-many --target=build --projects=immersion-player-desktop,immersion-player-ui && electron-builder --linux"
   },
   "private": true,
   "dependencies": {

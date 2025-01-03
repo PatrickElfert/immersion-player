@@ -5,7 +5,7 @@ export function useLibrary(searchTerm?: string) {
   const {data, error, isLoading} = useQuery<LibraryItem[]>(
     ['library'],
     // @ts-expect-error window.electron is not typed
-      () => window.electron
+      () => window.api
       .getLibrary('ImmersionPlayer'),
     {
       staleTime: 1000 * 60 * 5,

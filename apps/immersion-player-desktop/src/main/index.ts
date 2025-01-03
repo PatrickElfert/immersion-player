@@ -1,9 +1,22 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, protocol } from 'electron';
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { rendererAppName } from './constants';
 import { loadLibrary } from '@immersion-player/feature-content-provider';
 import { parseSrt } from '@immersion-player/feature-dictionary-lookup';
+import * as path from 'path';
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'media',
+    privileges: {
+      secure: true,
+      supportFetchAPI: true,
+      bypassCSP: true,
+      stream: true
+    }
+  }
+]);
 
 function createWindow(): void {
   // Create the browser window.
@@ -15,7 +28,7 @@ function createWindow(): void {
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
+      preload: join(__dirname, '../preload/index.mjs'),
       sandbox: false
     }
   })
@@ -44,6 +57,13 @@ function createWindow(): void {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
+
+  /** https://github.com/electron/electron/issues/38749 **/
+  protocol.registerFileProtocol("media", (request, callback) => {
+    const url = new URL(request.url);
+    const filePath = path.normalize(decodeURIComponent(url.pathname));
+    callback(filePath);
+  })
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

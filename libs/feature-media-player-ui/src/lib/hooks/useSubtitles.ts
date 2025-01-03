@@ -5,7 +5,7 @@ export default function useSubtitles(srtPath?: string) {
   const {data, error, isLoading} = useQuery<Subtitle[]>(
     ['subtitles', srtPath],
     // @ts-expect-error window.electron is not typed
-    () => window.electron
+    () => window.api
       .parseSubtitles(srtPath),
     {
       enabled: !!srtPath,
