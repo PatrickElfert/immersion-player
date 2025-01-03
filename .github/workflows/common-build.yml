@@ -29,6 +29,9 @@ jobs:
       - name: Build Electron App
         run: npm run make
 
+      - name: Run Unit Tests
+        run: npx nx run-many --target=test
+
 #      - name: Create Library folder
 #        run: mkdir -p $HOME/ImmersionPlayer
 #
