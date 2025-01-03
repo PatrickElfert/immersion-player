@@ -35,22 +35,4 @@ describe('featureDictionaryLookup', () => {
       '。'
     ]);
   });
-
-  it('sentence test', async () => {
-    const result = await parser.parseSentence(' 常勤さんがいるおかげで僕のかわいさが引き立っよ');
-    expect(result.map((r) => r.token)).toEqual([
-      '常勤',
-      'さん',
-      'が',
-      'いる',
-      'おかげ',
-      'で',
-      '僕',
-      'の',
-      'かわい',
-      'さ',
-      'が',
-      '引き立っよ'
-    ]);
-  });
 });

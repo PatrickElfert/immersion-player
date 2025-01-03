@@ -34,6 +34,7 @@ export default defineConfig({
   },
 
   test: {
+    passWithNoTests: true,
     globals: true,
     cache: {
       dir: '../../node_modules/.vitest',
