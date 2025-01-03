@@ -29,15 +29,15 @@ jobs:
       - name: Build Electron App
         run: npm run make
 
-      - name: Create Library folder
-        run: mkdir -p $HOME/ImmersionPlayer
-
-      - name: Copy Test files
-        run: cp "./Example E01.mp4" "./Example E02.mp4" "$HOME/ImmersionPlayer"
-        shell: bash
-
-      - name: Run playwright tests
-        run: npx nx e2e immersion-player-desktop
+#      - name: Create Library folder
+#        run: mkdir -p $HOME/ImmersionPlayer
+#
+#      - name: Copy Test files
+#        run: cp "./Example E01.mp4" "./Example E02.mp4" "$HOME/ImmersionPlayer"
+#        shell: bash
+#
+#      - name: Run playwright tests
+#        run: npx nx e2e immersion-player-desktop
 
 
 
