@@ -1,4 +1,7 @@
 @import 'typeface-inter';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @tailwind base;
 @tailwind components;
@@ -21,7 +24,6 @@ body {
 ::-webkit-scrollbar {
   width: 10px;
 }
-
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
