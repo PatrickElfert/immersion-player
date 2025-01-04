@@ -20,6 +20,7 @@
       "@immersion-player/feature-dictionary-lookup": ["libs/feature-dictionary-lookup/src/index.ts"],
       "@immersion-player/feature-dictionary-lookup-old": ["libs/feature-dictionary-lookup-old/src/index.ts"],
       "@immersion-player/feature-flashcard-creation": ["libs/feature-flashcard-creation/src/index.ts"],
+      "@immersion-player/feature-flashcard-templates": ["libs/feature-flashcard-templates/src/index.ts"],
       "@immersion-player/feature-media-player-ui": ["libs/feature-media-player-ui/src/index.ts"],
       "@immersion-player/shared-types": ["libs/shared-types/src/index.ts"],
       "@immersion-player/shared-utils": ["libs/shared-utils/src/index.ts"]

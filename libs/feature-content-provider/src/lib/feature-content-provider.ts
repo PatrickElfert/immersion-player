@@ -39,7 +39,6 @@ function createThumbnail(outputPath: string, videoPath: string): Promise<void> {
 }
 
 export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
-
   const mediaFolder = join(homedir(), folderPath);
 
   if(!existsSync(mediaFolder)) {
