@@ -5,6 +5,8 @@ import { rendererAppName } from './constants';
 import { loadLibrary } from '@immersion-player/feature-content-provider';
 import { parseSrt } from '@immersion-player/feature-dictionary-lookup';
 import * as path from 'path';
+import { CreateFlashcardDto } from '@immersion-player/shared-types';
+import { createFlashcard } from '@immersion-player/feature-flashcard-creation';
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -80,6 +82,10 @@ app.whenReady().then(() => {
 
   ipcMain.handle('parse-srt', async (event, srtPath: string) => {
     return parseSrt(srtPath);
+  });
+
+  ipcMain.handle('create-flashcard', async (event, flashcard: CreateFlashcardDto) => {
+    return createFlashcard(flashcard);
   });
 
   createWindow()

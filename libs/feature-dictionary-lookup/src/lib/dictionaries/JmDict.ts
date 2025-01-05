@@ -3,8 +3,8 @@ import { JMdict, JMdictWord } from '@scriptin/jmdict-simplified-types';
 
 function getDefinitions(entry: JMdictWord) {
   return entry.sense.filter(s => s.gloss[0].lang === 'eng').map((s) => ({
-    description: s.info.join(';'),
-    text: s.gloss.map(g => g.text).join(';'),
+    description: s.info.join('; '),
+    text: s.gloss.map(g => g.text).join('; '),
   }));
 }
 

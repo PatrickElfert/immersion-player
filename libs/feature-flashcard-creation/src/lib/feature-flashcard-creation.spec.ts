@@ -11,8 +11,9 @@ describe('featureFlashcardCreation', () => {
           { text: 'to live on', description: '' },
         ],
       },
-      timeTo: 1,
-      timeFrom: 1,
+      endTime: 1,
+      startTime: 1,
+      filePath: ''
     });
   });
 });

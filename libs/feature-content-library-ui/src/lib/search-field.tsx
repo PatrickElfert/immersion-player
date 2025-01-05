@@ -1,4 +1,4 @@
-import {ChangeEvent, FormEvent} from 'react';
+import {ChangeEvent } from 'react';
 import search from './search-normal.svg';
 
 export interface SearchFieldProps {

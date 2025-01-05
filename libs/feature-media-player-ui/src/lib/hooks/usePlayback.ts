@@ -49,7 +49,6 @@ function parseTimecodeToSeconds(timecode: string) {
   const [hours, minutes, secondsWithMs] = timecode.split(":");
   const [seconds, milliseconds] = secondsWithMs.split(",");
 
-  // Convert to seconds
   const totalSeconds =
     Number(hours) * 3600 +
     Number(minutes) * 60 +
