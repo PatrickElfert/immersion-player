@@ -1,13 +1,23 @@
 import { useMutation } from 'react-query';
 import { CreateFlashcardDto } from '@immersion-player/shared-types';
+import toast, { Toast } from 'react-simple-toasts';
 
 export default function useFlashcards() {
-  const { mutate: createFlashcard } = useMutation(
-    {
-      mutationFn: (flashcard: CreateFlashcardDto) =>
-        // @ts-ignore
-        window.api.createFlashcard(flashcard),
+  let progressToast: Toast;
+
+  const { mutate: createFlashcard } = useMutation({
+    mutationFn: (flashcard: CreateFlashcardDto) =>
+      // @ts-ignore
+      window.api.createFlashcard(flashcard),
+    onMutate: () => {
+      progressToast = toast('Creating Flashcard', { loading: true });
+    },
+    onSuccess: () => {
+      progressToast.update({ loading: false, message: 'Flashcard Created', duration: 5000, theme: 'success' });
+    },
+    onError: () => {
+      progressToast.update({loading: false, message: "Could not create Flashcard", duration: 5000, theme: 'failure'})
     }
-  );
+  });
   return { createFlashcard };
 }

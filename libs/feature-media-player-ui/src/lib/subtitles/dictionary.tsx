@@ -86,6 +86,7 @@ function DeinflectedTerm({
       </div>
       {definitions[deinflectedTerm].map((definition, index) => (
         <Definition
+          key={index}
           onDefinitionSelected={() => addNewDefinition(definition, index.toString())}
           onDefinitionUnselected={() => removeDefinition(index.toString())}
           count={index + 1}
@@ -106,6 +107,7 @@ export function Dictionary(props: {
       <div className="h-60 min-w-[20rem] w-20 bg-surface rounded flex flex-col text-white text-base font-extralight overflow-auto">
         {Object.keys(props.definitions).map((deinflectedTerm) => (
           <DeinflectedTerm
+            key={deinflectedTerm}
             onCreateFlashcard={props.onCreateFlashcard}
             deinflectedTerm={deinflectedTerm}
             definitions={props.definitions}

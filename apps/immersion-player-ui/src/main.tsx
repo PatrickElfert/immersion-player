@@ -7,6 +7,14 @@ import { FeatureMediaPlayerUi } from '@immersion-player/feature-media-player-ui'
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {persistQueryClient} from "react-query/persistQueryClient-experimental";
 import {createWebStoragePersistor} from "react-query/createWebStoragePersistor-experimental";
+import { toastConfig } from 'react-simple-toasts';
+import toast, { Themes } from 'react-simple-toasts';
+import 'node_modules/react-simple-toasts/dist/style.css';
+import 'node_modules/react-simple-toasts/dist/theme/moonlight.css'
+import 'node_modules/react-simple-toasts/dist/theme/success.css'
+import 'node_modules/react-simple-toasts/dist/theme/failure.css'
+
+toastConfig({theme: Themes.MOONLIGHT, position: 'top-right'})
 
 const router = createHashRouter([
   {

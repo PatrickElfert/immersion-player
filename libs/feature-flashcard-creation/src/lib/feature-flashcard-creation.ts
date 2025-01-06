@@ -40,6 +40,9 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
         definitions: flashcard.definitions.map((d) => d.text).join(';'),
         targetWord: flashcard.targetWord,
       },
+      options: {
+        allowDuplicate: true
+      }
     },
   });
 }

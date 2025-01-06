@@ -15,7 +15,7 @@ export const Breadcrumb = () => {
         const isLast = index === breadcrumbs.length - 1;
 
         return (
-          <div className="flex items-center">
+          <div key={index} className="flex items-center">
             <div
               className={cn('text-white', {
                 'text-primary': isLast,

@@ -3,6 +3,8 @@ import { RefObject, useState } from 'react';
 import { usePlayback } from '../hooks/usePlayback';
 import { Dictionary } from './dictionary';
 import useAnkiConnect from '../hooks/useFlashcards';
+import { createToast } from 'react-simple-toasts';
+import useFlashcards from '../hooks/useFlashcards';
 
 export function Subtitles({
   subtitles,
@@ -17,7 +19,7 @@ export function Subtitles({
 }) {
   const { currentSubtitle } = usePlayback(videoPlayerRef, subtitles);
   const [visibleDictionaryIndex, setVisibleDictionaryIndex] = useState<null | number>(null);
-  const { createFlashcard } = useAnkiConnect();
+  const { createFlashcard } = useFlashcards();
 
   const onMouseEnter = (index: number) => {
     setVisibleDictionaryIndex(index);
@@ -36,6 +38,7 @@ export function Subtitles({
       endTime: currentSubtitle?.endTime,
       filePath: mediaPath,
     });
+
   }
 
   if (subtitles) {
