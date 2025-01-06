@@ -2,6 +2,9 @@ import { YankiConnect } from 'yanki-connect';
 import { CreateFlashcardDto } from '@immersion-player/shared-types';
 import { backTemplate } from './templates/back';
 import { frontTemplate } from './templates/front';
+import ffmpeg from 'fluent-ffmpeg';
+import { fileSync } from 'tmp';
+import path from 'path';
 
 const client = new YankiConnect();
 const MODEL_NAME = 'ImmersionPlayer';
@@ -23,13 +26,30 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
           Front: frontTemplate,
         },
       ],
-      inOrderFields: ['sentence', 'definitions', 'targetWord'],
+      inOrderFields: ['sentence', 'definitions', 'targetWord', 'image', 'sentenceAudio'],
     });
   }
 
   if (!deckExists) {
     await client.deck.createDeck({ deck: DECK_NAME });
   }
+
+  const { tempImageFilePath, tempAudioFilePath, cleanup } = await extractFlashcardMedia(
+    flashcard.filePath.replace(/^media:/, ''),
+    flashcard.startTime,
+    flashcard.endTime
+  );
+
+
+  const imageStoreResult = await client.media.storeMediaFile({
+    path: tempImageFilePath,
+    filename: path.basename(tempImageFilePath),
+  })
+
+  const audioStoreResult = await client.media.storeMediaFile({
+    path: tempAudioFilePath,
+    filename: path.basename(tempAudioFilePath),
+  })
 
   await client.note.addNote({
     note: {
@@ -39,10 +59,57 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
         sentence: flashcard.sentence,
         definitions: flashcard.definitions.map((d) => d.text).join(';'),
         targetWord: flashcard.targetWord,
+        sentenceAudio: audioStoreResult,
+        image: imageStoreResult,
       },
       options: {
-        allowDuplicate: true
-      }
+        allowDuplicate: true,
+      },
     },
+  });
+
+  //cleanup();
+}
+
+function extractFlashcardMedia(
+  filePath: string,
+  startTime: number,
+  endTime: number
+): Promise<{ tempImageFilePath: string; tempAudioFilePath: string; cleanup: () => void }> {
+  const tempImageFile = fileSync({ keep: true, postfix: '.png' });
+  const tempAudioFile = fileSync({ keep: true, postfix: '.mp3' });
+  const tempVideoFile = fileSync({ keep: true, postfix: '.mp4' });
+
+  console.log(tempVideoFile, tempAudioFile, tempImageFile);
+
+  const cleanup = () => {
+    tempAudioFile.removeCallback();
+    tempImageFile.removeCallback();
+    tempVideoFile.removeCallback();
+  };
+
+  return new Promise((resolve, reject) => {
+    ffmpeg(filePath)
+      .setStartTime(startTime)
+      .setDuration(endTime - startTime)
+      .output(tempAudioFile.name)
+      .noVideo()
+      .audioCodec('libmp3lame')
+      .outputOption('-vn')
+      .output(tempImageFile.name)
+      .outputOption('-vframes 1')
+      .outputOption('-ss ' + startTime)
+      .on('stderr', (stderrLine) => {
+        console.error('FFmpeg stderr:', stderrLine);
+      })
+      .on('end', () => {
+        console.log('Audio and Screenshot for Flashcard created!');
+        resolve({ tempImageFilePath: tempImageFile.name, tempAudioFilePath: tempAudioFile.name, cleanup });
+      })
+      .on('error', (err) => {
+        console.error('An error occurred:', err);
+        reject(err);
+      })
+      .run();
   });
 }

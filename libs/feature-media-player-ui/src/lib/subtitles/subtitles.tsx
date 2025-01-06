@@ -2,9 +2,8 @@ import { Definition, Subtitle } from '@immersion-player/shared-types';
 import { RefObject, useState } from 'react';
 import { usePlayback } from '../hooks/usePlayback';
 import { Dictionary } from './dictionary';
-import useAnkiConnect from '../hooks/useFlashcards';
-import { createToast } from 'react-simple-toasts';
 import useFlashcards from '../hooks/useFlashcards';
+import { timecodeToSeconds } from '@immersion-player/shared-utils';
 
 export function Subtitles({
   subtitles,
@@ -29,18 +28,6 @@ export function Subtitles({
     setVisibleDictionaryIndex(null);
   }
 
-  function onCreateFlashcard(targetWord: string, definitions: Definition[], sentence: string) {
-    createFlashcard({
-      targetWord,
-      sentence,
-      definitions,
-      startTime: currentSubtitle?.startTime,
-      endTime: currentSubtitle?.endTime,
-      filePath: mediaPath,
-    });
-
-  }
-
   if (subtitles) {
     return (
       <div className={className}>
@@ -56,7 +43,14 @@ export function Subtitles({
                 {visibleDictionaryIndex === index && (
                   <Dictionary
                     onCreateFlashcard={(targetWord, definitions) =>
-                      onCreateFlashcard(targetWord, definitions, currentSubtitle?.text[0])
+                      createFlashcard({
+                        targetWord,
+                        sentence: currentSubtitle.text[0],
+                        definitions,
+                        startTime: timecodeToSeconds(currentSubtitle.startTime),
+                        endTime: timecodeToSeconds(currentSubtitle.endTime),
+                        filePath: mediaPath,
+                      })
                     }
                     definitions={result.definitions}
                   />

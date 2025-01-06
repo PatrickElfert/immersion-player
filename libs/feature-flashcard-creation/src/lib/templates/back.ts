@@ -14,5 +14,9 @@ export const backTemplate = `
   </script>
   <h2>{{sentence}}</h2>
   <h4>{{targetWord}}</h4>
+  <img src="{{image}}" />
+  <audio autoplay controls>
+    <source src="{{sentenceAudio}}" type="audio/mpeg">
+  </audio>
   <ol id="dynamic-fields"></ol>
 `;

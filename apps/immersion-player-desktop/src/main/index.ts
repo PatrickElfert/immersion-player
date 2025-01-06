@@ -7,6 +7,9 @@ import { parseSrt } from '@immersion-player/feature-dictionary-lookup';
 import * as path from 'path';
 import { CreateFlashcardDto } from '@immersion-player/shared-types';
 import { createFlashcard } from '@immersion-player/feature-flashcard-creation';
+import ffmpegPath from 'ffmpeg-static';
+import { path as ffprobePath } from 'ffprobe-static';
+import ffmpeg from 'fluent-ffmpeg';
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -57,6 +60,12 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+
+  if (ffmpegPath && ffprobePath) {
+    ffmpeg.setFfmpegPath(ffmpegPath.replace('app.asar', 'app.asar.unpacked'));
+    ffmpeg.setFfprobePath(ffprobePath.replace('app.asar', 'app.asar.unpacked'));
+  }
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 

@@ -2,8 +2,8 @@ export interface CreateFlashcardDto {
   sentence: string;
   targetWord: string;
   definitions: Definition[];
-  startTime?: string;
-  endTime?: string;
+  startTime: number;
+  endTime: number;
   filePath: string;
 }
 

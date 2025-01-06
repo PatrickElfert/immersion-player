@@ -10,7 +10,7 @@ export default function useFlashcards() {
       // @ts-ignore
       window.api.createFlashcard(flashcard),
     onMutate: () => {
-      progressToast = toast('Creating Flashcard', { loading: true });
+      progressToast = toast('Creating Flashcard', { loading: true, duration: Infinity });
     },
     onSuccess: () => {
       progressToast.update({ loading: false, message: 'Flashcard Created', duration: 5000, theme: 'success' });
