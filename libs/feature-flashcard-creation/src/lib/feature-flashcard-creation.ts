@@ -37,9 +37,7 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
       modelName: MODEL_NAME,
       fields: {
         sentence: flashcard.sentence,
-        definitions: Object.values(flashcard.definitions)
-          .flatMap((d) => d.map((d) => d.text))
-          .join(';'),
+        definitions: flashcard.definitions.map((d) => d.text).join(';'),
         targetWord: flashcard.targetWord,
       },
     },

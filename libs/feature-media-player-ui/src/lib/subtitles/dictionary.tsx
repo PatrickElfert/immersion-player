@@ -2,8 +2,6 @@ import { PossibleDefinitions } from '@immersion-player/shared-types';
 import { cn } from '@immersion-player/shared-utils';
 import { useState } from 'react';
 import Flashcard from './flashcard.svg?react';
-import { createFlashcard } from '@immersion-player/feature-flashcard-creation';
-import useAnkiConnect from '../hooks/useAnkiConnect';
 
 type Definition = {
   text: string;
@@ -25,16 +23,18 @@ function Definition({
 }) {
   return (
     <div className={cn('flex flex-col', className)}>
-      <div className="flex flex-row p-4 items-center">
-        <div>{count}.</div>
-        <label className="ml-2">{definition.text}</label>
-        <input
-          className="ml-auto checked:accent-primary"
-          type="checkbox"
-          onChange={(event) =>
-            event.target.checked ? onDefinitionSelected(definition) : onDefinitionUnselected(definition)
-          }
-        />
+      <div className="relative pl-10">
+        <div className="flex absolute top-0 left-0">
+          <input
+            className="mr-2 checked:accent-primary"
+            type="checkbox"
+            onChange={(event) =>
+              event.target.checked ? onDefinitionSelected(definition) : onDefinitionUnselected(definition)
+            }
+          />
+          <div>{count}.</div>
+        </div>
+        <label>{definition.text}</label>
       </div>
       {definition.description && (
         <label className="ml-6 font-light text-sm text-gray-400">{definition.description}</label>
@@ -76,10 +76,10 @@ function DeinflectedTerm({
           onClick={() =>
             onCreateFlashcard(
               deinflectedTerm,
-              Object.values(definitions).flatMap((definition) => definition)
+              Object.values(selectedDefinitions).flatMap((definition) => definition)
             )
           }
-          className="ml-auto p-2 text-white flex items-center"
+          className="ml-auto text-white flex items-center"
         >
           <Flashcard />
         </button>

@@ -1,16 +1,18 @@
-import { Subtitle } from '@immersion-player/shared-types';
+import { Definition, Subtitle } from '@immersion-player/shared-types';
 import { RefObject, useState } from 'react';
 import { usePlayback } from '../hooks/usePlayback';
 import { Dictionary } from './dictionary';
-import useAnkiConnect from '../hooks/useAnkiConnect';
+import useAnkiConnect from '../hooks/useFlashcards';
 
 export function Subtitles({
   subtitles,
   videoPlayerRef,
   className,
+  mediaPath,
 }: {
   subtitles: Subtitle[];
   videoPlayerRef: RefObject<HTMLVideoElement>;
+  mediaPath: string;
   className?: string;
 }) {
   const { currentSubtitle } = usePlayback(videoPlayerRef, subtitles);
@@ -23,6 +25,17 @@ export function Subtitles({
 
   function onMouseLeave() {
     setVisibleDictionaryIndex(null);
+  }
+
+  function onCreateFlashcard(targetWord: string, definitions: Definition[], sentence: string) {
+    createFlashcard({
+      targetWord,
+      sentence,
+      definitions,
+      startTime: currentSubtitle?.startTime,
+      endTime: currentSubtitle?.endTime,
+      filePath: mediaPath,
+    });
   }
 
   if (subtitles) {
@@ -40,14 +53,7 @@ export function Subtitles({
                 {visibleDictionaryIndex === index && (
                   <Dictionary
                     onCreateFlashcard={(targetWord, definitions) =>
-                      createFlashcard({
-                        targetWord,
-                        sentence: currentSubtitle.text[0],
-                        definitions,
-                        startTime: currentSubtitle?.startTime,
-                        endTime: currentSubtitle?.endTime,
-                        filePath:
-                      })
+                      onCreateFlashcard(targetWord, definitions, currentSubtitle?.text[0])
                     }
                     definitions={result.definitions}
                   />
