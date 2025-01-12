@@ -1,7 +1,14 @@
 export const backTemplate = `
+  <h2>{{sentence}}</h2>
+  <h4>{{targetWord}}</h4>
+  <img src="{{image}}" />
+  <audio autoplay controls>
+    <source src="{{sentenceAudio}}" type="audio/mpeg">
+  </audio>
+  <ol id="dynamic-fields"></ol>
   <script>
    const rawDefinitions = '{{definitions}}'
-   const delimiter = ';'
+   const delimiter = '*~*'
 
    const definitions = rawDefinitions.split(delimiter).map(def => def.trim());
    const container = document.getElementById('dynamic-fields');
@@ -12,11 +19,4 @@ export const backTemplate = `
         container.appendChild(fieldElement);
     });
   </script>
-  <h2>{{sentence}}</h2>
-  <h4>{{targetWord}}</h4>
-  <img src="{{image}}" />
-  <audio autoplay controls>
-    <source src="{{sentenceAudio}}" type="audio/mpeg">
-  </audio>
-  <ol id="dynamic-fields"></ol>
 `;

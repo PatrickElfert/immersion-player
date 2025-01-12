@@ -3,8 +3,6 @@ import { homedir } from 'os';
 import { extname, join, parse } from 'path';
 import { existsSync, mkdirSync } from 'fs';
 import ffmpeg from 'fluent-ffmpeg';
-import ffmpegPath from 'ffmpeg-static';
-import { path as ffprobePath } from 'ffprobe-static';
 import * as path from 'node:path';
 import {v4} from "uuid";
 import {LibraryItem} from "@immersion-player/shared-types";
@@ -47,11 +45,6 @@ export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
 
   const libraryFolder = await readdir(mediaFolder);
   const result: LibraryItem[] = [];
-
-  if (ffmpegPath && ffprobePath) {
-    ffmpeg.setFfmpegPath(ffmpegPath.replace('app.asar', 'app.asar.unpacked'));
-    ffmpeg.setFfprobePath(ffprobePath.replace('app.asar', 'app.asar.unpacked'));
-  }
 
   for (const item of libraryFolder) {
     const folderPath = path.join(mediaFolder, item);

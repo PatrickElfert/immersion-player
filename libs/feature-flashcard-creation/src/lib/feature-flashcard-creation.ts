@@ -40,16 +40,15 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
     flashcard.endTime
   );
 
-
   const imageStoreResult = await client.media.storeMediaFile({
     path: tempImageFilePath,
     filename: path.basename(tempImageFilePath),
-  })
+  });
 
   const audioStoreResult = await client.media.storeMediaFile({
     path: tempAudioFilePath,
     filename: path.basename(tempAudioFilePath),
-  })
+  });
 
   await client.note.addNote({
     note: {
@@ -57,7 +56,7 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
       modelName: MODEL_NAME,
       fields: {
         sentence: flashcard.sentence,
-        definitions: flashcard.definitions.map((d) => d.text).join(';'),
+        definitions: flashcard.definitions.map((d) => d.text).join('*~*'),
         targetWord: flashcard.targetWord,
         sentenceAudio: audioStoreResult,
         image: imageStoreResult,
@@ -90,21 +89,23 @@ function extractFlashcardMedia(
 
   return new Promise((resolve, reject) => {
     ffmpeg(filePath)
-      .setStartTime(startTime)
+      .inputOptions(['-ss ' + startTime])
       .setDuration(endTime - startTime)
       .output(tempAudioFile.name)
-      .noVideo()
       .audioCodec('libmp3lame')
-      .outputOption('-vn')
+      .noVideo()
       .output(tempImageFile.name)
       .outputOption('-vframes 1')
-      .outputOption('-ss ' + startTime)
       .on('stderr', (stderrLine) => {
         console.error('FFmpeg stderr:', stderrLine);
       })
       .on('end', () => {
         console.log('Audio and Screenshot for Flashcard created!');
-        resolve({ tempImageFilePath: tempImageFile.name, tempAudioFilePath: tempAudioFile.name, cleanup });
+        resolve({
+          tempImageFilePath: tempImageFile.name,
+          tempAudioFilePath: tempAudioFile.name,
+          cleanup,
+        });
       })
       .on('error', (err) => {
         console.error('An error occurred:', err);
