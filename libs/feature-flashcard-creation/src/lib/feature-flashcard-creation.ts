@@ -57,7 +57,9 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
       fields: {
         sentence: flashcard.sentence,
         definitions: flashcard.definitions.map((d) => d.text).join('*~*'),
-        targetWord: flashcard.targetWord,
+        targetWord: flashcard.definitions[0].token
+          .map((char) => (char.furigana ? `${char.original}[${char.furigana}]` : char.original))
+          .join(''),
         sentenceAudio: audioStoreResult,
         image: imageStoreResult,
       },

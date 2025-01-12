@@ -1,4 +1,4 @@
-import { Definition, Subtitle } from '@immersion-player/shared-types';
+import { Subtitle } from '@immersion-player/shared-types';
 import { RefObject, useState } from 'react';
 import { usePlayback } from '../hooks/usePlayback';
 import { Dictionary } from './dictionary';
@@ -42,9 +42,8 @@ export function Subtitles({
               >
                 {visibleDictionaryIndex === index && (
                   <Dictionary
-                    onCreateFlashcard={(targetWord, definitions) =>
+                    onCreateFlashcard={(definitions) =>
                       createFlashcard({
-                        targetWord,
                         sentence: currentSubtitle.text[0],
                         definitions,
                         startTime: timecodeToSeconds(currentSubtitle.startTime),
@@ -55,7 +54,14 @@ export function Subtitles({
                     definitions={result.definitions}
                   />
                 )}
-                {result.token}
+                <ruby>
+                  {result.token?.map((t) => (
+                    <>
+                      {t.original}
+                      {t.furigana && <rt>{t.furigana}</rt>}
+                    </>
+                  ))}
+                </ruby>
               </div>
             ))}
           </div>

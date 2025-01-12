@@ -1,7 +1,8 @@
 import { KuromojiToken, tokenize } from 'kuromojin';
 import { getDeinflections } from './deinflect';
 import { JmDictionary } from './dictionaries/JmDict';
-import { LookupResult, PossibleDefinitions } from '@immersion-player/shared-types';
+import { Character, Definition, LookupResult } from '@immersion-player/shared-types';
+import { isHiragana, toHiragana } from 'wanakana';
 
 export class Parser {
   dictionary: JmDictionary;
@@ -13,10 +14,10 @@ export class Parser {
 
   async parseSentence(sentence: string, scanLength = 4) {
     const morphemes = structuredClone(await this.getMorphemes(sentence));
-    return this.getLookupResults(morphemes, scanLength);
+    return await this.getLookupResults(morphemes, scanLength);
   }
 
-  getLookupResults(morphemes: KuromojiToken[], scanLength: number): LookupResult[] {
+  async getLookupResults(morphemes: KuromojiToken[], scanLength: number): Promise<LookupResult[]> {
     const morphemeGroups = this.getMorphemeGroups(morphemes, scanLength);
     const result: LookupResult[] = [];
 
@@ -24,16 +25,16 @@ export class Parser {
       const currentGroup = morphemeGroups[0];
 
       const remainingMorphemes: string[] = [];
-      for (let i = 0; i < this.MAX_GROUPING_ATTEMPTS ; i++) {
+      for (let i = 0; i < this.MAX_GROUPING_ATTEMPTS; i++) {
         /** always start with the longest possible morpheme combination **/
         const token = currentGroup.join('');
         const deinflectedTokens = getDeinflections(token);
 
         /** If we don't find any deinflections we expect the word is already in its base form **/
         const terms = deinflectedTokens.length > 0 ? deinflectedTokens.map((baseForm) => baseForm) : [token];
-        const possibleDefinitions = this.lookupTermsInDictionary(terms);
+        const possibleDefinitions = await this.lookupTermsInDictionary(terms);
 
-        if (Object.keys(possibleDefinitions).length > 0) {
+        if (possibleDefinitions.length > 0) {
           /** remove the currently processed group **/
           morphemeGroups.shift();
 
@@ -42,11 +43,11 @@ export class Parser {
             morphemeGroups.unshift(remainingMorphemes);
           }
 
-          result.push({ token, definitions: possibleDefinitions });
+          result.push({ token: await this.getCharacters(token), definitions: possibleDefinitions });
           break;
         }
 
-        if(currentGroup.length > 1) {
+        if (currentGroup.length > 1) {
           /** Save remaining morphemes that will not be processed with this group **/
           remainingMorphemes.push(currentGroup[currentGroup.length - 1]);
 
@@ -55,7 +56,7 @@ export class Parser {
         } else {
           /** we could not find a word for this item **/
           morphemeGroups.shift();
-          result.push({token, definitions: {}})
+          result.push({ token: await this.getCharacters(token), definitions: [] });
           break;
         }
       }
@@ -64,18 +65,25 @@ export class Parser {
     return result;
   }
 
-  lookupTermsInDictionary(terms: string[]) {
-    const possibleDefinitions: PossibleDefinitions = {};
+  async lookupTermsInDictionary(terms: string[]) {
+    const definitions: Definition[][] = [];
     for (const term of terms) {
-      const definitions = this.dictionary.getDefinitions(term);
-      if (definitions.length > 0) {
-        if (!possibleDefinitions[term]) {
-          possibleDefinitions[term] = [];
+      const result = this.dictionary.getDefinitions(term);
+      const definitionsByTerm: Definition[] = []
+      if (result.length > 0) {
+        for (const definition of result) {
+          const tokenCharacters = await this.getCharacters(term);
+          definitionsByTerm.push({
+            token: tokenCharacters,
+            ...definition
+          })
         }
-        possibleDefinitions[term].push(...definitions);
+      }
+      if(definitionsByTerm.length > 0) {
+        definitions.push(definitionsByTerm);
       }
     }
-    return possibleDefinitions;
+    return definitions;
   }
 
   /** Returns multiple groups of morphemes which could represent a dictionary entry **/
@@ -125,5 +133,13 @@ export class Parser {
   /** Breaks sentence into morphemes using kuromoji **/
   private async getMorphemes(sentence: string) {
     return await tokenize(sentence);
+  }
+
+  private async getCharacters(text: string): Promise<Character[]> {
+    const tokens = await tokenize(text);
+    return tokens.map((t) => ({
+      original: t.surface_form,
+      furigana: isHiragana(t.surface_form) ?  null : toHiragana(t.reading),
+    }));
   }
 }

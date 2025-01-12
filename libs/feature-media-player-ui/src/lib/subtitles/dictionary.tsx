@@ -1,12 +1,7 @@
-import { PossibleDefinitions } from '@immersion-player/shared-types';
 import { cn } from '@immersion-player/shared-utils';
+import { Character, Definition } from '@immersion-player/shared-types';
 import { useState } from 'react';
 import Flashcard from './flashcard.svg?react';
-
-type Definition = {
-  text: string;
-  description: string;
-};
 
 function Definition({
   definition,
@@ -44,15 +39,14 @@ function Definition({
 }
 
 function DeinflectedTerm({
-  deinflectedTerm,
   definitions,
   onCreateFlashcard,
 }: {
-  deinflectedTerm: string;
-  definitions: PossibleDefinitions;
-  onCreateFlashcard: (targetWord: string, definitions: Definition[]) => void;
+  definitions: Definition[];
+  onCreateFlashcard: (definitions: Definition[]) => void;
 }) {
   const [selectedDefinitions, setSelectedDefinitions] = useState<{ [key: string]: Definition }>({});
+  const deinflectedTerm = definitions[0]?.token;
 
   const addNewDefinition = (definition: Definition, key: string) => {
     setSelectedDefinitions((current) => {
@@ -71,20 +65,24 @@ function DeinflectedTerm({
   return (
     <>
       <div className="m-2 px-1 pt-0.5 pb-1 rounded bg-primary-gradient flex items-center">
-        <label className="text-black font-normal">{deinflectedTerm}</label>
+        <label className="text-black font-normal">
+          <ruby>
+            {deinflectedTerm?.map((t) => (
+              <>
+                {t.original}
+                {t.furigana && <rt>{t.furigana}</rt>}
+              </>
+            ))}
+          </ruby>
+        </label>
         <button
-          onClick={() =>
-            onCreateFlashcard(
-              deinflectedTerm,
-              Object.values(selectedDefinitions).flatMap((definition) => definition)
-            )
-          }
+          onClick={() => onCreateFlashcard(Object.values(selectedDefinitions).flatMap((definition) => definition))}
           className="ml-auto text-white flex items-center"
         >
           <Flashcard />
         </button>
       </div>
-      {definitions[deinflectedTerm].map((definition, index) => (
+      {definitions.map((definition, index) => (
         <Definition
           key={index}
           onDefinitionSelected={() => addNewDefinition(definition, index.toString())}
@@ -99,19 +97,14 @@ function DeinflectedTerm({
 }
 
 export function Dictionary(props: {
-  definitions: PossibleDefinitions;
-  onCreateFlashcard: (targetWord: string, definitions: Definition[]) => void;
+  definitions: Definition[][];
+  onCreateFlashcard: (definitions: Definition[]) => void;
 }) {
   return (
     <div className="w-full flex absolute left-0 bottom-0 items-center flex-col">
       <div className="h-60 min-w-[20rem] w-20 bg-surface rounded flex flex-col text-white text-base font-extralight overflow-auto">
-        {Object.keys(props.definitions).map((deinflectedTerm) => (
-          <DeinflectedTerm
-            key={deinflectedTerm}
-            onCreateFlashcard={props.onCreateFlashcard}
-            deinflectedTerm={deinflectedTerm}
-            definitions={props.definitions}
-          />
+        {props.definitions.map((entry, index) => (
+          <DeinflectedTerm key={index} onCreateFlashcard={props.onCreateFlashcard} definitions={entry} />
         ))}
       </div>
       <div className="h-12 w-full bg-transparent"></div>
