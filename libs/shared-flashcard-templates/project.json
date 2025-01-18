@@ -1,0 +1,9 @@
+{
+  "name": "shared-flashcard-templates",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared-flashcard-templates/src",
+  "projectType": "library",
+  "tags": ["shared"],
+  "// targets": "to see all targets run: nx show project shared-flashcard-templates --web",
+  "targets": {}
+}

@@ -19,6 +19,7 @@ export function Subtitles({
   const { currentSubtitle } = usePlayback(videoPlayerRef, subtitles);
   const [visibleDictionaryIndex, setVisibleDictionaryIndex] = useState<null | number>(null);
   const { createFlashcard } = useFlashcards();
+  const showFurigana = false;
 
   const onMouseEnter = (index: number) => {
     setVisibleDictionaryIndex(index);
@@ -44,7 +45,8 @@ export function Subtitles({
                   <Dictionary
                     onCreateFlashcard={(definitions) =>
                       createFlashcard({
-                        sentence: currentSubtitle.text[0],
+                        sentenceFront: currentSubtitle?.text[0],
+                        sentenceBack: currentSubtitle?.lookupResult.flatMap(l => l.token),
                         definitions,
                         startTime: timecodeToSeconds(currentSubtitle.startTime),
                         endTime: timecodeToSeconds(currentSubtitle.endTime),
@@ -58,7 +60,7 @@ export function Subtitles({
                   {result.token?.map((t) => (
                     <>
                       {t.original}
-                      {t.furigana && <rt>{t.furigana}</rt>}
+                      {showFurigana && t.furigana && <rt>{t.furigana}</rt>}
                     </>
                   ))}
                 </ruby>

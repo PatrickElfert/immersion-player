@@ -80,6 +80,12 @@
         "linter": "eslint",
         "unitTestRunner": "vitest"
       }
+    },
+    "@nx/web:application": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "vitest",
+      "e2eTestRunner": "playwright"
     }
   },
   "nxCloudAccessToken": "YWIxMDU3NjQtZWFjYi00NzJkLTlhNGYtOWMyNzAxMWNmMTVifHJlYWQtd3JpdGU=",

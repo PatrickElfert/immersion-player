@@ -1,10 +1,10 @@
 import { YankiConnect } from 'yanki-connect';
 import { CreateFlashcardDto } from '@immersion-player/shared-types';
-import { backTemplate } from './templates/back';
-import { frontTemplate } from './templates/front';
 import ffmpeg from 'fluent-ffmpeg';
 import { fileSync } from 'tmp';
 import path from 'path';
+import { backTemplate, frontTemplate } from '@immersion-player/shared-flashcard-templates';
+import { stringifyCharacters } from '@immersion-player/shared-utils';
 
 const client = new YankiConnect();
 const MODEL_NAME = 'ImmersionPlayer';
@@ -26,7 +26,7 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
           Front: frontTemplate,
         },
       ],
-      inOrderFields: ['sentence', 'definitions', 'targetWord', 'image', 'sentenceAudio'],
+      inOrderFields: ['sentenceFront', 'sentenceBack', 'definitions', 'targetWord', 'image', 'sentenceAudio'],
     });
   }
 
@@ -55,11 +55,10 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
       deckName: DECK_NAME,
       modelName: MODEL_NAME,
       fields: {
-        sentence: flashcard.sentence,
+        sentenceFront: flashcard.sentenceFront,
+        sentenceBack: stringifyCharacters(flashcard.sentenceBack),
         definitions: flashcard.definitions.map((d) => d.text).join('*~*'),
-        targetWord: flashcard.definitions[0].token
-          .map((char) => (char.furigana ? `${char.original}[${char.furigana}]` : char.original))
-          .join(''),
+        targetWord: stringifyCharacters(flashcard.definitions[0].token),
         sentenceAudio: audioStoreResult,
         image: imageStoreResult,
       },
@@ -69,7 +68,7 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
     },
   });
 
-  //cleanup();
+  cleanup();
 }
 
 function extractFlashcardMedia(

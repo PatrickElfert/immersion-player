@@ -1,7 +1,8 @@
-import { Definition } from './lookup-result';
+import { Character, Definition } from './lookup-result';
 
 export interface CreateFlashcardDto {
-  sentence: string;
+  sentenceBack: Character[];
+  sentenceFront: string;
   definitions: Definition[];
   startTime: number;
   endTime: number;
