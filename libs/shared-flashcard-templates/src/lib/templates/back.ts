@@ -1,13 +1,15 @@
 import { parseTextWithFurigana } from './utils/utils';
 
 export const backTemplate = `
- <h2></h2>
- <h4></h4>
- <img src="{{image}}" />
- <audio autoplay controls>
+ <div style="display: flex; flex-direction: column; align-items: center">
+  <h2></h2>
+  <h4></h4>
+  <img style="height: 400px" src="{{image}}" />
+  <audio autoplay controls>
    <source src="{{sentenceAudio}}" type="audio/mpeg">
- </audio>
-<ol id="dynamic-fields"></ol>
+  </audio>
+  <ol id="dynamic-fields"></ol>
+ </div>
 <script>
 
 const rawDefinitions = '{{definitions}}';

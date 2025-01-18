@@ -1,6 +1,7 @@
 import { backTemplate, frontTemplate } from '@immersion-player/shared-flashcard-templates';
+import { stringifyCharacters } from '@immersion-player/shared-utils';
 
-type TemplateValues = {[key: string]: string};
+type TemplateValues = { [key: string]: string };
 
 function replaceTemplateValues(str: string, values: TemplateValues) {
   return Object.entries(values).reduce((updatedStr, [key, value]) => {
@@ -9,13 +10,29 @@ function replaceTemplateValues(str: string, values: TemplateValues) {
   }, str);
 }
 
+const sentence = [
+  { original: 'もっと', furigana: null },
+  { original: ' ', furigana: '' },
+  { original: '２', furigana: 'に' },
+  { original: ' ', furigana: '' },
+  { original: '人', furigana: 'ひと' },
+  { original: 'で', furigana: null },
+  { original: 'お客', furigana: 'おきゃく' },
+  { original: 'さん', furigana: null },
+  { original: 'せ', furigana: null },
+  { original: '喜ば', furigana: 'よろこば' },
+  { original: 'たかっ', furigana: null },
+  { original: 'た', furigana: null },
+  { original: 'な', furigana: null },
+];
+
 const values: TemplateValues = {
-  image: './test.png',
-  sentenceAudio: './sentenceAudio.mp3',
-  definitions: 'def',
-  targetWord: 'targetWord',
-  sentenceBack: 'sentenceBack',
-}
+  image: 'src/assets/test.png',
+  sentenceAudio: 'src/assets/test.mp3',
+  definitions: 'customer*~*guest; visitor',
+  targetWord: stringifyCharacters([{ original: '喜ば', furigana: 'よろこば' }]),
+  sentenceBack: stringifyCharacters(sentence),
+};
 
 export class BackTemplate extends HTMLElement {
   constructor() {
@@ -24,7 +41,7 @@ export class BackTemplate extends HTMLElement {
 
   connectedCallback() {
     this.innerHTML = replaceTemplateValues(backTemplate, values);
-    this.querySelectorAll('script').forEach(script => {
+    this.querySelectorAll('script').forEach((script) => {
       const scriptElement = document.createElement('script');
       scriptElement.textContent = script.textContent;
       document.body.appendChild(scriptElement);
@@ -40,6 +57,12 @@ export class FrontTemplate extends HTMLElement {
 
   connectedCallback() {
     this.innerHTML = replaceTemplateValues(frontTemplate, values);
+    this.querySelectorAll('script').forEach((script) => {
+      const scriptElement = document.createElement('script');
+      scriptElement.textContent = script.textContent;
+      document.body.appendChild(scriptElement);
+      script.remove();
+    });
   }
 }
 
