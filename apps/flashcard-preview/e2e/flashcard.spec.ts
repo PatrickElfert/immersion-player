@@ -15,6 +15,13 @@ async function validateRubyTags(target: Locator, expectedTokens: { base: string;
   }
 }
 
+test('renders front template', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('[data-testid="frontTemplate"]').locator('[data-testid="targetSentence"]')).toHaveText(
+    'もっと２人でお客さんせ喜ばたかったな'
+  );
+});
+
 test('renders back template', async ({ page }) => {
   await page.goto('/');
 
@@ -55,6 +62,6 @@ test('renders back template', async ({ page }) => {
   const definitions = backTemplate.locator('[data-testid="definitions"]');
   await expect(definitions.locator('li')).toHaveCount(2);
 
-  await expect(definitions.locator('li').nth(0)).toHaveText('customer')
-  await expect(definitions.locator('li').nth(1)).toHaveText('guest; visitor')
+  await expect(definitions.locator('li').nth(0)).toHaveText('customer');
+  await expect(definitions.locator('li').nth(1)).toHaveText('guest; visitor');
 });

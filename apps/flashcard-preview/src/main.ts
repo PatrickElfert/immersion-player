@@ -30,6 +30,7 @@ const values: TemplateValues = {
   definitions: 'customer*~*guest; visitor',
   targetWord: stringifyCharacters([{ original: 'お客', furigana: 'おきゃく' }]),
   sentenceBack: stringifyCharacters(sentence),
+  sentenceFront: 'もっと２人でお客さんせ喜ばたかったな'
 };
 
 export class BackTemplate extends HTMLElement {
