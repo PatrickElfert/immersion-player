@@ -1,15 +1,13 @@
 import { Parser } from './parser';
 import { join } from 'path';
-import * as path from "node:path";
+import * as path from 'node:path';
 
-const parser = new Parser(
-  join(path.resolve(__dirname, '../../../../'), 'jmdict-all-3.5.0.json')
-);
+const parser = new Parser(join(path.resolve(__dirname, '../../../../'), 'jmdict-all.json'));
 
 describe('featureDictionaryLookup', () => {
   it('parses a sentence', async () => {
     const result = await parser.parseSentence('今日は友達と学校に行きます');
-    expect(result.map((r) => r.token)).toEqual([
+    expect(result.map((r) => r.token.map((t) => t.original).join(''))).toEqual([
       '今日',
       'は',
       '友達',
@@ -22,7 +20,7 @@ describe('featureDictionaryLookup', () => {
 
   it('ignores special characters', async () => {
     const result = await parser.parseSentence('明日は、友達とラーメンを食べたいです。');
-    expect(result.map((r) => r.token)).toEqual([
+    expect(result.map((r) => r.token.map((t) => t.original).join(''))).toEqual([
       '明日',
       'は',
       '、',
@@ -32,7 +30,7 @@ describe('featureDictionaryLookup', () => {
       'を',
       '食べたい',
       'です',
-      '。'
+      '。',
     ]);
   });
 });
