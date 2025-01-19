@@ -18,7 +18,7 @@ jobs:
         run: brew install wget
 
       - name: Invoke Common Build
-        uses: ./.github/workflows/common-build.yml
+        uses: PatrickElfert/immersion-player/.github/workflows/common-build.yml@main
         with:
           platform-name: macos-latest
 #  build-windows:
