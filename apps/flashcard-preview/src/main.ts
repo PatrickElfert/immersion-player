@@ -12,9 +12,7 @@ function replaceTemplateValues(str: string, values: TemplateValues) {
 
 const sentence = [
   { original: 'もっと', furigana: null },
-  { original: ' ', furigana: '' },
   { original: '２', furigana: 'に' },
-  { original: ' ', furigana: '' },
   { original: '人', furigana: 'ひと' },
   { original: 'で', furigana: null },
   { original: 'お客', furigana: 'おきゃく' },
@@ -30,7 +28,7 @@ const values: TemplateValues = {
   image: 'src/assets/test.png',
   sentenceAudio: 'src/assets/test.mp3',
   definitions: 'customer*~*guest; visitor',
-  targetWord: stringifyCharacters([{ original: '喜ば', furigana: 'よろこば' }]),
+  targetWord: stringifyCharacters([{ original: 'お客', furigana: 'おきゃく' }]),
   sentenceBack: stringifyCharacters(sentence),
 };
 
