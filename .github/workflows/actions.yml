@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-macos:
+  install-dependencies:
     runs-on: macos-latest
     steps:
       - name: Install Homebrew
@@ -17,10 +17,12 @@ jobs:
       - name: Install wget
         run: brew install wget
 
-      - name: Invoke Common Build
-        uses: PatrickElfert/immersion-player/.github/workflows/common-build.yml@main
-        with:
-          platform-name: macos-latest
+  build-macos:
+    needs: install-dependencies
+    uses: PatrickElfert/immersion-player/.github/workflows/common-build.yml@main
+    with:
+      platform-name: macos-latest
+
 #  build-windows:
 #    uses: ./.github/workflows/common-build.yml
 #    with:
