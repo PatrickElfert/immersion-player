@@ -26,11 +26,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Electron App
-        run: npm run make
+      - name: Download JmDict
+        run: |
+          wget -O jmdict-all.json.zip https://github.com/scriptin/jmdict-simplified/releases/download/3.5.0%2B20240826121924/jmdict-all-3.5.0+20240826121924.json.zip
+
+      - name: Extract JMdict ZIP
+        run: |
+          unzip jmdict-all.json.zip
 
       - name: Run Unit Tests
         run: npx nx run-many --target=test
+
+#      - name: Build Electron App
+#        run: npm run make
 
 #      - name: Create Library folder
 #        run: mkdir -p $HOME/ImmersionPlayer

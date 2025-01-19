@@ -7,9 +7,20 @@ on:
 
 jobs:
   build-macos:
-    uses: ./.github/workflows/common-build.yml
-    with:
-      platform-name: macos-latest
+    runs-on: macos-latest
+    steps:
+      - name: Install Homebrew
+        run: |
+          which brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          brew update
+
+      - name: Install wget
+        run: brew install wget
+
+      - name: Invoke Common Build
+        uses: ./.github/workflows/common-build.yml
+        with:
+          platform-name: macos-latest
 #  build-windows:
 #    uses: ./.github/workflows/common-build.yml
 #    with:
