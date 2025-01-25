@@ -10,6 +10,8 @@ const platforms = {
 
 export async function launchElectron(): Promise<ElectronApplication> {
   const videoPath = path.resolve(workspaceRoot, 'e2e-recordings');
+  console.log(platforms[process.env.PLATFORM])
+  console.log(workspaceRoot)
   return await _electron.launch({
     executablePath: path.join(
       workspaceRoot,
