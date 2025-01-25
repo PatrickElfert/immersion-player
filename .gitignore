@@ -40,7 +40,7 @@ Thumbs.db
 
 .nx/cache
 
-jmdict-all.json
+jmdict-all-3.5.0.json
 e2e-recordings
 .env
 extraResources/jmdict-all-3.5.0.json

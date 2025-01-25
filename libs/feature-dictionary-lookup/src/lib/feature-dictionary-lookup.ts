@@ -10,7 +10,7 @@ type SRT = {
   text: string[];
 };
 
-const parser = new Parser(join(process.cwd(), 'jmdict-all.json'));
+const parser = new Parser(join(process.cwd(), 'jmdict-all-3.5.0.json'));
 
 export async function parseSrt(path: string): Promise<Subtitle[]> {
   const srtFile = readFileSync(path, 'utf8');

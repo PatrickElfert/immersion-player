@@ -2,7 +2,7 @@ import { Parser } from './parser';
 import { join } from 'path';
 import * as path from 'node:path';
 
-const parser = new Parser(join(path.resolve(__dirname, '../../../../'), 'jmdict-all.json'));
+const parser = new Parser(join(path.resolve(__dirname, '../../../../'), 'jmdict-all-3.5.0.json'));
 
 describe('featureDictionaryLookup', () => {
   it('parses a sentence', async () => {
