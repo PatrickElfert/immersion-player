@@ -62,7 +62,6 @@ jobs:
           npx start-server-and-test 'nx serve flashcard-preview --port 5000' http://localhost:5000 'nx run-many --target e2e --skip-nx-cache 2>&1 | tee electron-debug.log'
 
       - name: Upload crash logs
-        if: failure()
         uses: actions/upload-artifact@v3
         with:
           name: electron-logs
