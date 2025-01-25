@@ -30,6 +30,7 @@
     "simple-subtitle-parser": "^2.0.0",
     "srt-file-parser": "^1.0.0",
     "srt-parser-2": "^1.2.3",
+    "start-server-and-test": "^2.0.10",
     "tailwind-merge": "^2.5.4",
     "tmp": "^0.2.3",
     "tslib": "^2.3.0",

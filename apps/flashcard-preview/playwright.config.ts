@@ -26,13 +26,6 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
-  webServer: {
-    command: 'npx nx run flashcard-preview:serve --port 5000',
-    url: 'http://127.0.0.1:5000',
-    reuseExistingServer: false,
-    timeout: 120000,
-    cwd: workspaceRoot,
-  },
   projects: [
     {
       name: 'chromium',

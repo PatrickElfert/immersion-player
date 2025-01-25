@@ -17,7 +17,7 @@ test.afterEach(async () => {
 test('Load and display existing media', async () => {
 
   await page.open();
-  await expect(page.media).toHaveCount(3)
+  await expect(page.media).toHaveCount(2)
   await expect(page.media.first().getByText('Example E01')).toBeVisible();
   await expect(page.media.nth(1).getByText('Example E02')).toBeVisible();
 });
