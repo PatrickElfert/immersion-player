@@ -18,6 +18,11 @@ asarUnpack:
   - node_modules/ffmpeg-static/package.json
   - node_modules/ffprobe-static/index.js
   - node_modules/ffprobe-static/package.json
+extraResources:
+  - from: ./extraResources/
+    to: extraResources/
+    filter:
+      - "**/*"
 win:
   executableName: immersion-player
 nsis:

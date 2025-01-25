@@ -1,7 +1,8 @@
 import { readFileSync } from 'fs';
 import { Parser } from './parser';
-import {join} from "path";
+import { join } from "path";
 import { Subtitle } from '@immersion-player/shared-types';
+import { app } from 'electron';
 
 type SRT = {
   index: number;
@@ -10,7 +11,13 @@ type SRT = {
   text: string[];
 };
 
-const parser = new Parser(join(process.cwd(), 'jmdict-all-3.5.0.json'));
+const getDictionaryPath = () => {
+  return app.isPackaged
+    ? join(process.resourcesPath, 'extraResources', 'jmdict-all-3.5.0.json')
+    : join(process.cwd(), 'extraResources', 'jmdict-all-3.5.0.json');
+};
+
+const parser = new Parser(getDictionaryPath());
 
 export async function parseSrt(path: string): Promise<Subtitle[]> {
   const srtFile = readFileSync(path, 'utf8');

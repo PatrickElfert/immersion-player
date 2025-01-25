@@ -29,7 +29,8 @@ export default defineConfig({
   webServer: {
     command: 'npx nx run flashcard-preview:serve --port 5000',
     url: 'http://127.0.0.1:5000',
-    reuseExistingServer: true,
+    reuseExistingServer: false,
+    timeout: 120000,
     cwd: workspaceRoot,
   },
   projects: [

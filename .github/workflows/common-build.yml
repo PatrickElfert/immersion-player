@@ -47,8 +47,11 @@ jobs:
         run: cp -r "./assets/Example E01" "./assets/Example E02" "$HOME/ImmersionPlayer"
         shell: bash
 
+      - name: Start Flashcard Preview Server
+        run: npx nx serve flashcard-preview --port 5000
+
       - name: Run playwright tests
-        run: npx nx e2e immersion-player-desktop
+        run: npx nx run-many --target e2e
 
 
 
