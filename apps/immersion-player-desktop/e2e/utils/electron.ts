@@ -1,6 +1,8 @@
 import { workspaceRoot } from '@nx/devkit';
 import { _electron, ElectronApplication } from '@playwright/test';
+import { existsSync } from 'node:fs';
 import * as path from 'node:path';
+import { execPath } from 'node:process';
 
 const platforms = {
   "macos-latest": 'dist/mac-arm64/immersion-player.app/Contents/MacOS/immersion-player',
@@ -10,18 +12,24 @@ const platforms = {
 
 export async function launchElectron(): Promise<ElectronApplication> {
   const videoPath = path.resolve(workspaceRoot, 'e2e-recordings');
+  const execPath = path.join(
+    workspaceRoot,
+    platforms[process.env.PLATFORM]
+  )
+
+  if (!existsSync(execPath)) {
+    throw new Error(`Electron executable not found at: ${execPath}`);
+  }
+
   try {
     return await _electron.launch({
-      executablePath: path.join(
-        workspaceRoot,
-        platforms[process.env.PLATFORM]
-      ),
+      executablePath: execPath,
       recordVideo: {
         dir: videoPath,
       },
       timeout: 60000,
     });
-  } catch(error) {
+  } catch (error) {
     console.error('Error launching Electron:', error);
     throw error;
   }
