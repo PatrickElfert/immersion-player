@@ -11,7 +11,7 @@ const platforms = {
 };
 
 export async function launchElectron(): Promise<ElectronApplication> {
-  const videoPath = path.resolve(workspaceRoot, 'e2e-recordings');
+  //const videoPath = path.resolve(workspaceRoot, 'e2e-recordings');
   const execPath = path.join(
     workspaceRoot,
     platforms[process.env.PLATFORM]
@@ -24,9 +24,6 @@ export async function launchElectron(): Promise<ElectronApplication> {
   try {
     return await _electron.launch({
       executablePath: execPath,
-      recordVideo: {
-        dir: videoPath,
-      },
       timeout: 60000,
     });
   } catch (error) {
