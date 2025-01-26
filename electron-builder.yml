@@ -39,21 +39,17 @@ mac:
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
 dmg:
-  artifactName: immersion-player-${version}.${ext}
+  artifactName: ${productName}-${version}.${ext}
 linux:
   executableName: immersion-player
+  artifactName: ${productName}-${version}.${ext}
   target:
     - AppImage
     - snap
     - deb
   maintainer: electronjs.org
   category: Utility
-appImage:
-  artifactName: immersion-player-${version}.${ext}
 npmRebuild: false
 publish:
   provider: generic
   url: https://example.com/auto-updates
-electronFuses: {
-  enableNodeCliInspectArguments: true
-}
