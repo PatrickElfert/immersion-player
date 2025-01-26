@@ -53,3 +53,6 @@ npmRebuild: false
 publish:
   provider: generic
   url: https://example.com/auto-updates
+electronFuses: {
+  enableNodeCliInspectArguments: true
+}
