@@ -56,7 +56,7 @@ jobs:
 
       - name: Run Electron E2E Tests 
         run: |
-          nx run immersion-player-desktop:e2e
+          npx nx run immersion-player-desktop:e2e
 
 
 
