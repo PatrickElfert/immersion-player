@@ -13,7 +13,6 @@
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "@scriptin/jmdict-simplified-types": "^3.6.1",
-    "@sentry/electron": "^5.10.0",
     "@types/ffprobe-static": "^2.0.3",
     "@types/fluent-ffmpeg": "^2.1.27",
     "@types/tmp": "^0.2.6",
