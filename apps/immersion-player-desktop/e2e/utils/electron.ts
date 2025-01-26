@@ -6,7 +6,7 @@ import * as path from 'node:path';
 const platforms = {
   "macos-latest": 'dist/mac-arm64/immersion-player.app/Contents/MacOS/immersion-player',
   "windows-latest": 'dist/win32/immersion-player.exe',
-  "ubuntu-latest": "dist/linux-x64/immersion-player"
+  "ubuntu-latest": "dist/immersion-player-0.0.0.AppImage"
 };
 
 export async function launchElectron(): Promise<ElectronApplication> {

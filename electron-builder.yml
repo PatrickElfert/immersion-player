@@ -45,8 +45,6 @@ linux:
   artifactName: ${productName}-${version}.${ext}
   target:
     - AppImage
-    - snap
-    - deb
   maintainer: electronjs.org
   category: Utility
 npmRebuild: false
