@@ -11,6 +11,13 @@ import ffmpegPath from 'ffmpeg-static';
 import { path as ffprobePath } from 'ffprobe-static';
 import ffmpeg from 'fluent-ffmpeg';
 
+import * as Sentry from '@sentry/electron/main'
+
+Sentry.init({
+  dsn: "https://730985f9ce26e45bdcffb01e7106c0dd@o4508710510592000.ingest.de.sentry.io/4508710513344592",
+})
+
+
 protocol.registerSchemesAsPrivileged([
   {
     scheme: 'media',

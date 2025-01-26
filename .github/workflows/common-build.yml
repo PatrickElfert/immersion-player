@@ -42,9 +42,6 @@ jobs:
 
       - name: Build Electron App
         run: npm run make
-        env:
-          ELECTRON_ENABLE_LOGGING: true
-          ELECTRON_ENABLE_STACK_DUMPING: true
 
       - name: Create Library folder
         run: mkdir -p $HOME/ImmersionPlayer
@@ -53,22 +50,13 @@ jobs:
         run: cp -r "./assets/Example E01" "./assets/Example E02" "$HOME/ImmersionPlayer"
         shell: bash
 
-      - name: Start Flashcard Preview Server and Test
-        env:
-          ELECTRON_ENABLE_LOGGING: true
-          ELECTRON_ENABLE_STACK_DUMPING: true
+      - name: Start Flashcard Preview Server and run E2E Tests
         run: |
-          export DEBUG=electron*
-          npx start-server-and-test 'nx serve flashcard-preview --port 5000' http://localhost:5000 'nx run-many --target e2e --skip-nx-cache 2>&1 | tee electron-debug.log'
+          npx start-server-and-test 'nx serve flashcard-preview --port 5000' http://localhost:5000 'nx run flashcard-preview:e2e' 
 
-      - name: Upload crash logs
-        uses: actions/upload-artifact@v3
-        with:
-          name: electron-logs
-          path: |
-            electron-debug.log
-            $HOME/.config/Electron/Crash Reports/
-            $HOME/Library/Logs/Electron/
+      - name: Run Electron E2E Tests 
+        run: |
+          nx run immersion-player-desktop:e2e
 
 
 
