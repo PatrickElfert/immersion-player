@@ -54,9 +54,11 @@ jobs:
         run: |
           npx start-server-and-test 'nx serve flashcard-preview --port 5000' http://localhost:5000 'nx run flashcard-preview:e2e' 
 
-      - name: Run Electron E2E Tests 
-        run: |
-          npx nx run immersion-player-desktop:e2e
+      - name: Install xvfb 
+        run: sudo apt-get install -y xvfb
+
+      - name: Run Electron E2E Tests
+        run: xvfb-run npx nx run immersion-player-desktop:e2e
 
 
 
