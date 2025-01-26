@@ -3,6 +3,7 @@ import { _electron, ElectronApplication } from '@playwright/test';
 import { existsSync } from 'node:fs';
 import * as path from 'node:path';
 import { execPath } from 'node:process';
+import { registerPluginTSTranspiler } from 'nx/src/project-graph/plugins';
 
 const platforms = {
   "macos-latest": 'dist/mac-arm64/immersion-player.app/Contents/MacOS/immersion-player',
@@ -22,10 +23,17 @@ export async function launchElectron(): Promise<ElectronApplication> {
   }
 
   try {
-    return await _electron.launch({
+    const electronApplication = await _electron.launch({
       executablePath: execPath,
       timeout: 60000,
     });
+
+    if(!electronApplication) {
+      throw Error('Electron application is undefined');
+    }
+
+    return electronApplication; 
+
   } catch (error) {
     console.error('Error launching Electron:', error);
     throw error;

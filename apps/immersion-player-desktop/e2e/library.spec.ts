@@ -1,29 +1,37 @@
-import {test, expect, ElectronApplication} from '@playwright/test';
-import {LibraryPage} from "./pages/library.page";
-import {launchElectron} from "./utils/electron";
+import { test, expect, ElectronApplication } from '@playwright/test';
+import { LibraryPage } from "./pages/library.page";
+import { launchElectron } from "./utils/electron";
 
 let electronApp: ElectronApplication;
-let page: LibraryPage;
+let libraryPage: LibraryPage;
 
 test.beforeEach(async () => {
   electronApp = await launchElectron()
-  page = new LibraryPage(await electronApp.firstWindow());
+  const page = await electronApp.firstWindow()
+
+  if(!page) {
+    throw new Error('Could not get window');
+  }
+
+  libraryPage = new LibraryPage(page);
 });
 
 test.afterEach(async () => {
-  await electronApp.close();
+  if (electronApp) {
+    await electronApp.close();
+  }
 });
 
 test('Load and display existing media', async () => {
 
-  await page.open();
-  await expect(page.media).toHaveCount(2)
-  await expect(page.media.first().getByText('Example E01')).toBeVisible();
-  await expect(page.media.nth(1).getByText('Example E02')).toBeVisible();
+  await libraryPage.open();
+  await expect(libraryPage.media).toHaveCount(2)
+  await expect(libraryPage.media.first().getByText('Example E01')).toBeVisible();
+  await expect(libraryPage.media.nth(1).getByText('Example E02')).toBeVisible();
 });
 
-test('Search for specific media', async() => {
-  await page.open();
-  await page.searchFor('Example E01')
-  await expect(page.media.getByText('Example E01')).toBeVisible();
+test('Search for specific media', async () => {
+  await libraryPage.open();
+  await libraryPage.searchFor('Example E01')
+  await expect(libraryPage.media.getByText('Example E01')).toBeVisible();
 })
