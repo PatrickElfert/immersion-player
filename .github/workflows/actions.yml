@@ -6,29 +6,30 @@ on:
       - main
 
 jobs:
-  install-dependencies:
-    runs-on: macos-latest
-    steps:
-      - name: Install Homebrew
-        run: |
-          which brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          brew update
+  # install-dependencies:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Install Homebrew
+  #       run: |
+  #         which brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  #         brew update
 
-      - name: Install wget
-        run: brew install wget
+  #     - name: Install wget
+  #       run: brew install wget
+  
+    build-linux:
+      uses: ./.github/workflows/common-build.yml
+      with:
+        platform-name: ubuntu-latest
 
-  build-macos:
-    needs: install-dependencies
-    uses: PatrickElfert/immersion-player/.github/workflows/common-build.yml@main
-    with:
-      platform-name: macos-latest
+  # build-macos:
+  #   needs: install-dependencies
+  #   uses: PatrickElfert/immersion-player/.github/workflows/common-build.yml@main
+  #   with:
+  #     platform-name: macos-latest
 
 #  build-windows:
 #    uses: ./.github/workflows/common-build.yml
 #    with:
 #      platform-name: windows-latest
 #
-#  build-linux:
-#    uses: ./.github/workflows/common-build.yml
-#    with:
-#      platform-name: ubuntu-latest
