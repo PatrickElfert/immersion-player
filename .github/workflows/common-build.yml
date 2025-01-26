@@ -33,9 +33,11 @@ jobs:
         run: |
           wget -O jmdict-all.json.zip https://github.com/scriptin/jmdict-simplified/releases/download/3.5.0%2B20240826121924/jmdict-all-3.5.0+20240826121924.json.zip
 
-      - name: Extract JMdict ZIP
+      - name: Extract JMdict ZIP and Copy to extraResources
         run: |
           unzip jmdict-all.json.zip
+          mkdir -p extraResources
+          cp jmdict-all-3.5.0.json extraResources/
 
       - name: Run Unit Tests
         run: npx nx run-many --target=test
