@@ -41,6 +41,8 @@ mac:
 dmg:
   artifactName: immersion-player-${version}.${ext}
 linux:
+  executableName: immersion-player
+  artifactName": "${productName}-${version}.${ext}"
   target:
     - AppImage
     - snap
