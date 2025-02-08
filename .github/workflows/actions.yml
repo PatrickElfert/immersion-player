@@ -17,16 +17,16 @@ jobs:
   #     - name: Install wget
   #       run: brew install wget
   
-    build-linux:
-      uses: ./.github/workflows/common-build.yml
-      with:
-        platform-name: ubuntu-latest
+    # build-linux:
+    #   uses: ./.github/workflows/common-build.yml
+    #   with:
+    #     platform-name: ubuntu-latest
 
-  # build-macos:
-  #   needs: install-dependencies
-  #   uses: PatrickElfert/immersion-player/.github/workflows/common-build.yml@main
-  #   with:
-  #     platform-name: macos-latest
+  build-macos:
+    needs: install-dependencies
+    uses: PatrickElfert/immersion-player/.github/workflows/common-build.yml@main
+    with:
+      platform-name: macos-latest
 
 #  build-windows:
 #    uses: ./.github/workflows/common-build.yml
