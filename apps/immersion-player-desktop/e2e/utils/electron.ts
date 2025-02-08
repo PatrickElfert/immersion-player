@@ -9,22 +9,25 @@ const platforms = {
   "ubuntu-latest": "dist/linux-unpacked/immersion-player"
 };
 
-export async function launchElectron(): Promise<ElectronApplication> {
-  //const videoPath = path.resolve(workspaceRoot, 'e2e-recordings');
+export async function launchElectron(useBinary = false): Promise<ElectronApplication> {
   const execPath = path.join(
     workspaceRoot,
     platforms[process.env.PLATFORM]
   )
 
-  if (!existsSync(execPath)) {
+  if (useBinary && !existsSync(execPath)) {
     throw new Error(`Electron executable not found at: ${execPath}`);
   }
 
   try {
     const electronApplication = await _electron.launch({
-      executablePath: execPath,
-      timeout: 60000,
+      cwd: workspaceRoot,
+      args: !useBinary ? [path.join(workspaceRoot, 'dist/apps/immersion-player-desktop/main/index.js')] : [],
+      executablePath: useBinary ? execPath : undefined,
+      timeout: 60000, 
       env: {
+        ELECTRON_IS_DEV: '1',
+        ELECTRON_RENDERER_URL: 'http://localhost:4200',
         ELECTRON_ENABLE_LOGGING: "true"
       }
     });

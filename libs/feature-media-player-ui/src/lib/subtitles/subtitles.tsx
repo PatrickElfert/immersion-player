@@ -31,7 +31,9 @@ export function Subtitles({
 
   if (subtitles) {
     return (
-      <div className={className}>
+      <div
+        data-testid="subtitles"
+        className={className}>
         {currentSubtitle && (
           <div className="bg-surface/[.9] flex flex-row text-white text-2xl p-2 rounded">
             {currentSubtitle.lookupResult.map((result, index) => (
@@ -56,7 +58,7 @@ export function Subtitles({
                     definitions={result.definitions}
                   />
                 )}
-                <ruby>
+                <ruby data-testid="word">
                   {result.token?.map((t) => (
                     <>
                       {t.original}

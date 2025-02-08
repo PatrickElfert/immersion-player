@@ -17,7 +17,7 @@ function Definition({
   onDefinitionUnselected: (definition: Definition) => void;
 }) {
   return (
-    <div className={cn('flex flex-col', className)}>
+    <div data-testid="definition" className={cn('flex flex-col', className)}>
       <div className="relative pl-10">
         <div className="flex absolute top-0 left-0">
           <input
@@ -29,11 +29,9 @@ function Definition({
           />
           <div>{count}.</div>
         </div>
-        <label>{definition.text}</label>
+        <label data-testid="word">{definition.text}</label>
       </div>
-      {definition.description && (
-        <label className="ml-6 font-light text-sm text-gray-400">{definition.description}</label>
-      )}
+      <label data-testid="description" className="ml-6 font-light text-sm text-gray-400">{definition.description}</label>
     </div>
   );
 }
@@ -63,9 +61,10 @@ function DeinflectedTerm({
   };
 
   return (
-    <>
-      <div className="m-2 px-1 pt-0.5 pb-1 rounded bg-primary-gradient flex items-center">
-        <label className="text-black font-normal">
+    <div data-testid="deinflectedTerm">
+      <div
+        className="m-2 px-1 pt-0.5 pb-1 rounded bg-primary-gradient flex items-center">
+        <label data-testid="title" className="text-black font-normal">
           <ruby>
             {deinflectedTerm?.map((t) => (
               <>
@@ -92,7 +91,7 @@ function DeinflectedTerm({
           className={'ml-4 my-1'}
         />
       ))}
-    </>
+    </div>
   );
 }
 
@@ -101,7 +100,9 @@ export function Dictionary(props: {
   onCreateFlashcard: (definitions: Definition[]) => void;
 }) {
   return (
-    <div className="w-full flex absolute left-0 bottom-0 items-center flex-col">
+    <div
+      data-testid="dictionary"
+      className="w-full flex absolute left-0 bottom-0 items-center flex-col">
       <div className="h-60 min-w-[20rem] w-20 bg-surface rounded flex flex-col text-white text-base font-extralight overflow-auto">
         {props.definitions.map((entry, index) => (
           <DeinflectedTerm key={index} onCreateFlashcard={props.onCreateFlashcard} definitions={entry} />
