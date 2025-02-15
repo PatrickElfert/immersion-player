@@ -19,6 +19,7 @@ module.exports = {
     extend: {
       colors: {
         surface: '#202124',
+        card: '#27282B',
         primary: '#08CF65',
         secondary: '#FFD042',
       },

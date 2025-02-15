@@ -9,7 +9,7 @@ export function usePlayback(
   const [currentSubtitle, setCurrentSubtitle] = useState<Subtitle | null>(null);
 
   useEffect(() => {
-    const videoPlayer = videoPlayerRef.current;
+    const videoPlayer = videoPlayerRef?.current;
     if (videoPlayer) {
       const handleTimeUpdate = () => {
         const newSubtitle = getCurrentSubtitle(subtitles, videoPlayer.currentTime);

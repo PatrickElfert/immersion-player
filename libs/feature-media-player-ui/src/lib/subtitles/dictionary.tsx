@@ -103,7 +103,7 @@ export function Dictionary(props: {
     <div
       data-testid="dictionary"
       className="w-full flex absolute left-0 bottom-0 items-center flex-col">
-      <div className="h-60 min-w-[20rem] w-20 bg-surface rounded flex flex-col text-white text-base font-extralight overflow-auto">
+      <div className="h-60 min-w-[20rem] w-20 bg-surface rounded flex flex-col text-white text-base font-extralight overflow-y-scroll">
         {props.definitions.map((entry, index) => (
           <DeinflectedTerm key={index} onCreateFlashcard={props.onCreateFlashcard} definitions={entry} />
         ))}
