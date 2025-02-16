@@ -11,5 +11,5 @@ export default function useSubtitles(srtPath?: string) {
       enabled: !!srtPath,
     }
   )
-  return {subtitles: data, isLoading, error};
+  return {subtitles: data ?? [], isLoading, error};
 }

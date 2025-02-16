@@ -27,6 +27,7 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.11.2",
     "react-simple-toasts": "^6.0.1",
+    "react-tiny-popover": "^8.1.6",
     "simple-subtitle-parser": "^2.0.0",
     "srt-file-parser": "^1.0.0",
     "srt-parser-2": "^1.2.3",

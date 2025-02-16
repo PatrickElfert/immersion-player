@@ -1,8 +1,18 @@
-import { Subtitle } from '@immersion-player/shared-types';
-import { useState } from 'react';
-import { Dictionary } from './dictionary';
+import { Character, Definition, Subtitle } from '@immersion-player/shared-types';
+import { DictionaryOverlay } from './dictionary';
 import useFlashcards from '../hooks/useFlashcards';
 import { timecodeToSeconds } from '@immersion-player/shared-utils';
+
+function JapaneseText({ tokens, showFurigana }: { tokens: Character[], showFurigana: boolean }) {
+  return <ruby data-testid="word">
+    {tokens?.map((t) => (
+      <>
+        {t.original}
+        {showFurigana && t.furigana && <rt>{t.furigana}</rt>}
+      </>
+    ))}
+  </ruby>
+}
 
 export function Subtitles({
   currentSubtitle,
@@ -13,17 +23,19 @@ export function Subtitles({
   mediaPath: string;
   className?: string;
 }) {
-  const [visibleDictionaryIndex, setVisibleDictionaryIndex] = useState<null | number>(null);
   const { createFlashcard } = useFlashcards();
   const showFurigana = false;
 
-  const onMouseEnter = (index: number) => {
-    setVisibleDictionaryIndex(index);
+  const handleCreateFlashcard = (definitions: Definition[], subtitle: Subtitle) => {
+    createFlashcard({
+      sentenceFront: subtitle.text[0],
+      sentenceBack: subtitle.lookupResult.flatMap(l => l.token),
+      definitions,
+      startTime: timecodeToSeconds(subtitle.startTime),
+      endTime: timecodeToSeconds(subtitle.endTime),
+      filePath: mediaPath,
+    });
   };
-
-  function onMouseLeave() {
-    setVisibleDictionaryIndex(null);
-  }
 
   return (
     <div
@@ -32,35 +44,14 @@ export function Subtitles({
       {currentSubtitle && (
         <div className="bg-surface/[.9] flex flex-row text-white text-2xl p-2 rounded">
           {currentSubtitle.lookupResult.map((result, index) => (
-            <div
-              onMouseEnter={() => onMouseEnter(index)}
-              onMouseLeave={onMouseLeave}
-              className={'hover:text-primary relative'}
-              key={index}
-            >
-              {visibleDictionaryIndex === index && (
-                <Dictionary
-                  onCreateFlashcard={(definitions) =>
-                    createFlashcard({
-                      sentenceFront: currentSubtitle?.text[0],
-                      sentenceBack: currentSubtitle?.lookupResult.flatMap(l => l.token),
-                      definitions,
-                      startTime: timecodeToSeconds(currentSubtitle.startTime),
-                      endTime: timecodeToSeconds(currentSubtitle.endTime),
-                      filePath: mediaPath,
-                    })
-                  }
-                  definitions={result.definitions}
-                />
-              )}
-              <ruby data-testid="word">
-                {result.token?.map((t) => (
-                  <>
-                    {t.original}
-                    {showFurigana && t.furigana && <rt>{t.furigana}</rt>}
-                  </>
-                ))}
-              </ruby>
+            <div>
+              <DictionaryOverlay
+                key={index}
+                onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, currentSubtitle)}
+                definitions={result.definitions}
+              >
+                <JapaneseText showFurigana={showFurigana} tokens={result.token} />
+              </DictionaryOverlay>
             </div>
           ))}
         </div>

@@ -1,7 +1,8 @@
 import { cn } from '@immersion-player/shared-utils';
-import { Character, Definition } from '@immersion-player/shared-types';
-import { useState } from 'react';
+import { Definition } from '@immersion-player/shared-types';
+import { PropsWithChildren, useState } from 'react';
 import Flashcard from './flashcard.svg?react';
+import { ArrowContainer, Popover } from 'react-tiny-popover';
 
 function Definition({
   definition,
@@ -95,20 +96,40 @@ function DeinflectedTerm({
   );
 }
 
-export function Dictionary(props: {
+interface DictionaryProps {
   definitions: Definition[][];
   onCreateFlashcard: (definitions: Definition[]) => void;
-}) {
+}
+
+function Dictionary(props: DictionaryProps) {
   return (
     <div
       data-testid="dictionary"
-      className="w-full flex absolute left-0 bottom-0 items-center flex-col">
+      className="w-full flex items-center flex-col">
       <div className="h-60 min-w-[20rem] w-20 bg-surface rounded flex flex-col text-white text-base font-extralight overflow-y-scroll">
         {props.definitions.map((entry, index) => (
           <DeinflectedTerm key={index} onCreateFlashcard={props.onCreateFlashcard} definitions={entry} />
         ))}
       </div>
-      <div className="h-12 w-full bg-transparent"></div>
     </div>
   );
+}
+
+export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps>) {
+  const [isHoveringChildren, setIsHoveringChildren] = useState(false);
+  const [isHoveringDictionary, setIsHoveringDictionary] = useState(false);
+
+  const isOpen = isHoveringChildren || isHoveringDictionary;
+
+  return <Popover content={() =>
+    <div className='p-4 bg-transparent' onMouseEnter={() => setIsHoveringDictionary(true)} onMouseLeave={() => setIsHoveringDictionary(false)}>
+      <Dictionary onCreateFlashcard={props.onCreateFlashcard} definitions={props.definitions} />
+    </div>
+  } isOpen={isOpen}>
+    <div onMouseEnter={() => setIsHoveringChildren(true)}
+      onMouseLeave={() => setIsHoveringChildren(false)}
+      className={'hover:text-primary'}>
+      {props.children}
+    </div>
+  </Popover>
 }

@@ -42,7 +42,7 @@ test('It should display the correct subtitles', async () => {
   ])
 });
 
-test('It should the correct translations', async () => {
+test('It should display the correct translations', async () => {
   await playerPage.setPlaybackPosition(3);
   const definitions = await playerPage.getDefinitions('は');
   expect(definitions).toEqual([{

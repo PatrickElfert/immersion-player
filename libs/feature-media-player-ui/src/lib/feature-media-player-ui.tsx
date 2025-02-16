@@ -3,7 +3,7 @@ import { Subtitles } from './subtitles/subtitles';
 import { useRef } from 'react';
 import useSubtitles from './hooks/useSubtitles';
 import { useMedia } from './hooks/useMedia';
-import { Browser } from './browser/browser';
+import { Browser } from './subtitles/browser';
 import { usePlayback } from './hooks/usePlayback';
 
 export function FeatureMediaPlayerUi() {
