@@ -3,6 +3,7 @@ import useSubtitles from "../hooks/useSubtitles"
 import { usePlayback } from "../hooks/usePlayback";
 import { useEffect, useRef } from "react";
 import { cn } from "@immersion-player/shared-utils";
+import { SubtitleLine } from "./subtitles";
 
 const formatTime = (timecode: string) => {
     const [time] = timecode.split(',');
@@ -10,7 +11,7 @@ const formatTime = (timecode: string) => {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 };
 
-export function Browser({ currentSubtitle, subtitles }: { subtitles: Subtitle[], currentSubtitle: Subtitle | null }) {
+export function Browser({ currentSubtitle, subtitles, mediaPath }: { subtitles: Subtitle[], currentSubtitle: Subtitle | null, mediaPath: string }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const currentSubtitleIndex = currentSubtitle ? subtitles.indexOf(currentSubtitle) : null;
 
@@ -26,10 +27,8 @@ export function Browser({ currentSubtitle, subtitles }: { subtitles: Subtitle[],
 
     return (<div ref={containerRef} className="rounded bg-card text-white overflow-y-scroll">
         {subtitles.map((subtitle, index) => {
-            return (<div key={index} className={cn('p-2 border-l-primary rounded', {'border-l-4': currentSubtitleIndex === index})}>
-                <div>
-                    {subtitle.text}
-                </div>
+            return (<div key={index} className={cn('p-2 border-l-primary rounded', { 'border-l-4': currentSubtitleIndex === index })}>
+                <SubtitleLine currentSubtitle={subtitle} mediaPath={mediaPath} />
                 <small className="opacity-50">
                     {formatTime(subtitle.startTime)} - {formatTime(subtitle.endTime)}
                 </small>

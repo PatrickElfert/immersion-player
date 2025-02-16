@@ -122,7 +122,7 @@ export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps>) {
   const isOpen = isHoveringChildren || isHoveringDictionary;
 
   return <Popover content={() =>
-    <div className='p-4 bg-transparent' onMouseEnter={() => setIsHoveringDictionary(true)} onMouseLeave={() => setIsHoveringDictionary(false)}>
+    <div className='p-2 bg-transparent' onMouseEnter={() => setIsHoveringDictionary(true)} onMouseLeave={() => setIsHoveringDictionary(false)}>
       <Dictionary onCreateFlashcard={props.onCreateFlashcard} definitions={props.definitions} />
     </div>
   } isOpen={isOpen}>

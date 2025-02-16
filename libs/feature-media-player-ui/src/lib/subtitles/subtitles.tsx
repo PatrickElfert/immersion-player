@@ -1,10 +1,10 @@
 import { Character, Definition, Subtitle } from '@immersion-player/shared-types';
 import { DictionaryOverlay } from './dictionary';
 import useFlashcards from '../hooks/useFlashcards';
-import { timecodeToSeconds } from '@immersion-player/shared-utils';
+import { cn, timecodeToSeconds } from '@immersion-player/shared-utils';
 
 function JapaneseText({ tokens, showFurigana }: { tokens: Character[], showFurigana: boolean }) {
-  return <ruby data-testid="word">
+  return <ruby data-testid="word" className='whitespace-nowrap'>
     {tokens?.map((t) => (
       <>
         {t.original}
@@ -14,14 +14,16 @@ function JapaneseText({ tokens, showFurigana }: { tokens: Character[], showFurig
   </ruby>
 }
 
-export function Subtitles({
+export function SubtitleLine({
   currentSubtitle,
   mediaPath,
-  className,
+  containerClassName,
+  subtitleClassName
 }: {
   currentSubtitle: Subtitle | null;
   mediaPath: string;
-  className?: string;
+  containerClassName?: string;
+  subtitleClassName?: string;
 }) {
   const { createFlashcard } = useFlashcards();
   const showFurigana = false;
@@ -40,22 +42,25 @@ export function Subtitles({
   return (
     <div
       data-testid="subtitles"
-      className={className}>
+      className={containerClassName}>
       {currentSubtitle && (
-        <div className="bg-surface/[.9] flex flex-row text-white text-2xl p-2 rounded">
-          {currentSubtitle.lookupResult.map((result, index) => (
-            <div>
-              <DictionaryOverlay
-                key={index}
-                onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, currentSubtitle)}
-                definitions={result.definitions}
-              >
-                <JapaneseText showFurigana={showFurigana} tokens={result.token} />
-              </DictionaryOverlay>
-            </div>
-          ))}
+        <div className={cn("flex flex-row flex-wrap text-white", subtitleClassName)} >
+          {
+            currentSubtitle.lookupResult.map((result, index) => (
+              <div className="inline-block">
+                <DictionaryOverlay
+                  key={index}
+                  onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, currentSubtitle)}
+                  definitions={result.definitions}
+                >
+                  <JapaneseText showFurigana={showFurigana} tokens={result.token} />
+                </DictionaryOverlay>
+              </div>
+            ))
+          }
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }

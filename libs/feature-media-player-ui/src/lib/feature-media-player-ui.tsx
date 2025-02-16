@@ -1,5 +1,5 @@
 /* eslint-disable-next-line */
-import { Subtitles } from './subtitles/subtitles';
+import { SubtitleLine } from './subtitles/subtitles';
 import { useRef } from 'react';
 import useSubtitles from './hooks/useSubtitles';
 import { useMedia } from './hooks/useMedia';
@@ -31,8 +31,9 @@ export function FeatureMediaPlayerUi() {
         {isLoading && <div className="absolute text-white bottom-[15%] right-1/2">Loading...</div>}
 
         {!isLoading && (
-          <Subtitles
-            className="absolute bottom-[15%] w-full flex justify-center"
+          <SubtitleLine
+            containerClassName="absolute bottom-[15%] w-full flex justify-center"
+            subtitleClassName='bg-surface/[.9] text-2xl rounded p-2'
             mediaPath={media.path}
             currentSubtitle={currentSubtitle}
           />
@@ -40,6 +41,7 @@ export function FeatureMediaPlayerUi() {
       </div>
       {!isLoading && (
         <Browser
+          mediaPath={media.path}
           subtitles={subtitles}
           currentSubtitle={currentSubtitle}
         />
