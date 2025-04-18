@@ -1,7 +1,7 @@
 /// <reference types="jest" />
 import { getDeinflections } from './deinflect';
 
-type DeinflectionTest = {
+export type DeinflectionTest = {
   input: string;
   output: string[];
   description: string;

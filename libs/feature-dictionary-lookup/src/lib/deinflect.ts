@@ -19,7 +19,10 @@ type Types =
   | 'ADJECTIVE_BASE'
   | 'ADJECTIVE_PAST'
   | 'ADJECTIVE_NEGATIVE'
-  | 'ADJECTIVE_PAST_NEGATIVE';
+  | 'ADJECTIVE_PAST_NEGATIVE'
+  | 'ADVERB'
+  | 'VERB_PROGRESSIVE'
+  | 'VERB_POTENTIAL';
 
 export type Rule = {
   applyTo: Types[];

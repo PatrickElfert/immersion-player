@@ -1,5 +1,4 @@
-import { DeinflectionTest } from '../../deinflection.spec';
-import { runTests } from '../../deinflect-test';
+import { DeinflectionTest, runTests } from '../../deinflect-test';
 
 const tests: DeinflectionTest[] = [
   {
@@ -479,8 +478,79 @@ const tests: DeinflectionTest[] = [
     output: ['くる'],
     description: 'volitional くる',
   },
+  {
+    input: '読んでいる',
+    output: ['読む'],
+    description: 'progressive でいる',
+  },
+  {
+    input: '話している',
+    output: ['話す'],
+    description: 'progressive ている'
+  },
+  {
+    input: '食べられる',
+    output: ['食べる'],
+    description: 'potential ichidan',
+  },
+  {
+    input: '話せる',
+    output: ['話す'],
+    description: 'potential す',
+  },
+  {
+    input: '書ける',
+    output: ['書く'],
+    description: 'potential く',
+  },
+  {
+    input: '泳げる',
+    output: ['泳ぐ'],
+    description: 'potential ぐ',
+  },
+  {
+    input: '遊べる',
+    output: ['遊ぶ'],
+    description: 'potential ぶ',
+  },
+  {
+    input: '待てる',
+    output: ['待つ'],
+    description: 'potential つ',
+  },
+  {
+    input: '飲める',
+    output: ['飲む'],
+    description: 'potential む',
+  },
+  {
+    input: '死ねる',
+    output: ['死ぬ'],
+    description: 'potential ぬ',
+  },
+  {
+    input: '買える',
+    output: ['買う'],
+    description: 'potential う',
+  },
+  {
+    input: '取れる',
+    output: ['取る'],
+    description: 'potential る',
+  },
+  //Todo: Fix this
+  {
+    input: 'できる',
+    output: ['する'],
+    description: 'potential する',
+  },
+  {
+    input: 'こられる',
+    output: ['くる'],
+    description: 'potential くる',
+  }
 ];
 
-describe('Deinflection of godan verbs', () => {
+describe('Deinflection verbs', () => {
   runTests(tests);
 });

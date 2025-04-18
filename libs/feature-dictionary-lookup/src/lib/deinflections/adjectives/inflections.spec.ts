@@ -1,5 +1,4 @@
-import {DeinflectionTest} from "../../deinflection.spec";
-import {runTests} from "../../deinflect-test";
+import {DeinflectionTest, runTests} from "../../deinflect-test";
 
 const tests: DeinflectionTest[] = [
   {
@@ -32,6 +31,11 @@ const tests: DeinflectionTest[] = [
     output: ["いく"],
     description: "desire past negative",
   },
+  {
+    input: "早く",
+    output: ["早い"],
+    description: "adverb",
+  }
 ]
 
 describe('Deinflection of い adjectives', () => {

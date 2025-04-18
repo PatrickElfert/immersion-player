@@ -2,6 +2,7 @@ import { Rule, Ruleset } from '../../deinflect';
 
 const U_VERB_ENDINGS = ['す', 'く', 'ぐ', 'ぶ', 'つ', 'む', 'う', 'る', 'ぬ'];
 const A_VERB_ENDINGS = ['さ', 'か', 'が', 'ば', 'た', 'ま', 'わ', 'ら', 'な'];
+const E_VERB_ENDINGS = ['せ', 'け', 'げ', 'べ', 'て', 'め', 'え', 'れ', 'ね'];
 const O_VERB_ENDINGS = ['そ', 'こ', 'ご', 'ぼ', 'と', 'も', 'お', 'ろ', 'の'];
 const TE_ENDINGS = ['して', 'いて', 'いで', 'んで', 'って', 'んで', 'って', 'って', 'んで'];
 const STEM_ENDINGS = ['し', 'き', 'ぎ', 'び', 'ち', 'み', 'い', 'り', 'に'];
@@ -153,6 +154,39 @@ export const politeVolitional: Ruleset = {
   ],
 };
 
+export const progressive: Ruleset = {
+  description: '',
+  produces: ['VERB_TE_FORM'],
+  rules: [{ replace: 'ている', with: 'て', applyTo: ['VERB_PROGRESSIVE'] },
+  { replace: 'でいる', with: 'で', applyTo: ['VERB_PROGRESSIVE'] }],
+}
+
+export const godanPotential_u_ending: Rule[] = E_VERB_ENDINGS.map((e_verbEnding, i) => ({
+  replace: `${e_verbEnding}る`,
+  with: U_VERB_ENDINGS[i],
+  applyTo: ['VERB_POTENTIAL'],
+}));
+
+export const godanPotential_a_ending: Rule[] = STEM_ENDINGS.map((e_verbEnding, i) => ({
+  replace: `${e_verbEnding}る`,
+  with: A_VERB_ENDINGS[i],
+  applyTo: ['VERB_POTENTIAL'],
+}));
+
+export const potential: Ruleset = {
+  description: '',
+  produces: ['VERB_BASE'],
+  rules: [
+    ...godanPotential_a_ending,
+    ...godanPotential_u_ending,
+    { replace: 'られる', with: 'る', applyTo: ['VERB_POTENTIAL'] },
+    { replace: 'れる', with: 'る', applyTo: ['VERB_POTENTIAL'] },
+    { replace: 'こられる', with: 'くる', applyTo: ['VERB_POTENTIAL'] },
+    { replace: 'でくる', with: 'する', applyTo: ['VERB_POTENTIAL'] },
+  ],
+
+}
+
 export const rulesets = [
   pastNegative,
   past,
@@ -164,4 +198,6 @@ export const rulesets = [
   politeVolitional,
   politePast,
   politePastNegative,
+  progressive,
+  potential,
 ];

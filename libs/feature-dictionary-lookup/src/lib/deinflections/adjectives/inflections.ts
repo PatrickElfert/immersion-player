@@ -53,5 +53,17 @@ export const desire: Ruleset = {
   ],
 };
 
-export const rulesets = [pastNegative, past, negative, desire];
+export const adverb: Ruleset = {
+  description: '',
+  produces: ['ADJECTIVE_BASE'],
+  rules: [
+    {
+      replace: 'く',
+      with: 'い',
+      applyTo: ['ADVERB'],
+    },
+  ],
+};
+
+export const rulesets = [pastNegative, past, negative, desire, adverb];
 
