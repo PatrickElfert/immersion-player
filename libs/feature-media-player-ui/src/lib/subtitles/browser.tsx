@@ -1,9 +1,7 @@
-import { Subtitle } from "@immersion-player/shared-types"
-import useSubtitles from "../hooks/useSubtitles"
-import { usePlayback } from "../hooks/usePlayback";
 import { useEffect, useRef } from "react";
 import { cn } from "@immersion-player/shared-utils";
 import { SubtitleLine } from "./subtitles";
+import { useCurrentSubtitleIndex, usePlaybackStore } from "../hooks/playback";
 
 const formatTime = (timecode: string) => {
     const [time] = timecode.split(',');
@@ -11,9 +9,10 @@ const formatTime = (timecode: string) => {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 };
 
-export function Browser({ currentSubtitle, subtitles, mediaPath }: { subtitles: Subtitle[], currentSubtitle: Subtitle | null, mediaPath: string }) {
+export function Browser() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const currentSubtitleIndex = currentSubtitle ? subtitles.indexOf(currentSubtitle) : null;
+    const currentSubtitleIndex = useCurrentSubtitleIndex();
+    const subtitles = usePlaybackStore((state) => state.subtitles);
 
     useEffect(() => {
         if (currentSubtitleIndex && containerRef.current) {
@@ -23,12 +22,12 @@ export function Browser({ currentSubtitle, subtitles, mediaPath }: { subtitles: 
                 activeSubtitleElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
-    }, [currentSubtitle, subtitles]);
+    }, [currentSubtitleIndex, subtitles]);
 
     return (<div ref={containerRef} className="rounded bg-card text-white overflow-y-scroll">
         {subtitles.map((subtitle, index) => {
             return (<div key={index} className={cn('p-2 border-l-primary rounded', { 'border-l-4': currentSubtitleIndex === index })}>
-                <SubtitleLine currentSubtitle={subtitle} mediaPath={mediaPath} />
+                <SubtitleLine subtitle={subtitle} />
                 <small className="opacity-50">
                     {formatTime(subtitle.startTime)} - {formatTime(subtitle.endTime)}
                 </small>

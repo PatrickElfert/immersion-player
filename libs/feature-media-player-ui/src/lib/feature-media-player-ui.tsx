@@ -1,20 +1,24 @@
 /* eslint-disable-next-line */
 import { SubtitleLine } from './subtitles/subtitles';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import useSubtitles from './hooks/useSubtitles';
-import { useMedia } from './hooks/useMedia';
+import { useLibraryItem } from './hooks/useMedia';
 import { Browser } from './subtitles/browser';
-import { usePlayback } from './hooks/usePlayback';
+import { useCurrentSubtitle, usePlaybackStore, useSyncTimestamp } from './hooks/playback';
+import { useSyncPlaybackData } from './hooks/useSyncPlaybackData';
 
 export function FeatureMediaPlayerUi() {
-  const media = useMedia();
-  const japaneseLanguage = media?.language.find((l) => l.languageCode === 'ja');
+  const libraryItem = useLibraryItem();
+  const japaneseLanguage = libraryItem?.language.find((l) => l.languageCode === 'ja');
   const { subtitles, isLoading } = useSubtitles(japaneseLanguage?.path);
+  const currentSubtitle = useCurrentSubtitle();
+
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const {currentSubtitle} = usePlayback(videoRef, subtitles ?? [])
+  useSyncPlaybackData(subtitles, libraryItem?.path)
+  useSyncTimestamp(videoRef)
 
 
-  if (!media) {
+  if (!libraryItem) {
     return null;
   }
 
@@ -26,28 +30,24 @@ export function FeatureMediaPlayerUi() {
           controls
           style={{ width: "100%", height: "auto" }}
           controlsList={'nofullscreen'}
-          src={media.path}
+          src={libraryItem.path}
         ></video>
         {isLoading && <div className="absolute text-white bottom-[15%] right-1/2">Loading...</div>}
 
-        {!isLoading && (
+        {!isLoading && currentSubtitle && (
           <SubtitleLine
+            subtitle={ currentSubtitle }
             containerClassName="absolute bottom-[15%] w-full flex justify-center"
             subtitleClassName='bg-surface/[.9] text-2xl rounded p-2'
-            mediaPath={media.path}
-            currentSubtitle={currentSubtitle}
           />
         )}
       </div>
       {!isLoading && (
-        <Browser
-          mediaPath={media.path}
-          subtitles={subtitles}
-          currentSubtitle={currentSubtitle}
-        />
+        <Browser />
       )}
     </div>
   );
 }
 
 export default FeatureMediaPlayerUi;
+

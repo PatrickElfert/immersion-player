@@ -38,7 +38,8 @@
     "typeface-inter": "^3.18.1",
     "uuid": "^11.0.3",
     "wanakana": "^5.3.1",
-    "yanki-connect": "^2.1.9"
+    "yanki-connect": "^2.1.9",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.14.5",
