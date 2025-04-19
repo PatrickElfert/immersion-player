@@ -2,7 +2,9 @@ import { Character, Definition, Subtitle } from '@immersion-player/shared-types'
 import { DictionaryOverlay } from './dictionary';
 import useFlashcards from '../hooks/useFlashcards';
 import { cn, timecodeToSeconds } from '@immersion-player/shared-utils';
-import { usePlaybackStore } from '../hooks/playback';
+import { usePlaybackStore } from '../state/playback.store';
+import useSubtitles from '../hooks/useSubtitles';
+import { useCurrentSubtitle } from '../hooks/useCurrentSubtitle';
 
 function JapaneseText({ tokens, showFurigana }: { tokens: Character[], showFurigana: boolean }) {
   return <ruby data-testid="word" className='whitespace-nowrap'>
@@ -16,26 +18,28 @@ function JapaneseText({ tokens, showFurigana }: { tokens: Character[], showFurig
 }
 
 export function SubtitleLine({
-  subtitle,
   containerClassName,
-  subtitleClassName
+  subtitleClassName,
+  subtitle,
+  disableDictionary,
 }: {
-  subtitle: Subtitle;
+  subtitle: Subtitle | null 
   containerClassName?: string;
   subtitleClassName?: string;
+  disableDictionary?: boolean;
 }) {
   const { createFlashcard } = useFlashcards();
-  const filePath = usePlaybackStore((state) => state.filePath)
+  const { path } = useSubtitles();
   const showFurigana = false;
 
-  const handleCreateFlashcard = (definitions: Definition[], subtitle: Subtitle) => {
+  const handleCreateFlashcard = (definitions: Definition[], subtitle: Subtitle, path: string) => {
     createFlashcard({
       sentenceFront: subtitle.text[0],
       sentenceBack: subtitle.lookupResult.flatMap(l => l.token),
       definitions,
       startTime: timecodeToSeconds(subtitle.startTime),
       endTime: timecodeToSeconds(subtitle.endTime),
-      filePath,
+      filePath: path,
     });
   };
 
@@ -49,8 +53,9 @@ export function SubtitleLine({
             subtitle.lookupResult.map((result, index) => (
               <div className="inline-block">
                 <DictionaryOverlay
+                  enabled={!disableDictionary}
                   key={index}
-                  onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, subtitle)}
+                  onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, subtitle, path!)}
                   definitions={result.definitions}
                 >
                   <JapaneseText showFurigana={showFurigana} tokens={result.token} />

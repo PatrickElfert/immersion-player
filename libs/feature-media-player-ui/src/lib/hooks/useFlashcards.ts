@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { CreateFlashcardDto } from '@immersion-player/shared-types';
 import toast, { Toast } from 'react-simple-toasts';
 

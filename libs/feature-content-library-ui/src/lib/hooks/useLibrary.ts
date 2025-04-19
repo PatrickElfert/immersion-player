@@ -1,20 +1,15 @@
-import {useQuery} from "react-query";
-import {LibraryItem} from "@immersion-player/shared-types";
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { LibraryItem } from "@immersion-player/shared-types";
 
 export function useLibrary(searchTerm?: string) {
-  const {data, error, isLoading} = useQuery<LibraryItem[]>(
-    ['library'],
+  const { data } = useSuspenseQuery<LibraryItem[]>({
+    queryKey: ['library'],
     // @ts-expect-error window.electron is not typed
-      () => window.api
-      .getLibrary('ImmersionPlayer'),
-    {
-      staleTime: 1000 * 60 * 5,
-      cacheTime: 1000 * 60 * 30
-    }
+    queryFn: () => window.api.getLibrary('ImmersionPlayer'),
+    staleTime: 1000 * 60 * 5,
+  }
   )
 
+  return data.filter(l => searchTerm ? l.name.includes(searchTerm) : true);
 
-  const library = data?.filter(l => searchTerm ?  l.name.includes(searchTerm): true);
-
-  return library ?? [];
 }

@@ -115,11 +115,11 @@ function Dictionary(props: DictionaryProps) {
   );
 }
 
-export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps>) {
+export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps & {enabled: boolean}>) {
   const [isHoveringChildren, setIsHoveringChildren] = useState(false);
   const [isHoveringDictionary, setIsHoveringDictionary] = useState(false);
 
-  const isOpen = isHoveringChildren || isHoveringDictionary;
+  const isOpen = (isHoveringChildren || isHoveringDictionary) && props.enabled;
 
   return <Popover content={() =>
     <div className='p-2 bg-transparent' onMouseEnter={() => setIsHoveringDictionary(true)} onMouseLeave={() => setIsHoveringDictionary(false)}>

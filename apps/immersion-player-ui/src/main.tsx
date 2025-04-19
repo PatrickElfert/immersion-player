@@ -4,11 +4,11 @@ import App from './app/app';
 import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { FeatureContentLibrary } from '@immersion-player/feature-content-library-ui';
 import { FeatureMediaPlayerUi } from '@immersion-player/feature-media-player-ui';
-import {QueryClient, QueryClientProvider} from 'react-query';
-import {persistQueryClient} from "react-query/persistQueryClient-experimental";
-import {createWebStoragePersistor} from "react-query/createWebStoragePersistor-experimental";
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import { persistQueryClient } from '@tanstack/react-query-persist-client'
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { toastConfig } from 'react-simple-toasts';
-import toast, { Themes } from 'react-simple-toasts';
+import { Themes } from 'react-simple-toasts';
 import 'node_modules/react-simple-toasts/dist/style.css';
 import 'node_modules/react-simple-toasts/dist/theme/moonlight.css'
 import 'node_modules/react-simple-toasts/dist/theme/success.css'
@@ -45,11 +45,13 @@ const queryClient = new QueryClient({
   }
 });
 
-const localStoragePersistor = createWebStoragePersistor({storage: window.localStorage})
+const localStoragePersister = createSyncStoragePersister({
+  storage: window.localStorage,
+})
 
 persistQueryClient({
   queryClient,
-  persistor: localStoragePersistor,
+  persister: localStoragePersister,
 })
 
 const root = ReactDOM.createRoot(

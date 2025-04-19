@@ -1,20 +1,18 @@
 /* eslint-disable-next-line */
 import { SubtitleLine } from './subtitles/subtitles';
-import { useEffect, useRef } from 'react';
+import { Suspense, useRef } from 'react';
 import useSubtitles from './hooks/useSubtitles';
 import { useLibraryItem } from './hooks/useMedia';
 import { Browser } from './subtitles/browser';
-import { useCurrentSubtitle, usePlaybackStore, useSyncTimestamp } from './hooks/playback';
-import { useSyncPlaybackData } from './hooks/useSyncPlaybackData';
+import { useSyncTimestamp } from './hooks/useSyncTimestamp';
+import { useCurrentSubtitle } from './hooks/useCurrentSubtitle';
 
 export function FeatureMediaPlayerUi() {
   const libraryItem = useLibraryItem();
-  const japaneseLanguage = libraryItem?.language.find((l) => l.languageCode === 'ja');
-  const { subtitles, isLoading } = useSubtitles(japaneseLanguage?.path);
+  const { isLoading } = useSubtitles();
   const currentSubtitle = useCurrentSubtitle();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  useSyncPlaybackData(subtitles, libraryItem?.path)
   useSyncTimestamp(videoRef)
 
 
@@ -32,21 +30,26 @@ export function FeatureMediaPlayerUi() {
           controlsList={'nofullscreen'}
           src={libraryItem.path}
         ></video>
-        {isLoading && <div className="absolute text-white bottom-[15%] right-1/2">Loading...</div>}
-
-        {!isLoading && currentSubtitle && (
-          <SubtitleLine
-            subtitle={ currentSubtitle }
-            containerClassName="absolute bottom-[15%] w-full flex justify-center"
-            subtitleClassName='bg-surface/[.9] text-2xl rounded p-2'
-          />
-        )}
+        <Suspense fallback={<div className="absolute text-white bottom-[15%] right-1/2">Loading...</div>}>
+          <CurrentSubtitle/>
+        </Suspense>
       </div>
       {!isLoading && (
         <Browser />
       )}
     </div>
   );
+}
+
+export function CurrentSubtitle() {
+  const currentSubtitle = useCurrentSubtitle(); 
+  return (
+    <SubtitleLine
+      subtitle={currentSubtitle}
+      containerClassName="absolute bottom-[15%] w-full flex justify-center"
+      subtitleClassName='bg-surface/[.9] text-2xl rounded p-2'
+    />
+  )
 }
 
 export default FeatureMediaPlayerUi;
