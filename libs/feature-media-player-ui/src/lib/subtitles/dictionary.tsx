@@ -106,7 +106,7 @@ function Dictionary(props: DictionaryProps) {
     <div
       data-testid="dictionary"
       className="w-full flex items-center flex-col">
-      <div className="h-60 min-w-[20rem] w-20 bg-surface rounded flex flex-col text-white text-base font-extralight overflow-y-scroll">
+      <div className="h-60 min-w-[20rem] w-20 bg-overlay rounded flex flex-col text-white text-base font-extralight overflow-y-scroll">
         {props.definitions.map((entry, index) => (
           <DeinflectedTerm key={index} onCreateFlashcard={props.onCreateFlashcard} definitions={entry} />
         ))}
