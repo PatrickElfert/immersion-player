@@ -10,7 +10,6 @@ import { useCurrentSubtitle } from './hooks/useCurrentSubtitle';
 export function FeatureMediaPlayerUi() {
   const libraryItem = useLibraryItem();
   const { isLoading } = useSubtitles();
-  const currentSubtitle = useCurrentSubtitle();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   useSyncTimestamp(videoRef)

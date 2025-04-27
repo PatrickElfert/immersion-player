@@ -12,6 +12,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
+    "@radix-ui/react-icons": "^1.3.2",
     "@scriptin/jmdict-simplified-types": "^3.6.1",
     "@tanstack/query-sync-storage-persister": "^5.74.4",
     "@tanstack/react-query": "^5.74.4",
@@ -27,6 +28,7 @@
     "i": "^0.3.7",
     "kuromojin": "^3.0.0",
     "npm": "^11.3.0",
+    "radix-ui": "^1.3.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "^6.11.2",

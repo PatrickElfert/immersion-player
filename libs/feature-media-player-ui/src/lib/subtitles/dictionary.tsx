@@ -2,7 +2,7 @@ import { cn } from '@immersion-player/shared-utils';
 import { Definition } from '@immersion-player/shared-types';
 import { PropsWithChildren, useState } from 'react';
 import Flashcard from './flashcard.svg?react';
-import { ArrowContainer, Popover } from 'react-tiny-popover';
+import { Popover } from "radix-ui";
 
 function Definition({
   definition,
@@ -115,21 +115,23 @@ function Dictionary(props: DictionaryProps) {
   );
 }
 
-export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps & {enabled: boolean}>) {
+export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps & { enabled: boolean }>) {
   const [isHoveringChildren, setIsHoveringChildren] = useState(false);
   const [isHoveringDictionary, setIsHoveringDictionary] = useState(false);
 
   const isOpen = (isHoveringChildren || isHoveringDictionary) && props.enabled;
 
-  return <Popover content={() =>
-    <div className='p-2 bg-transparent' onMouseEnter={() => setIsHoveringDictionary(true)} onMouseLeave={() => setIsHoveringDictionary(false)}>
-      <Dictionary onCreateFlashcard={props.onCreateFlashcard} definitions={props.definitions} />
-    </div>
-  } isOpen={isOpen}>
-    <div onMouseEnter={() => setIsHoveringChildren(true)}
-      onMouseLeave={() => setIsHoveringChildren(false)}
-      className={'hover:text-primary'}>
-      {props.children}
-    </div>
-  </Popover>
+  return <Popover.Root open={isOpen}>
+    <Popover.Anchor>
+      <div className={'hover:text-primary'} onMouseLeave={() => setIsHoveringChildren(false)} onMouseEnter={() => setIsHoveringChildren(true)}> {props.children}
+      </div>
+    </Popover.Anchor>
+    <Popover.Portal>
+      <Popover.Content>
+        <div onMouseEnter={() => setIsHoveringDictionary(true)} onMouseLeave={() => setIsHoveringDictionary(false)}>
+          <Dictionary onCreateFlashcard={props.onCreateFlashcard} definitions={props.definitions} />
+        </div>
+      </Popover.Content>
+    </Popover.Portal>
+  </Popover.Root>
 }
