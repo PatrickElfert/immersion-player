@@ -1,1 +1,1 @@
-export * from './lib/feature-media-player-ui';
+export * from './lib/feature-media-player-ui.js';

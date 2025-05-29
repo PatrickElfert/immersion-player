@@ -1,10 +1,8 @@
 import { Character, Definition, Subtitle } from '@immersion-player/shared-types';
-import { DictionaryOverlay } from './dictionary';
-import useFlashcards from '../hooks/useFlashcards';
+import { DictionaryOverlay } from './dictionary.js';
+import useFlashcards from '../hooks/useFlashcards.js';
 import { cn, timecodeToSeconds } from '@immersion-player/shared-utils';
-import { usePlaybackStore } from '../state/playback.store';
-import useSubtitles from '../hooks/useSubtitles';
-import { useCurrentSubtitle } from '../hooks/useCurrentSubtitle';
+import useSubtitles from '../hooks/useSubtitles.js';
 
 function JapaneseText({ tokens, showFurigana }: { tokens: Character[], showFurigana: boolean }) {
   return <ruby data-testid="word" className='whitespace-nowrap'>

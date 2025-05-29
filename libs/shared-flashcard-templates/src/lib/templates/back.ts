@@ -1,4 +1,4 @@
-import { parseTextWithFurigana } from './utils/utils';
+import { parseTextWithFurigana } from './utils/utils.js';
 
 export const backTemplate = `
  <div data-testid="backTemplate" style="display: flex; flex-direction: column; align-items: center">

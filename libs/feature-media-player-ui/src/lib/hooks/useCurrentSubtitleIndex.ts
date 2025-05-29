@@ -1,5 +1,5 @@
-import { useCurrentSubtitle } from "./useCurrentSubtitle";
-import useSubtitles from "./useSubtitles";
+import { useCurrentSubtitle } from "./useCurrentSubtitle.js";
+import useSubtitles from "./useSubtitles.js";
 
 export const useCurrentSubtitleIndex = () => {
   const { subtitles } = useSubtitles();

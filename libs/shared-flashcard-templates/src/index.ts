@@ -1,2 +1,2 @@
-export * from './lib/templates/front';
-export * from './lib/templates/back';
+export * from './lib/templates/front.js';
+export * from './lib/templates/back.js';

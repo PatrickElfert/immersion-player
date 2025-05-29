@@ -1,4 +1,4 @@
-import { Rule, Ruleset } from '../../deinflect';
+import { Rule, Ruleset } from '../../deinflect.js';
 
 const U_VERB_ENDINGS = ['す', 'く', 'ぐ', 'ぶ', 'つ', 'む', 'う', 'る', 'ぬ'];
 const A_VERB_ENDINGS = ['さ', 'か', 'が', 'ば', 'た', 'ま', 'わ', 'ら', 'な'];

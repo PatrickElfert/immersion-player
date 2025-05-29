@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { cn, useIsScrolling } from "@immersion-player/shared-utils";
-import { SubtitleLine } from "./subtitles";
-import useSubtitles from "../hooks/useSubtitles";
-import { useCurrentSubtitleIndex } from "../hooks/useCurrentSubtitleIndex";
+import { SubtitleLine } from "./subtitles.js";
+import useSubtitles from "../hooks/useSubtitles.js";
+import { useCurrentSubtitleIndex } from "../hooks/useCurrentSubtitleIndex.js";
 
 const formatTime = (timecode: string) => {
     const [time] = timecode.split(',');

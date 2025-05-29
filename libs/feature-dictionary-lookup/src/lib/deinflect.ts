@@ -1,5 +1,5 @@
-import { rulesets as verbRulesets } from './deinflections/verbs/inflections';
-import { rulesets as adjectiveRuleset } from './deinflections/adjectives/inflections';
+import { rulesets as verbRulesets } from './deinflections/verbs/inflections.js';
+import { rulesets as adjectiveRuleset } from './deinflections/adjectives/inflections.js';
 
 type Types =
   | 'NEW'
@@ -62,7 +62,7 @@ function deinflect(target: DeinflectionTarget) {
       if (target.term.endsWith(rule.replace) && (target.type === 'UNKNOWN' || rule.applyTo.includes(target.type))) {
         const newTerm = target.term.slice(0, -rule.replace.length) + rule.with;
 
-        const deinflections = ruleset.produces.map((newType) => ({
+        const deinflections = ruleset.produces.map((newType: any) => ({
           term: newTerm,
           type: newType,
           appliedRules: [...target.appliedRules, rule],

@@ -1,5 +1,5 @@
+import React from "react";
+
 export function NoteType() {
-    return <div className="bg-card w-full">
-        
-    </div>
+    return <div className="bg-card w-full"></div>
 }

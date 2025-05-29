@@ -1,2 +1,2 @@
-export * from './lib/feature-content-library';
-export * from './lib/hooks/useLibrary';
+export * from './lib/feature-content-library.js';
+export * from './lib/hooks/useLibrary.js';

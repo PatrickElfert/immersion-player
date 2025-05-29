@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { Parser } from './parser';
+import { Parser } from './parser.js';
 import { join } from "path";
 import { Subtitle } from '@immersion-player/shared-types';
 import { app } from 'electron';

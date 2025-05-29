@@ -1,12 +1,13 @@
 import { app, shell, BrowserWindow, ipcMain, protocol } from 'electron';
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import { rendererAppName } from './constants';
+import { rendererAppName } from './constants.js';
 import { loadLibrary } from '@immersion-player/feature-content-provider';
 import { parseSrt } from '@immersion-player/feature-dictionary-lookup';
 import * as path from 'path';
 import { CreateFlashcardDto } from '@immersion-player/shared-types';
 import { createFlashcard } from '@immersion-player/feature-flashcard-creation';
+import { selectMediaFolder } from '@immersion-player/feature-settings';
 import ffmpegPath from 'ffmpeg-static';
 import { path as ffprobePath } from 'ffprobe-static';
 import ffmpeg from 'fluent-ffmpeg';
@@ -83,8 +84,6 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
   ipcMain.handle('get-library', async (event, folderPath: string) => {
     return loadLibrary(folderPath);
   });
@@ -96,6 +95,8 @@ app.whenReady().then(() => {
   ipcMain.handle('create-flashcard', async (event, flashcard: CreateFlashcardDto) => {
     return createFlashcard(flashcard);
   });
+
+  ipcMain.handle('select-media-folder', async (event) => selectMediaFolder());
 
   createWindow()
 

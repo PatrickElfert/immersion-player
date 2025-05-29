@@ -1,1 +1,1 @@
-export * from './lib/feature-flashcard-creation';
+export * from './lib/feature-flashcard-creation.js';

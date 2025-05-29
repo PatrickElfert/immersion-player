@@ -1,4 +1,4 @@
-import { LookupResult } from './lookup-result';
+import { LookupResult } from './lookup-result.js';
 
 export interface Subtitle {
   index: number

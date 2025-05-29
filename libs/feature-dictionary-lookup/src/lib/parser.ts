@@ -1,6 +1,6 @@
 import { KuromojiToken, tokenize } from 'kuromojin';
-import { getDeinflections } from './deinflect';
-import { JmDictionary } from './dictionaries/JmDict';
+import { getDeinflections } from './deinflect.js';
+import { JmDictionary } from './dictionaries/JmDict.js';
 import { Character, Definition, LookupResult } from '@immersion-player/shared-types';
 import { isHiragana, toHiragana } from 'wanakana';
 

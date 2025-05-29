@@ -1,4 +1,4 @@
-import { Rule, Ruleset } from '../../deinflect';
+import { Rule, Ruleset } from '../../deinflect.js';
 
 export const negative: Ruleset = {
   description: '',

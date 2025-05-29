@@ -1,10 +1,10 @@
 /* eslint-disable-next-line */
 
-import SearchField from './search-field';
+import SearchField from './search-field.js';
 import { cn } from '@immersion-player/shared-utils';
 import {useState} from "react";
 import {Link} from "react-router-dom";
-import {useLibrary} from "./hooks/useLibrary";
+import {useLibrary} from "./hooks/useLibrary.js";
 
 function MediaCard({ name, thumbnail }: { name: string; thumbnail: string }) {
   return (

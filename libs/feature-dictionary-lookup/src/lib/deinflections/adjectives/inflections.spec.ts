@@ -1,4 +1,4 @@
-import {DeinflectionTest, runTests} from "../../deinflect-test";
+import {DeinflectionTest, runTests} from "../../deinflect-test.js";
 
 const tests: DeinflectionTest[] = [
   {

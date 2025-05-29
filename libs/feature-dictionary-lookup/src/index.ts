@@ -1,2 +1,2 @@
-export * from './lib/parser';
-export * from './lib/feature-dictionary-lookup';
+export * from './lib/parser.js';
+export * from './lib/feature-dictionary-lookup.js';

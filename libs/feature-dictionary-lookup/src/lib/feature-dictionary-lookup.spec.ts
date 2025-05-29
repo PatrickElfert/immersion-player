@@ -1,4 +1,4 @@
-import { Parser } from './parser';
+import { Parser } from './parser.js';
 import { join } from 'path';
 import * as path from 'node:path';
 

@@ -1,8 +1,9 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
-import App from './app/app';
+import App from './app/app.js';
 import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { FeatureContentLibrary } from '@immersion-player/feature-content-library-ui';
+import { FeatureSettingsUi } from '@immersion-player/feature-settings-ui';
 import { FeatureMediaPlayerUi } from '@immersion-player/feature-media-player-ui';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
@@ -32,6 +33,10 @@ const router = createHashRouter([
       {
         path: 'Library/Player',
         element: <FeatureMediaPlayerUi />,
+      },
+      {
+        path: 'Settings',
+        element: <FeatureSettingsUi/>,
       },
     ],
   },

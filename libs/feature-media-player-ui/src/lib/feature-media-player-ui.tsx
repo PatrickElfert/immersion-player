@@ -1,11 +1,11 @@
 /* eslint-disable-next-line */
-import { SubtitleLine } from './subtitles/subtitles';
+import { SubtitleLine } from './subtitles/subtitles.js';
 import { Suspense, useRef } from 'react';
-import useSubtitles from './hooks/useSubtitles';
-import { useLibraryItem } from './hooks/useMedia';
-import { Browser } from './subtitles/browser';
-import { useSyncTimestamp } from './hooks/useSyncTimestamp';
-import { useCurrentSubtitle } from './hooks/useCurrentSubtitle';
+import useSubtitles from './hooks/useSubtitles.js';
+import { useLibraryItem } from './hooks/useMedia.js';
+import { Browser } from './subtitles/browser.js';
+import { useSyncTimestamp } from './hooks/useSyncTimestamp.js';
+import { useCurrentSubtitle } from './hooks/useCurrentSubtitle.js';
 
 export function FeatureMediaPlayerUi() {
   const libraryItem = useLibraryItem();

@@ -1,13 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
 import { CreateFlashcardDto } from '@immersion-player/shared-types';
-import toast, { Toast } from 'react-simple-toasts';
+import { Toast, toast } from 'react-simple-toasts';
 
 export default function useFlashcards() {
   let progressToast: Toast;
 
   const { mutate: createFlashcard } = useMutation({
     mutationFn: (flashcard: CreateFlashcardDto) =>
-      // @ts-ignore
+      // @ts-expect-error 
       window.api.createFlashcard(flashcard),
     onMutate: () => {
       progressToast = toast('Creating Flashcard', { loading: true, duration: Infinity });

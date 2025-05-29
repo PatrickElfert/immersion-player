@@ -1,4 +1,4 @@
-import { Character, Definition } from './lookup-result';
+import { Character, Definition } from './lookup-result.js';
 
 export interface CreateFlashcardDto {
   sentenceBack: Character[];

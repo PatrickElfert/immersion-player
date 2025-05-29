@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-import { getDeinflections } from './deinflect';
+import { getDeinflections } from './deinflect.js';
 
 export type DeinflectionTest = {
   input: string;

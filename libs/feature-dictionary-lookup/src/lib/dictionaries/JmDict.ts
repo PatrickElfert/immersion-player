@@ -1,4 +1,4 @@
-import { Dictionary, DictionaryModel } from '../dictionary';
+import { Dictionary, DictionaryModel } from '../dictionary.js';
 import { JMdict, JMdictWord } from '@scriptin/jmdict-simplified-types';
 
 function getDefinitions(entry: JMdictWord) {

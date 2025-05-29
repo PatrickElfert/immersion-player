@@ -1,6 +1,6 @@
 import { Subtitle } from "@immersion-player/shared-types";
-import { usePlaybackStore } from "../state/playback.store";
-import useSubtitles from "./useSubtitles";
+import { usePlaybackStore } from "../state/playback.store.js";
+import useSubtitles from "./useSubtitles.js";
 import { timecodeToSeconds } from "@immersion-player/shared-utils";
 
 export const useCurrentSubtitle = () => {
