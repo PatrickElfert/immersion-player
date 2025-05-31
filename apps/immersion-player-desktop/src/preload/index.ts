@@ -7,7 +7,8 @@ const api = {
   getLibrary: (folderPath) => ipcRenderer.invoke('get-library', folderPath),
   parseSubtitles: (srtPath) => ipcRenderer.invoke('parse-srt', srtPath),
   createFlashcard: (flashcard: CreateFlashcardDto) => ipcRenderer.invoke('create-flashcard', flashcard),
-  selectMediaFolder: () => ipcRenderer.invoke('select-media-folder')};
+  selectMediaFolder: () => ipcRenderer.invoke('select-media-folder'),
+  getUserSettings: () => ipcRenderer.invoke('get-user-settings')};
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

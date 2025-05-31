@@ -7,7 +7,7 @@ import { parseSrt } from '@immersion-player/feature-dictionary-lookup';
 import * as path from 'path';
 import { CreateFlashcardDto } from '@immersion-player/shared-types';
 import { createFlashcard } from '@immersion-player/feature-flashcard-creation';
-import { selectMediaFolder } from '@immersion-player/feature-settings';
+import { loadSettings, selectMediaFolder } from '@immersion-player/feature-settings';
 import ffmpegPath from 'ffmpeg-static';
 import { path as ffprobePath } from 'ffprobe-static';
 import ffmpeg from 'fluent-ffmpeg';
@@ -84,8 +84,8 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  ipcMain.handle('get-library', async (event, folderPath: string) => {
-    return loadLibrary(folderPath);
+  ipcMain.handle('get-library', async (event) => {
+    return loadLibrary();
   });
 
   ipcMain.handle('parse-srt', async (event, srtPath: string) => {
@@ -97,6 +97,7 @@ app.whenReady().then(() => {
   });
 
   ipcMain.handle('select-media-folder', async (event) => selectMediaFolder());
+  ipcMain.handle('get-user-settings', (event) => loadSettings());
 
   createWindow()
 

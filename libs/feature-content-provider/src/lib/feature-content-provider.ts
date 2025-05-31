@@ -6,6 +6,7 @@ import ffmpeg from 'fluent-ffmpeg';
 import * as path from 'node:path';
 import {v4} from "uuid";
 import {LibraryItem} from "@immersion-player/shared-types";
+import Store from 'electron-store';
 
 const videoExtensions = [
   '.mpg',
@@ -36,12 +37,9 @@ function createThumbnail(outputPath: string, videoPath: string): Promise<void> {
   });
 }
 
-export async function loadLibrary(folderPath: string): Promise<LibraryItem[]> {
-  const mediaFolder = join(homedir(), folderPath);
-
-  if(!existsSync(mediaFolder)) {
-    mkdirSync(mediaFolder);
-  }
+export async function loadLibrary(): Promise<LibraryItem[]> {
+  const store = new Store();
+  const mediaFolder = store.get('mediaFolder') as string;
 
   const libraryFolder = await readdir(mediaFolder);
   const result: LibraryItem[] = [];

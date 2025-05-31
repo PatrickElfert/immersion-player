@@ -1,7 +1,7 @@
 import home from '../../assets/home-line.svg';
 import chevronRight from '../../assets/chevron-right.svg';
 import { cn } from '@immersion-player/shared-utils';
-import { useBreadcrumbs } from './useBreadcrumbs';
+import { useBreadcrumbs } from './useBreadcrumbs.js';
 
 export const Breadcrumb = () => {
   const {breadcrumbs} = useBreadcrumbs();
