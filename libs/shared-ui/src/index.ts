@@ -1,1 +1,1 @@
-export * from './lib/dropdown.js';
+export * from './lib/accordion.js'

@@ -9,7 +9,7 @@ import { CreateFlashcardDto } from '@immersion-player/shared-types';
 import { createFlashcard } from '@immersion-player/feature-flashcard-creation';
 import {
   loadFieldsByNoteType,
-  loadNoteTypes,
+  loadModelFields,
   loadSettings,
   selectMediaFolder,
 } from '@immersion-player/feature-settings';
@@ -102,8 +102,7 @@ app.whenReady().then(() => {
 
   ipcMain.handle('select-media-folder', async (event) => selectMediaFolder());
   ipcMain.handle('get-user-settings', (event) => loadSettings());
-  ipcMain.handle('load-note-types', (event) => loadNoteTypes());
-  ipcMain.handle('load-fields-by-note-type', (event, name: string) => loadFieldsByNoteType(name));
+  ipcMain.handle('load-model-fields', (event) => loadModelFields());
 
   createWindow();
 
