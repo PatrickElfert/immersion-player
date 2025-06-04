@@ -8,7 +8,10 @@ const api = {
   parseSubtitles: (srtPath) => ipcRenderer.invoke('parse-srt', srtPath),
   createFlashcard: (flashcard: CreateFlashcardDto) => ipcRenderer.invoke('create-flashcard', flashcard),
   selectMediaFolder: () => ipcRenderer.invoke('select-media-folder'),
-  getUserSettings: () => ipcRenderer.invoke('get-user-settings')};
+  getUserSettings: () => ipcRenderer.invoke('get-user-settings'),
+  loadNoteTypes: () => ipcRenderer.invoke('load-note-types'),
+  loadFieldsByNoteType: (name: string) => ipcRenderer.invoke('load-fields-by-note-type', name),
+};
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
