@@ -5,17 +5,18 @@ import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { FeatureContentLibrary } from '@immersion-player/feature-content-library-ui';
 import { FeatureSettingsUi } from '@immersion-player/feature-settings-ui';
 import { FeatureMediaPlayerUi } from '@immersion-player/feature-media-player-ui';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import { persistQueryClient } from '@tanstack/react-query-persist-client'
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { persistQueryClient } from '@tanstack/react-query-persist-client';
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { toastConfig } from 'react-simple-toasts';
 import { Themes } from 'react-simple-toasts';
 import 'node_modules/react-simple-toasts/dist/style.css';
-import 'node_modules/react-simple-toasts/dist/theme/moonlight.css'
-import 'node_modules/react-simple-toasts/dist/theme/success.css'
-import 'node_modules/react-simple-toasts/dist/theme/failure.css'
+import 'node_modules/react-simple-toasts/dist/theme/moonlight.css';
+import 'node_modules/react-simple-toasts/dist/theme/success.css';
+import 'node_modules/react-simple-toasts/dist/theme/failure.css';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-toastConfig({theme: Themes.MOONLIGHT, position: 'top-right'})
+toastConfig({ theme: Themes.MOONLIGHT, position: 'top-right' });
 
 const router = createHashRouter([
   {
@@ -36,7 +37,7 @@ const router = createHashRouter([
       },
       {
         path: 'Settings',
-        element: <FeatureSettingsUi/>,
+        element: <FeatureSettingsUi />,
       },
     ],
   },
@@ -45,27 +46,26 @@ const router = createHashRouter([
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false
-    }
-  }
+      refetchOnWindowFocus: false,
+    },
+  },
 });
 
 const localStoragePersister = createSyncStoragePersister({
   storage: window.localStorage,
-})
+});
 
 persistQueryClient({
   queryClient,
   persister: localStoragePersister,
-})
+});
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </StrictMode>
 );

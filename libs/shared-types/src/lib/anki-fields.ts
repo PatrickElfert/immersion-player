@@ -3,10 +3,11 @@ export type AnkiFields = {
   fields: string[];
 };
 
-export type SelectedAnkiFields = {
-  modelName: string;
-  fields: {
-    text: string;
-    selected: boolean;
-  }[]
+export type ModelFields = {
+  [modelName: string]: {
+    fields: {
+      text: string;
+      selected: boolean;
+    }[];
+  };
 };

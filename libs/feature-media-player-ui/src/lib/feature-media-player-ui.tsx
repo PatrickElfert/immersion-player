@@ -41,7 +41,7 @@ export function FeatureMediaPlayerUi() {
 }
 
 export function CurrentSubtitle() {
-  const currentSubtitle = useCurrentSubtitle(); 
+  const currentSubtitle = useCurrentSubtitle();
   return (
     <SubtitleLine
       subtitle={currentSubtitle}

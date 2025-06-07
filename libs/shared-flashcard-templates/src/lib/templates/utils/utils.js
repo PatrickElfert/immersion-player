@@ -1,6 +1,4 @@
 export function parseTextWithFurigana(text) {
-  console.log('test')
-
   const regex = /([^[\]]+)(?:\[([^[\]]*)\])?/g;
   const parsed = [];
   let match;

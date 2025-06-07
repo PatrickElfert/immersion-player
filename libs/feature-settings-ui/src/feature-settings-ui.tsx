@@ -1,7 +1,7 @@
 import useSelectMediaFolder from './hooks/useSelectMediaFolder.js';
 import { useUserSettings } from './hooks/useUserSettings.js';
 import { Section } from './section.js';
-import { KnownWords } from './known-words.js';
+import { ModelFields } from './model-fields.js';
 
 export function FeatureSettingsUi() {
   const { selectMediaFolder } = useSelectMediaFolder();
@@ -17,7 +17,7 @@ export function FeatureSettingsUi() {
           <label className="text-white">{mediaFolder}</label>
         </div>
       </Section>
-      <KnownWords></KnownWords>
+      <ModelFields></ModelFields>
     </div>
   );
 }

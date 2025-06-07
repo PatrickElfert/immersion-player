@@ -1,10 +1,10 @@
 import { dialog } from 'electron';
 import Store from 'electron-store';
-import { AnkiFields, SelectedAnkiFields, KnownWord, UserSettings } from '@immersion-player/shared-types';
+import { KnownWord, ModelFields, UserSettings } from '@immersion-player/shared-types';
 import { YankiConnect } from 'yanki-connect';
 
 const client = new YankiConnect();
-const store = new Store();
+const store = new Store<UserSettings>();
 
 export async function selectMediaFolder(): Promise<void> {
   const { filePaths } = await dialog.showOpenDialog({
@@ -14,51 +14,67 @@ export async function selectMediaFolder(): Promise<void> {
   store.set('mediaFolder', filePaths[0]);
 }
 
-export async function updateKnownWords(ankiFields: AnkiFields[]): Promise<void> {
-  const query = ankiFields.map((field) => `note:${field.modelName}`).join('OR');
+export async function selectModelFields(modelFields: ModelFields): Promise<void> {
+  store.set('modelFields', modelFields);
+}
+
+export async function getKnownWords(modelFields: ModelFields): Promise<KnownWord[]> {
+  const query = Object.keys(modelFields).map((modelName) => `"note:${modelName}"`).join(' OR ');
   const cardIds = await client.card.findCards({ query });
   const cards = await client.card.cardsInfo({ cards: cardIds });
 
   const knownWords: KnownWord[] = [];
 
-  for (const field of ankiFields) {
-    const card = cards.find((n) => n.modelName === field.modelName);
-    if (!card) {
-      continue;
-    }
+  for (const [modelName, modelValue] of Object.entries(modelFields)) {
+    const filteredCards= cards.filter((n) => n.modelName === modelName);
+    const selectedFields = modelValue.fields.filter(f => f.selected);
 
-    for (const selectedField of field.fields) {
-      const value = card.fields[selectedField]?.value;
+    for(const card of filteredCards) {
+      for (const selectedField of selectedFields) {
+        const value = card.fields[selectedField.text]?.value;
 
-      //@Todo: Implement leeches
-      knownWords.push({ text: value, status: card.interval > 21 ? 'KNOWN' : 'MINED' });
+        //@Todo: Implement leeches
+        knownWords.push({ text: value, status: card.interval > 21 ? 'KNOWN' : 'MINED' });
+      }
     }
   }
 
-  store.set('knownWords', knownWords);
+  return knownWords;
+}
+
+export async function getKnownWordsStats() {
+  const modelFields = store.get('modelFields') ?? {};
+  const modelsWithSelectedFields = Object.fromEntries(
+    Object.entries(modelFields).filter(([_, modelValue]) => modelValue.fields.some((f) => f.selected))
+  );
+
+  const knownWords = await getKnownWords(modelsWithSelectedFields);
+  return knownWords.filter(knownWord => knownWord.status === 'KNOWN').length;
 }
 
 export function loadSettings(): UserSettings {
-  const store = new Store();
   return {
-    mediaFolder: store.get('mediaFolder') as string,
-    knownWords: (store.get('knownWords') as KnownWord[]) ?? [],
-    selectedModelFields: store.get('modelFields') as AnkiFields[],
+    mediaFolder: store.get('mediaFolder'),
+    knownWords: store.get('knownWords') ?? [],
+    modelFields: store.get('modelFields'),
   };
 }
 
-export async function loadModelFields(): Promise<SelectedAnkiFields[]> {
+export async function loadModelFields(): Promise<ModelFields> {
   const modelNames = await client.model.modelNames();
   const models = await client.model.findModelsByName({ modelNames });
-  const selectedFields = store.get('selectedModelFields') as AnkiFields[];
+  const modelFields = store.get('modelFields') ?? {};
 
-  return models.map((model) => ({
-    modelName: model.name,
-    fields: model.flds.map((field) => {
-      const m = selectedFields.find((m) => m.modelName === model.name);
-      const selected = m?.fields.find((f) => f === field.name);
+  for (const model of models) {
+    if (!modelFields[model.name]) {
+      modelFields[model.name] = { fields: [] };
+    }
 
+    modelFields[model.name].fields = model.flds.map((field) => {
+      const selected = modelFields[model.name]?.fields?.find((f) => f.text === field.name)?.selected;
       return { text: field.name, selected: !!selected };
-    }),
-  }));
+    });
+  }
+
+  return modelFields;
 }

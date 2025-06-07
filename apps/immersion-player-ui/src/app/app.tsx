@@ -1,10 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
-import Menu from './menu/menu';
-import { Navbar } from './navbar/navbar';
-import {Outlet} from "react-router-dom";
-import {Breadcrumb} from "./breadcrumb/breadcrumb";
-import { Suspense } from 'react';
+import Menu from './menu/menu.js';
+import { Navbar } from './navbar/navbar.js';
+import { Outlet } from 'react-router-dom';
+import { Breadcrumb } from './breadcrumb/breadcrumb.js';
 
 export function App() {
   return (
@@ -14,11 +13,9 @@ export function App() {
         <Navbar />
         <div className="shadow-inner-glow flex flex-col h-full min-h-0">
           <div className="py-6 px-8 flex-1 flex flex-col min-h-0">
-            <Breadcrumb/>
+            <Breadcrumb />
             <div className="overflow-auto h-[calc(100%-40px)]">
-            <Suspense>
               <Outlet></Outlet>
-            </Suspense>
             </div>
           </div>
         </div>

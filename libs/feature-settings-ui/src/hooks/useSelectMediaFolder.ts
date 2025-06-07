@@ -6,7 +6,7 @@ export default function useSelectMediaFolder() {
     {
       mutationFn:
         // @ts-expect-error window.electron is not typed
-        () => window.api.selectMediaFolder(),
+        async () => await window.api.selectMediaFolder(),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['userSettings'] })
         queryClient.invalidateQueries({ queryKey: ['library'] })

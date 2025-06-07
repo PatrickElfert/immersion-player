@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
-import { CreateFlashcardDto } from '@immersion-player/shared-types';
+import { CreateFlashcardDto, ModelFields } from '@immersion-player/shared-types';
 
 // Custom APIs for renderer
 const api = {
@@ -10,6 +10,8 @@ const api = {
   selectMediaFolder: () => ipcRenderer.invoke('select-media-folder'),
   getUserSettings: () => ipcRenderer.invoke('get-user-settings'),
   loadModelFields: () => ipcRenderer.invoke('load-model-fields'),
+  selectModelFields: (modelFields: ModelFields) => ipcRenderer.invoke('select-model-fields', modelFields),
+  getKnownWordsStats: () => ipcRenderer.invoke('get-known-words-stats'),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
