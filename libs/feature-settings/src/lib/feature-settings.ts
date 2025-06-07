@@ -20,6 +20,11 @@ export async function selectModelFields(modelFields: ModelFields): Promise<void>
 
 export async function getKnownWords(modelFields: ModelFields): Promise<KnownWord[]> {
   const query = Object.keys(modelFields).map((modelName) => `"note:${modelName}"`).join(' OR ');
+
+  if(query === "") {
+    return [];
+  }
+
   const cardIds = await client.card.findCards({ query });
   const cards = await client.card.cardsInfo({ cards: cardIds });
 

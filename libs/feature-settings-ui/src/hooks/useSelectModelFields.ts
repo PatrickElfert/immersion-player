@@ -9,7 +9,7 @@ export default function useSelectModelFields() {
       (selectedModelFields: ModelFields) => window.api.selectModelFields(selectedModelFields),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['modelFields'] });
-      await queryClient.invalidateQueries({ queryKey: ['knownWords'] });
+      await queryClient.resetQueries({ queryKey: ['knownWords'] });
     },
   });
   return { selectModelFields: mutate, error };

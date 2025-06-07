@@ -6,7 +6,7 @@ import { CheckIcon } from '@radix-ui/react-icons';
 import useSelectModelFields from './hooks/useSelectModelFields.js';
 
 export function ModelFields() {
-  const modelFields = useModelFields();
+  const modelFields = useModelFields() ?? {};
   const { selectModelFields } = useSelectModelFields();
 
   const accordionItems: AccordionItem[] = Object.entries(modelFields).map(([modelName, modelValue]) => ({

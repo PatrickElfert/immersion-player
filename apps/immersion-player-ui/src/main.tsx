@@ -14,7 +14,6 @@ import 'node_modules/react-simple-toasts/dist/style.css';
 import 'node_modules/react-simple-toasts/dist/theme/moonlight.css';
 import 'node_modules/react-simple-toasts/dist/theme/success.css';
 import 'node_modules/react-simple-toasts/dist/theme/failure.css';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 toastConfig({ theme: Themes.MOONLIGHT, position: 'top-right' });
 
@@ -65,7 +64,6 @@ root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </StrictMode>
 );
