@@ -1,3 +1,5 @@
+import { KnownWordsStatus } from './user-settings.js';
+
 export type Character = {
   original: string;
   furigana: string | null;
@@ -6,6 +8,7 @@ export type Character = {
 export type LookupResult = {
   /** The part of a subtitle that got processed **/
   token: Character[];
+  status: KnownWordsStatus;
   /** All of the definitions that got found
    * This can be more then one if multiple different deinflected version are produced**/
   definitions: Definition[][];

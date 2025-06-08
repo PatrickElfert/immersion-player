@@ -1,6 +1,6 @@
 import { dialog } from 'electron';
 import Store from 'electron-store';
-import { KnownWord, ModelFields, UserSettings } from '@immersion-player/shared-types';
+import { KnownWordMap, ModelFields, UserSettings } from '@immersion-player/shared-types';
 import { YankiConnect } from 'yanki-connect';
 
 const client = new YankiConnect();
@@ -18,30 +18,38 @@ export async function selectModelFields(modelFields: ModelFields): Promise<void>
   store.set('modelFields', modelFields);
 }
 
-export async function getKnownWords(modelFields: ModelFields): Promise<KnownWord[]> {
-  const query = Object.keys(modelFields).map((modelName) => `"note:${modelName}"`).join(' OR ');
+export async function getKnownWords(modelFields: ModelFields): Promise<KnownWordMap> {
+  const query = Object.keys(modelFields)
+    .map((modelName) => `"note:${modelName}"`)
+    .join(' OR ');
 
-  if(query === "") {
-    return [];
+  if (query === '') {
+    return {};
   }
 
-  const cardIds = await client.card.findCards({ query });
-  const cards = await client.card.cardsInfo({ cards: cardIds });
+  let knownWords: KnownWordMap = {};
 
-  const knownWords: KnownWord[] = [];
+  try {
+    const cardIds = await client.card.findCards({ query });
+    const cards = await client.card.cardsInfo({ cards: cardIds });
 
-  for (const [modelName, modelValue] of Object.entries(modelFields)) {
-    const filteredCards= cards.filter((n) => n.modelName === modelName);
-    const selectedFields = modelValue.fields.filter(f => f.selected);
+    for (const [modelName, modelValue] of Object.entries(modelFields)) {
+      const filteredCards = cards.filter((n) => n.modelName === modelName);
+      const selectedFields = modelValue.fields.filter((f) => f.selected);
 
-    for(const card of filteredCards) {
-      for (const selectedField of selectedFields) {
-        const value = card.fields[selectedField.text]?.value;
+      for (const card of filteredCards) {
+        for (const selectedField of selectedFields) {
+          const value = card.fields[selectedField.text]?.value;
 
-        //@Todo: Implement leeches
-        knownWords.push({ text: value, status: card.interval > 21 ? 'KNOWN' : 'MINED' });
+          //@Todo: Implement leeches
+          knownWords[value] = { status: card.interval > 21 ? 'KNOWN' : 'MINED' };
+        }
       }
     }
+
+    store.set('knownWords', knownWords);
+  } catch (error) {
+    knownWords = store.get('knownWords', {});
   }
 
   return knownWords;
@@ -54,14 +62,14 @@ export async function getKnownWordsStats() {
   );
 
   const knownWords = await getKnownWords(modelsWithSelectedFields);
-  return knownWords.filter(knownWord => knownWord.status === 'KNOWN').length;
+  return Object.values(knownWords).filter((knownWord) => knownWord.status === 'KNOWN').length;
 }
 
 export function loadSettings(): UserSettings {
   return {
     mediaFolder: store.get('mediaFolder'),
-    knownWords: store.get('knownWords') ?? [],
     modelFields: store.get('modelFields'),
+    knownWords: store.get('knownWords'),
   };
 }
 

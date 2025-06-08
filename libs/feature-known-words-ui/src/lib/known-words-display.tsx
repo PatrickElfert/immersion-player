@@ -1,7 +1,7 @@
 import { useKnownWordsStats } from '../hooks/useKnownWords.js';
 
 export function KnownWordsDisplay() {
-  const { data, isFetching } = useKnownWordsStats();
+  const { data } = useKnownWordsStats();
 
   return (
     <div className="flex items-center text-white text-xl font-bold">

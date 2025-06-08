@@ -1,12 +1,14 @@
 import { KuromojiToken, tokenize } from 'kuromojin';
 import { getDeinflections } from './deinflect.js';
 import { JmDictionary } from './dictionaries/JmDict.js';
-import { Character, Definition, LookupResult } from '@immersion-player/shared-types';
+import { Character, Definition, KnownWordsStatus, LookupResult, UserSettings } from '@immersion-player/shared-types';
 import { isHiragana, toHiragana } from 'wanakana';
+import Store from 'electron-store';
 
 export class Parser {
   dictionary: JmDictionary;
   MAX_GROUPING_ATTEMPTS = 20;
+  store = new Store<UserSettings>();
 
   constructor(path: string) {
     this.dictionary = new JmDictionary(path);
@@ -43,7 +45,12 @@ export class Parser {
             morphemeGroups.unshift(remainingMorphemes);
           }
 
-          result.push({ token: await this.getCharacters(token), definitions: possibleDefinitions });
+          result.push({
+            token: await this.getCharacters(token),
+            definitions: possibleDefinitions,
+            status: this.determineWordsStatus(terms[0]),
+          });
+
           break;
         }
 
@@ -56,7 +63,11 @@ export class Parser {
         } else {
           /** we could not find a word for this item **/
           morphemeGroups.shift();
-          result.push({ token: await this.getCharacters(token), definitions: [] });
+          result.push({
+            token: await this.getCharacters(token),
+            definitions: [],
+            status: this.determineWordsStatus(terms[0]),
+          });
           break;
         }
       }
@@ -65,21 +76,30 @@ export class Parser {
     return result;
   }
 
+  determineWordsStatus(token: string): KnownWordsStatus {
+    const knownWords = this.store.get('knownWords');
+    if (knownWords[token]) {
+      return knownWords[token].status;
+    }
+
+    return 'UNKNOWN';
+  }
+
   async lookupTermsInDictionary(terms: string[]) {
     const definitions: Definition[][] = [];
     for (const term of terms) {
       const result = this.dictionary.getDefinitions(term);
-      const definitionsByTerm: Definition[] = []
+      const definitionsByTerm: Definition[] = [];
       if (result.length > 0) {
         for (const definition of result) {
           const tokenCharacters = await this.getCharacters(term);
           definitionsByTerm.push({
             token: tokenCharacters,
-            ...definition
-          })
+            ...definition,
+          });
         }
       }
-      if(definitionsByTerm.length > 0) {
+      if (definitionsByTerm.length > 0) {
         definitions.push(definitionsByTerm);
       }
     }
@@ -139,7 +159,7 @@ export class Parser {
     const tokens = await tokenize(text);
     return tokens.map((t) => ({
       original: t.surface_form,
-      furigana: isHiragana(t.surface_form) ?  null : toHiragana(t.reading),
+      furigana: isHiragana(t.surface_form) ? null : toHiragana(t.reading),
     }));
   }
 }

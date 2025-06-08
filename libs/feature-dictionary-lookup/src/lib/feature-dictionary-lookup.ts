@@ -21,9 +21,9 @@ const parser = new Parser(getDictionaryPath());
 
 export async function parseSrt(path: string): Promise<Subtitle[]> {
   const srtFile = readFileSync(path, 'utf8');
-  const result = srtParse(srtFile);
+  const result = readSrt(srtFile);
 
-  const parsedSentences = [];
+  const parsedSentences: Subtitle[] = [];
 
   for (const sentence of result) {
     const lookupResult = await parser.parseSentence(sentence.text[0]);
@@ -36,7 +36,7 @@ export async function parseSrt(path: string): Promise<Subtitle[]> {
   return parsedSentences;
 }
 
-function srtParse(srt: string) {
+function readSrt(srt: string) {
   const subtitles: SRT[] = [];
 
   const blocks = srt.trim().split(/\n\n+/);

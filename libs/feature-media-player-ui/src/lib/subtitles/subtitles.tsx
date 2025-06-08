@@ -1,18 +1,33 @@
-import { Character, Definition, Subtitle } from '@immersion-player/shared-types';
+import { Character, Definition, KnownWordsStatus, Subtitle } from '@immersion-player/shared-types';
 import { DictionaryOverlay } from './dictionary.js';
 import useFlashcards from '../hooks/useFlashcards.js';
 import { cn, timecodeToSeconds } from '@immersion-player/shared-utils';
 import useSubtitles from '../hooks/useSubtitles.js';
+import { WordStatusHighlighting } from './word-status-highlighting.js';
 
-function JapaneseText({ tokens, showFurigana }: { tokens: Character[], showFurigana: boolean }) {
-  return <ruby data-testid="word" className='whitespace-nowrap'>
-    {tokens?.map((t) => (
-      <>
-        {t.original}
-        {showFurigana && t.furigana && <rt>{t.furigana}</rt>}
-      </>
-    ))}
-  </ruby>
+function JapaneseText({
+  tokens,
+  showFurigana,
+  showStatus,
+  status,
+}: {
+  tokens: Character[];
+  showFurigana: boolean;
+  showStatus: boolean;
+  status: KnownWordsStatus;
+}) {
+  return (
+    <WordStatusHighlighting status={status}>
+      <ruby data-testid="word" className="whitespace-nowrap">
+        {tokens?.map((t) => (
+          <>
+            <span>{t.original}</span>
+            {showFurigana && t.furigana && <rt>{t.furigana}</rt>}
+          </>
+        ))}
+      </ruby>
+    </WordStatusHighlighting>
+  );
 }
 
 export function SubtitleLine({
@@ -21,7 +36,7 @@ export function SubtitleLine({
   subtitle,
   disableDictionary,
 }: {
-  subtitle: Subtitle | null 
+  subtitle: Subtitle | null;
   containerClassName?: string;
   subtitleClassName?: string;
   disableDictionary?: boolean;
@@ -29,11 +44,12 @@ export function SubtitleLine({
   const { createFlashcard } = useFlashcards();
   const { path } = useSubtitles();
   const showFurigana = false;
+  const showStatus = true;
 
   const handleCreateFlashcard = (definitions: Definition[], subtitle: Subtitle, path: string) => {
     createFlashcard({
       sentenceFront: subtitle.text[0],
-      sentenceBack: subtitle.lookupResult.flatMap(l => l.token),
+      sentenceBack: subtitle.lookupResult.flatMap((l) => l.token),
       definitions,
       startTime: timecodeToSeconds(subtitle.startTime),
       endTime: timecodeToSeconds(subtitle.endTime),
@@ -42,28 +58,28 @@ export function SubtitleLine({
   };
 
   return (
-    <div
-      data-testid="subtitles"
-      className={containerClassName}>
+    <div data-testid="subtitles" className={containerClassName}>
       {subtitle && (
-        <div className={cn("flex flex-row flex-wrap text-white", subtitleClassName)} >
-          {
-            subtitle.lookupResult.map((result, index) => (
-              <div className="inline-block">
-                <DictionaryOverlay
-                  enabled={!disableDictionary}
-                  key={index}
-                  onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, subtitle, path!)}
-                  definitions={result.definitions}
-                >
-                  <JapaneseText showFurigana={showFurigana} tokens={result.token} />
-                </DictionaryOverlay>
-              </div>
-            ))
-          }
+        <div className={cn('flex flex-row flex-wrap text-white', subtitleClassName)}>
+          {subtitle.lookupResult.map((result, index) => (
+            <div className="inline-block">
+              <DictionaryOverlay
+                enabled={!disableDictionary}
+                key={index}
+                onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, subtitle, path!)}
+                definitions={result.definitions}
+              >
+                <JapaneseText
+                  status={result.status}
+                  showFurigana={showFurigana}
+                  showStatus={showStatus}
+                  tokens={result.token}
+                />
+              </DictionaryOverlay>
+            </div>
+          ))}
         </div>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 }
