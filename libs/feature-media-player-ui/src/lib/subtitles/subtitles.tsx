@@ -4,6 +4,7 @@ import useFlashcards from '../hooks/useFlashcards.js';
 import { cn, timecodeToSeconds } from '@immersion-player/shared-utils';
 import { WordStatusHighlighting } from './word-status-highlighting.js';
 import { useLibraryItem } from '../hooks/useMedia.js';
+import { Fragment } from 'react';
 
 function JapaneseText({
   tokens,
@@ -19,11 +20,11 @@ function JapaneseText({
   return (
     <WordStatusHighlighting status={status}>
       <ruby data-testid="word" className="whitespace-nowrap">
-        {tokens?.map((t) => (
-          <>
+        {tokens?.map((t, index) => (
+          <div key={index}>
             <span>{t.original}</span>
             {showFurigana && t.furigana && <rt>{t.furigana}</rt>}
-          </>
+          </div>
         ))}
       </ruby>
     </WordStatusHighlighting>
@@ -62,10 +63,9 @@ export function SubtitleLine({
       {subtitle && (
         <div className={cn('flex flex-row flex-wrap text-white', subtitleClassName)}>
           {subtitle.lookupResult.map((result, index) => (
-            <div className="inline-block">
+            <div key={index} className="inline-block">
               <DictionaryOverlay
                 enabled={!disableDictionary}
-                key={index}
                 onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, subtitle, libraryItem.path)}
                 definitions={result.definitions}
               >
