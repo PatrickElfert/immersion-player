@@ -14,6 +14,7 @@ import 'node_modules/react-simple-toasts/dist/style.css';
 import 'node_modules/react-simple-toasts/dist/theme/moonlight.css';
 import 'node_modules/react-simple-toasts/dist/theme/success.css';
 import 'node_modules/react-simple-toasts/dist/theme/failure.css';
+import { HeroUIProvider, ToastProvider } from '@heroui/react';
 
 toastConfig({ theme: Themes.MOONLIGHT, position: 'top-right' });
 
@@ -62,8 +63,10 @@ persistQueryClient({
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <HeroUIProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </HeroUIProvider>
   </StrictMode>
 );

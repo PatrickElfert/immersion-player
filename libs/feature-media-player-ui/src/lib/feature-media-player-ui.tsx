@@ -46,7 +46,7 @@ export function CurrentSubtitle() {
     <SubtitleLine
       subtitle={currentSubtitle}
       containerClassName="absolute bottom-[15%] w-full flex justify-center"
-      subtitleClassName='bg-surface/[.9] text-2xl rounded p-2'
+      subtitleClassName='bg-content1/40 backdrop-blur-md backdrop-saturate-150 text-2xl rounded p-2'
     />
   )
 }

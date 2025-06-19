@@ -1,5 +1,6 @@
-import {ChangeEvent } from 'react';
-import search from './search-normal.svg';
+import { ChangeEvent } from 'react';
+import { Input } from '@heroui/react';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
 export interface SearchFieldProps {
   onChange: (value: string) => void;
@@ -15,18 +16,8 @@ export default function SearchField(props: SearchFieldProps) {
   }
 
   return (
-    <div className="relative flex items-center mt-2">
-      <button className="absolute right-0 focus:outline-none rtl:left-0 rtl:right-auto">
-        <img className="pr-4" src={search} />
-      </button>
-
-      <input
-        data-testid="search"
-        onChange={handleOnInput}
-        type="text"
-        placeholder="Search"
-        className="block w-full py-2.5 placeholder-white text-white bg-white bg-opacity-5 placeholder-opacity-50 pl-5 pr-11 outline-none"
-      />
+    <div className="flex w-full pt-4">
+      <Input onChange={handleOnInput} placeholder={'Search for...'} endContent={<MagnifyingGlassIcon />} />
     </div>
   );
 }

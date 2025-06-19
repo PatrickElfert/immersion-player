@@ -26,7 +26,7 @@ export function Browser() {
         }
     }, [currentSubtitleIndex, subtitles]);
 
-    return (<div ref={containerRef} className="rounded bg-card text-white overflow-y-scroll">
+    return (<div ref={containerRef} className="rounded bg-content1 text-white overflow-y-scroll">
         {subtitles.map((subtitle, index) => {
             return (<div key={index} className={cn('p-2 border-l-primary rounded', { 'border-l-4': currentSubtitleIndex === index })}>
                 <SubtitleLine disableDictionary={isScrolling} subtitle={subtitle} />

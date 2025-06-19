@@ -5,15 +5,20 @@ import { rendererAppName } from './constants.js';
 import { loadLibrary } from '@immersion-player/feature-content-provider';
 import { parseSrt } from '@immersion-player/feature-dictionary-lookup';
 import * as path from 'path';
-import { AnkiFields, CreateFlashcardDto, ModelFields } from '@immersion-player/shared-types';
+import {
+  AnkiFields,
+  CreateFlashcardDto,
+  ModelFields,
+  SelectedModelFields,
+  UpdateFieldMappingPayload
+} from '@immersion-player/shared-types';
 import { createFlashcard } from '@immersion-player/feature-flashcard-creation';
 import {
   getKnownWordsStats,
-  loadFieldsByNoteType,
   loadModelFields,
   loadSettings,
   selectMediaFolder,
-  selectModelFields
+  updateModelFields
 } from '@immersion-player/feature-settings';
 import ffmpegPath from 'ffmpeg-static';
 import { path as ffprobePath } from 'ffprobe-static';
@@ -105,7 +110,7 @@ app.whenReady().then(() => {
   ipcMain.handle('select-media-folder', async (event) => selectMediaFolder());
   ipcMain.handle('get-user-settings', (event) => loadSettings());
   ipcMain.handle('load-model-fields', (event) => loadModelFields());
-  ipcMain.handle('select-model-fields', (event, modelFields: ModelFields) => selectModelFields(modelFields));
+  ipcMain.handle('select-model-fields', (event, payload: UpdateFieldMappingPayload) => updateModelFields(payload));
   ipcMain.handle('get-known-words-stats', (event) => getKnownWordsStats());
 
   createWindow();

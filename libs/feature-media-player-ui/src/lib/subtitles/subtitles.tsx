@@ -2,8 +2,8 @@ import { Character, Definition, KnownWordsStatus, Subtitle } from '@immersion-pl
 import { DictionaryOverlay } from './dictionary.js';
 import useFlashcards from '../hooks/useFlashcards.js';
 import { cn, timecodeToSeconds } from '@immersion-player/shared-utils';
-import useSubtitles from '../hooks/useSubtitles.js';
 import { WordStatusHighlighting } from './word-status-highlighting.js';
+import { useLibraryItem } from '../hooks/useMedia.js';
 
 function JapaneseText({
   tokens,
@@ -42,7 +42,7 @@ export function SubtitleLine({
   disableDictionary?: boolean;
 }) {
   const { createFlashcard } = useFlashcards();
-  const { path } = useSubtitles();
+  const libraryItem = useLibraryItem();
   const showFurigana = false;
   const showStatus = true;
 
@@ -66,7 +66,7 @@ export function SubtitleLine({
               <DictionaryOverlay
                 enabled={!disableDictionary}
                 key={index}
-                onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, subtitle, path!)}
+                onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, subtitle, libraryItem.path)}
                 definitions={result.definitions}
               >
                 <JapaneseText

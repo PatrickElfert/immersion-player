@@ -1,5 +1,5 @@
 import { RefObject, useEffect } from "react";
-import { usePlaybackStore } from "../state/playback.store";
+import { usePlaybackStore } from "../state/playback.store.js";
 
 export function useSyncTimestamp(
   videoPlayerRef: RefObject<HTMLVideoElement>,

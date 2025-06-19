@@ -1,16 +1,16 @@
 import {useQueryClient  ,useMutation } from "@tanstack/react-query";
-import { ModelFields } from '@immersion-player/shared-types';
+import { UpdateFieldMappingPayload } from '@immersion-player/shared-types';
 
-export default function useSelectModelFields() {
+export default function useUpdateFieldMapping() {
   const queryClient = useQueryClient()
   const { mutate, error } = useMutation({
     mutationFn:
       // @ts-expect-error window.electron is not typed
-      (selectedModelFields: ModelFields) => window.api.selectModelFields(selectedModelFields),
+      (payload: UpdateFieldMappingPayload) => window.api.selectModelFields(payload),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['modelFields'] });
       await queryClient.resetQueries({ queryKey: ['knownWords'] });
     },
   });
-  return { selectModelFields: mutate, error };
+  return { updateFieldMapping: mutate, error };
 }

@@ -1,11 +1,22 @@
 import { useKnownWordsStats } from '../hooks/useKnownWords.js';
+import { Button } from '@heroui/react';
+import { ReloadIcon } from '@radix-ui/react-icons';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function KnownWordsDisplay() {
-  const { data } = useKnownWordsStats();
+  const { data, isLoading } = useKnownWordsStats();
+  const queryClient = useQueryClient();
 
   return (
-    <div className="flex items-center text-white text-xl font-bold">
-      {data} <span className="font-light text-sm ml-2">Known Words</span>
-    </div>
+    <Button
+      onPress={() => queryClient.resetQueries({ queryKey: ['knownWords'] })}
+      startContent={isLoading ? null : <ReloadIcon />}
+      color="primary"
+      isLoading={isLoading}
+      radius="full"
+    >
+      {data}
+      <span className="font-light text-sm">Known Words</span>
+    </Button>
   );
 }

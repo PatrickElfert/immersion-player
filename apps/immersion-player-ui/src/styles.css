@@ -27,6 +27,5 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary-gradient;
   border-radius: 5px;
 }

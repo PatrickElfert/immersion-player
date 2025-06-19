@@ -1,8 +1,8 @@
 import { cn } from '@immersion-player/shared-utils';
 import { Definition } from '@immersion-player/shared-types';
 import { PropsWithChildren, useState } from 'react';
-import Flashcard from './flashcard.svg?react';
-import { Popover } from "radix-ui";
+import { Button, Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
+import { PaperPlaneIcon } from '@radix-ui/react-icons';
 
 function Definition({
   definition,
@@ -32,7 +32,9 @@ function Definition({
         </div>
         <label data-testid="word">{definition.text}</label>
       </div>
-      <label data-testid="description" className="ml-6 font-light text-sm text-gray-400">{definition.description}</label>
+      <label data-testid="description" className="ml-6 font-light text-sm text-gray-400">
+        {definition.description}
+      </label>
     </div>
   );
 }
@@ -63,9 +65,8 @@ function DeinflectedTerm({
 
   return (
     <div data-testid="deinflectedTerm">
-      <div
-        className="m-2 px-1 pt-0.5 pb-1 rounded bg-primary-gradient flex items-center">
-        <label data-testid="title" className="text-black font-normal">
+      <div className="m-2 px-1 pt-0.5 pb-1 rounded bg-primary-gradient flex items-center">
+        <label data-testid="title" className="text-foreground font-normal">
           <ruby>
             {deinflectedTerm?.map((t) => (
               <>
@@ -75,12 +76,15 @@ function DeinflectedTerm({
             ))}
           </ruby>
         </label>
-        <button
-          onClick={() => onCreateFlashcard(Object.values(selectedDefinitions).flatMap((definition) => definition))}
-          className="ml-auto text-white flex items-center"
+        <Button
+          color="primary"
+          isIconOnly
+          aria-label="createFlashcard"
+          onPress={() => onCreateFlashcard(Object.values(selectedDefinitions).flatMap((definition) => definition))}
+          className="ml-auto text-foreground"
         >
-          <Flashcard />
-        </button>
+          <PaperPlaneIcon></PaperPlaneIcon>
+        </Button>
       </div>
       {definitions.map((definition, index) => (
         <Definition
@@ -103,10 +107,8 @@ interface DictionaryProps {
 
 function Dictionary(props: DictionaryProps) {
   return (
-    <div
-      data-testid="dictionary"
-      className="w-full flex items-center flex-col">
-      <div className="h-60 min-w-[20rem] w-20 bg-overlay rounded flex flex-col text-white text-base font-extralight overflow-y-scroll">
+    <div data-testid="dictionary" className="w-full flex items-center flex-col">
+      <div className="h-60 min-w-[20rem] w-20 rounded flex flex-col text-foreground text-base font-extralight overflow-y-scroll">
         {props.definitions.map((entry, index) => (
           <DeinflectedTerm key={index} onCreateFlashcard={props.onCreateFlashcard} definitions={entry} />
         ))}
@@ -121,17 +123,23 @@ export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps & { e
 
   const isOpen = (isHoveringChildren || isHoveringDictionary) && props.enabled;
 
-  return <Popover.Root open={isOpen}>
-    <Popover.Anchor>
-      <div className={'hover:text-primary'} onMouseLeave={() => setIsHoveringChildren(false)} onMouseEnter={() => setIsHoveringChildren(true)}> {props.children}
-      </div>
-    </Popover.Anchor>
-    <Popover.Portal>
-      <Popover.Content>
+  return (
+    <Popover className={"dark"} color="default" isOpen={isOpen} showArrow={true}>
+      <PopoverTrigger>
+        <div
+          className={'hover:text-primary'}
+          onMouseLeave={() => setIsHoveringChildren(false)}
+          onMouseEnter={() => setIsHoveringChildren(true)}
+        >
+          {' '}
+          {props.children}
+        </div>
+      </PopoverTrigger>
+      <PopoverContent>
         <div onMouseEnter={() => setIsHoveringDictionary(true)} onMouseLeave={() => setIsHoveringDictionary(false)}>
           <Dictionary onCreateFlashcard={props.onCreateFlashcard} definitions={props.definitions} />
         </div>
-      </Popover.Content>
-    </Popover.Portal>
-  </Popover.Root>
+      </PopoverContent>
+    </Popover>
+  );
 }

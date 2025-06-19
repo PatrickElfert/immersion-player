@@ -1,21 +1,22 @@
 /* eslint-disable-next-line */
 
 import SearchField from './search-field.js';
-import { cn } from '@immersion-player/shared-utils';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLibrary } from './hooks/useLibrary.js';
+import { Card, CardFooter, Image } from '@heroui/react';
 
 function MediaCard({ name, thumbnail }: { name: string; thumbnail: string }) {
   return (
-    <div
-      data-testid="media"
-      className={cn('relative h-[345px] w-[300px] bg-cover flex items-end rounded')}
-      style={{ backgroundImage: `url('${thumbnail}')` }}
-    >
-      <div className="absolute bg-black h-full w-full opacity-40"></div>
-      <label className="font-semibold text-xl text-white p-3 z-10 relative break-all">{name}</label>
-    </div>
+    <Card data-testid="media" isFooterBlurred className="border-none" radius="lg">
+      <Image src={thumbnail} height={345} width={300} className="object-cover" />
+      <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1
+      overflow-hidden py-2 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
+        <p className="font-bold text-white/80">
+          {name}
+        </p>
+      </CardFooter>
+    </Card>
   );
 }
 
@@ -28,11 +29,11 @@ export function FeatureContentLibrary() {
   }
 
   return (
-    <div className="h-full gap-7 flex flex-col">
+    <div className="h-full gap-7 flex flex-col mx-5 min-w-[940px] max-w-[940px]">
       <SearchField className="w-60 self-end mr-8" onChange={handleOnChange} debounce={300} />
       <div className="h-full flex flex-row flex-wrap gap-4 min-h-0 overflow-auto">
         {library.map((l, index) => (
-          <Link key={index} to={`Player?id=${l.id}`}>
+          <Link className="h-max" key={index} to={`Player?id=${l.id}`}>
             <MediaCard name={l.name} thumbnail={l.thumbnail} key={l.name} />
           </Link>
         ))}

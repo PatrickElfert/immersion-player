@@ -11,3 +11,14 @@ export type ModelFields = {
     }[];
   };
 };
+
+export type SelectedModelFields = {
+  [modelName: string]: {
+    selectedFields: string[];
+  }
+}
+
+export type UpdateFieldMappingPayload = {
+  modelName: string;
+  selectedFields: string[];
+}

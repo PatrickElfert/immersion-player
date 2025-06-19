@@ -1,8 +1,8 @@
-import { ModelFields } from './anki-fields.js';
+import { SelectedModelFields } from './anki-fields.js';
 
 export type UserSettings = {
     mediaFolder: string;
-    modelFields: ModelFields | null;
+    selectedFields: SelectedModelFields  | null;
     knownWords: KnownWordMap;
 }
 

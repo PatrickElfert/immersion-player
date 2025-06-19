@@ -1,5 +1,6 @@
 const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
 const { join } = require('path');
+const {heroui} = require("@heroui/react");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -9,6 +10,7 @@ module.exports = {
       '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'
     ),
     ...createGlobPatternsForDependencies(__dirname),
+    "../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     fontFamily: {
@@ -17,22 +19,6 @@ module.exports = {
       ]
     },
     extend: {
-      colors: {
-        surface: '#202124',
-        overlay: '#303236',
-        card: '#27282B',
-        primary: '#08CF65',
-        secondary: '#FFD042',
-      },
-      backgroundImage: (theme) => ({
-        'primary-gradient': `linear-gradient(to bottom right, ${theme(
-          'colors.primary'
-        )}, ${theme('colors.secondary')})`,
-      }),
-      boxShadow: {
-        "inner-glow": "4px 0 30px rgba(255,255,255,0.08) inset",
-        "left-glow": "2px -35px 30px 15px rgba(255,255,255,0.08)"
-      },
       gridTemplateColumns: {
         root: '250px 1fr',
       },
@@ -41,5 +27,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [heroui()],
 };

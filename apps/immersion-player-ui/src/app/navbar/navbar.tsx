@@ -1,18 +1,35 @@
 import { useBreadcrumbs } from '../breadcrumb/useBreadcrumbs.js';
 import { KnownWordsDisplay } from '@immersion-player/feature-known-words-ui';
-import { Suspense } from 'react';
-import './loader.css'
+import { Button, Navbar as HeroNavbar, NavbarBrand, NavbarContent, NavbarItem } from '@heroui/react';
+import './loader.css';
+import { HamburgerMenuIcon } from '@radix-ui/react-icons';
+import { useLayout } from '../useLayout.js';
 
 export function Navbar() {
   const { current } = useBreadcrumbs();
-
+  const { toggleMenu } = useLayout();
 
   return (
-    <div className="px-8 py-6 shadow-left-glow flex justify-between items-center">
-      <label className="text-white font-semibold text-2xl">{current}</label>
-      <Suspense fallback={<div className="loader"></div>}>
+    <HeroNavbar maxWidth="full" isBordered={true}>
+      <NavbarContent justify="start">
+        <NavbarItem>
+          <Button
+            onPress={() => toggleMenu()}
+            isIconOnly
+            variant="light"
+          >
+            <HamburgerMenuIcon className="w-6 h-6" />
+          </Button>
+        </NavbarItem>
+        <NavbarItem>
+          <NavbarBrand>
+            <p className="font-bold text-inherit">{current}</p>
+          </NavbarBrand>
+        </NavbarItem>
+      </NavbarContent>
+      <NavbarContent justify="end">
         <KnownWordsDisplay />
-      </Suspense>
-    </div>
+      </NavbarContent>
+    </HeroNavbar>
   );
 }

@@ -1,23 +1,35 @@
-import { useMutation } from '@tanstack/react-query';
+import { addToast } from '@heroui/react';
 import { CreateFlashcardDto } from '@immersion-player/shared-types';
-import { Toast, toast } from 'react-simple-toasts';
+import { useMutation } from '@tanstack/react-query';
 
 export default function useFlashcards() {
-  let progressToast: Toast;
-
   const { mutate: createFlashcard } = useMutation({
     mutationFn: (flashcard: CreateFlashcardDto) =>
-      // @ts-expect-error 
+      // @ts-expect-error
       window.api.createFlashcard(flashcard),
     onMutate: () => {
-      progressToast = toast('Creating Flashcard', { loading: true, duration: Infinity });
+      addToast({
+        title: 'In Progress',
+        description: 'Your flashcard is currently created in Anki!',
+      });
     },
     onSuccess: () => {
-      progressToast.update({ loading: false, message: 'Flashcard Created', duration: 5000, theme: 'success' });
+      addToast({
+        title: 'Success',
+        description: 'Flashcard successfully created!',
+        severity: 'success',
+        color: 'success',
+      });
     },
     onError: () => {
-      progressToast.update({loading: false, message: "Could not create Flashcard", duration: 5000, theme: 'failure'})
-    }
+      addToast({
+        title: 'Failed',
+        description: 'Could not create your flashcard!',
+        severity: 'danger',
+        color: 'danger',
+      });
+    },
   });
+
   return { createFlashcard };
 }
