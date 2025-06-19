@@ -10,7 +10,7 @@ export default function useSubtitles() {
     throw Error(`Subtitles for ${libraryItem.name} not found!`)
   }
 
-  const { data, error, isLoading } = useSuspenseQuery<Subtitle[]>(
+  const { data, error } = useSuspenseQuery<Subtitle[]>(
     {
       queryKey: ['subtitles', languageFile?.path],
       queryFn:
@@ -19,5 +19,5 @@ export default function useSubtitles() {
           .parseSubtitles(languageFile?.path),
     }
   )
-  return { subtitles: data ?? [], subtitleFilePath: languageFile?.path, isLoading, error };
+  return { subtitles: data ?? [], subtitleFilePath: languageFile?.path, error };
 }

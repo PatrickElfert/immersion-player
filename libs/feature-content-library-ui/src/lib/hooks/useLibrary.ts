@@ -6,7 +6,7 @@ export function useLibrary(searchTerm?: string) {
     queryKey: ['library'],
     // @ts-expect-error window.electron is not typed
     queryFn: () => window.api.getLibrary(),
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 30,
   }
   )
 

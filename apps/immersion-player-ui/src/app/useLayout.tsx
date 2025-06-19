@@ -6,10 +6,10 @@ export function useLayout() {
 
 type LayoutState = {
   menuOpen: boolean;
-  toggleMenu: () => void;
+  toggleMenu: (value?: boolean) => void;
 };
 
 const useLayoutStore = create<LayoutState>((set) => ({
   menuOpen: true,
-  toggleMenu: () => set(({ menuOpen }) => ({ menuOpen: !menuOpen })),
+  toggleMenu: (value?: boolean) => set(({ menuOpen }) => ({ menuOpen: value ?? !menuOpen })),
 }));

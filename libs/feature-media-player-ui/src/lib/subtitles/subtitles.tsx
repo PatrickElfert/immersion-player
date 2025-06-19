@@ -4,7 +4,6 @@ import useFlashcards from '../hooks/useFlashcards.js';
 import { cn, timecodeToSeconds } from '@immersion-player/shared-utils';
 import { WordStatusHighlighting } from './word-status-highlighting.js';
 import { useLibraryItem } from '../hooks/useMedia.js';
-import { Fragment } from 'react';
 
 function JapaneseText({
   tokens,

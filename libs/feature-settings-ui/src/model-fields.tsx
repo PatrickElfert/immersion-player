@@ -23,7 +23,6 @@ export function ModelFields() {
   }));
 
   return (
-    <Section title="Field Mappings">
       <Accordion variant="splitted">
         {accordionItems.map((item) => (
           <AccordionItem key={item.value} aria-label={item.value} title={item.value}>
@@ -31,6 +30,5 @@ export function ModelFields() {
           </AccordionItem>
         ))}
       </Accordion>
-    </Section>
   );
 }

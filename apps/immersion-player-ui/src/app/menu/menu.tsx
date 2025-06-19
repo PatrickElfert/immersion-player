@@ -8,9 +8,11 @@ import { Button } from '@heroui/react';
 import { useLayout } from '../useLayout.js';
 
 function MenuItem({ label, active, icon, path }: { label: string; active: boolean; icon: ReactNode; path: string }) {
+  const {toggleMenu} = useLayout();
   return (
     <Link className="m-2" to={path}>
       <Button
+        onPress={() => toggleMenu(false)}
         startContent={icon}
         variant={active ? 'flat' : 'light'}
         color={active ? 'primary' : undefined}

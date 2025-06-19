@@ -66,7 +66,6 @@ export async function loadLibrary(): Promise<LibraryItem[]> {
         if (!existsSync(join(folderPath, 'thumbnail.png'))) {
           await createThumbnail(folderPath, videoPath);
         }
-
         result.push({
           name: parse(mediaPath).name,
           path: join('media://', videoPath),

@@ -4,6 +4,7 @@ import Menu from './menu/menu.js';
 import { Navbar } from './navbar/navbar.js';
 import { Outlet } from 'react-router-dom';
 import { ToastProvider } from '@heroui/react';
+import { useLayout } from './useLayout.js';
 
 export function App() {
   return (
