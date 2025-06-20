@@ -11,6 +11,12 @@
         "command": "electron-vite dev --config apps/immersion-player-desktop/electron.vite.config.ts"
       }
     },
+    "inspect": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "electron-vite dev --config apps/immersion-player-desktop/electron.vite.config.ts --inspect --sourcemap"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
