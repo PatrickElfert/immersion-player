@@ -1,19 +1,20 @@
 /* eslint-disable-next-line */
 import { SubtitleLine } from './subtitles/subtitles.js';
 import { Suspense, useRef } from 'react';
-import useSubtitles from './hooks/useSubtitles.js';
 import { useLibraryItem } from './hooks/useMedia.js';
 import { Browser } from './subtitles/browser.js';
 import { useSyncTimestamp } from './hooks/useSyncTimestamp.js';
 import { useCurrentSubtitle } from './hooks/useCurrentSubtitle.js';
-import { Skeleton } from '@heroui/react';
+import { useRenderInfo } from '@uidotdev/usehooks';
 
 export function FeatureMediaPlayerUi() {
   return (
     <div className="grid grid-cols-4 h-full gap-6">
       <div className="relative max-h-full aspect-video col-span-3">
         <Suspense fallback={null}>
-          <VideoPlayer />
+          <div className="p-4">
+            <VideoPlayer />
+          </div>
         </Suspense>
         <Suspense fallback={<div className="absolute text-white bottom-[15%] right-1/2">Loading...</div>}>
           <CurrentSubtitle />

@@ -10,6 +10,6 @@ type LayoutState = {
 };
 
 const useLayoutStore = create<LayoutState>((set) => ({
-  menuOpen: true,
+  menuOpen: false,
   toggleMenu: (value?: boolean) => set(({ menuOpen }) => ({ menuOpen: value ?? !menuOpen })),
 }));

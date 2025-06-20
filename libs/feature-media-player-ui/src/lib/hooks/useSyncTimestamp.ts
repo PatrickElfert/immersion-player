@@ -1,19 +1,16 @@
-import { RefObject, useEffect } from "react";
-import { usePlaybackStore } from "../state/playback.store.js";
+import { RefObject, useEffect } from 'react';
+import { usePlaybackStore } from '../state/playback.store.js';
 
-export function useSyncTimestamp(
-  videoPlayerRef: RefObject<HTMLVideoElement>,
-) {
+export function useSyncTimestamp(videoPlayerRef: RefObject<HTMLVideoElement>) {
   const playbackStore = usePlaybackStore();
 
   useEffect(() => {
     const videoPlayer = videoPlayerRef?.current;
     if (videoPlayer) {
-      const handleTimeUpdate = () => {
+      videoPlayer.ontimeupdate = () => {
         playbackStore.setTimestamp(videoPlayer.currentTime);
       };
-      videoPlayer.ontimeupdate = handleTimeUpdate;
     }
-  }, [videoPlayerRef]);
-  return
+  }, [videoPlayerRef, playbackStore]);
+  return;
 }

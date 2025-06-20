@@ -1,13 +1,30 @@
-import { Subtitle } from "@immersion-player/shared-types";
-import { usePlaybackStore } from "../state/playback.store.js";
-import useSubtitles from "./useSubtitles.js";
-import { timecodeToSeconds } from "@immersion-player/shared-utils";
+import { Subtitle } from '@immersion-player/shared-types';
+import { usePlaybackStore } from '../state/playback.store.js';
+import useSubtitles from './useSubtitles.js';
+import { timecodeToSeconds } from '@immersion-player/shared-utils';
+import { useEffect, useRef, useState } from 'react';
 
 export const useCurrentSubtitle = () => {
   const { subtitles } = useSubtitles();
-  const timestamp = usePlaybackStore(state => state.timestamp);
-  return getCurrentSubtitle(subtitles, timestamp);
-}
+  const [currentSubtitle, setCurrentSubtitle] = useState<Subtitle | null>(null);
+  const subtitleKey = useRef<string | null>(null);
+
+  useEffect(() => {
+    const unsubscribe= usePlaybackStore.subscribe(state => {
+      const subtitle = getCurrentSubtitle(subtitles, state.timestamp);
+      const key = `${subtitle?.startTime}-${subtitle?.endTime}`;
+
+      if (subtitle && key != subtitleKey.current) {
+        subtitleKey.current = key;
+        setCurrentSubtitle(subtitle);
+      }
+    })
+
+    return ()  => unsubscribe();
+  }, [subtitles]);
+
+  return currentSubtitle;
+};
 
 function getCurrentSubtitle(subtitles: Subtitle[], timestamp: number) {
   let left = 0;
