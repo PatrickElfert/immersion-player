@@ -3,6 +3,7 @@ import { Definition } from '@immersion-player/shared-types';
 import { PropsWithChildren, useState } from 'react';
 import { Button, Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
+import { useDebounce } from "@uidotdev/usehooks";
 
 function Definition({
   definition,
@@ -68,11 +69,11 @@ function DeinflectedTerm({
       <div className="m-2 px-1 pt-0.5 pb-1 rounded bg-primary-gradient flex items-center">
         <label data-testid="title" className="text-foreground font-normal">
           <ruby>
-            {deinflectedTerm?.map((t) => (
-              <>
+            {deinflectedTerm?.map((t, index) => (
+              <div key={index}>
                 {t.original}
                 {t.furigana && <rt>{t.furigana}</rt>}
-              </>
+              </div>
             ))}
           </ruby>
         </label>
@@ -121,10 +122,10 @@ export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps & { e
   const [isHoveringChildren, setIsHoveringChildren] = useState(false);
   const [isHoveringDictionary, setIsHoveringDictionary] = useState(false);
 
-  const isOpen = (isHoveringChildren || isHoveringDictionary) && props.enabled;
+  const isOpen = useDebounce((isHoveringChildren || isHoveringDictionary) && props.enabled, 100);
 
   return (
-    <Popover className={"dark"} color="default" isOpen={isOpen} showArrow={true}>
+    <Popover className={'dark'} color="default" isOpen={isOpen} showArrow={true}>
       <PopoverTrigger>
         <div
           className={'hover:text-primary'}

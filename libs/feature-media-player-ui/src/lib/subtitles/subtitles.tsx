@@ -4,6 +4,7 @@ import useFlashcards from '../hooks/useFlashcards.js';
 import { cn, timecodeToSeconds } from '@immersion-player/shared-utils';
 import { WordStatusHighlighting } from './word-status-highlighting.js';
 import { useLibraryItem } from '../hooks/useMedia.js';
+import { Fragment } from 'react';
 
 function JapaneseText({
   tokens,
@@ -20,10 +21,10 @@ function JapaneseText({
     <WordStatusHighlighting status={status}>
       <ruby data-testid="word" className="whitespace-nowrap">
         {tokens?.map((t, index) => (
-          <div key={index}>
+          <Fragment key={index}>
             <span>{t.original}</span>
             {showFurigana && t.furigana && <rt>{t.furigana}</rt>}
-          </div>
+          </Fragment>
         ))}
       </ruby>
     </WordStatusHighlighting>
