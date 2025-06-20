@@ -182,7 +182,7 @@ export const potential: Ruleset = {
     { replace: 'られる', with: 'る', applyTo: ['VERB_POTENTIAL'] },
     { replace: 'れる', with: 'る', applyTo: ['VERB_POTENTIAL'] },
     { replace: 'こられる', with: 'くる', applyTo: ['VERB_POTENTIAL'] },
-    { replace: 'でくる', with: 'する', applyTo: ['VERB_POTENTIAL'] },
+    { replace: 'できる', with: 'する', applyTo: ['VERB_POTENTIAL'] },
   ],
 
 }

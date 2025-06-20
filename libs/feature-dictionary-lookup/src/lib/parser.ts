@@ -1,17 +1,23 @@
 import { KuromojiToken, tokenize } from 'kuromojin';
 import { getDeinflections } from './deinflect.js';
 import { JmDictionary } from './dictionaries/JmDict.js';
-import { Character, Definition, KnownWordsStatus, LookupResult, UserSettings } from '@immersion-player/shared-types';
+import {
+  Character,
+  Definition,
+  KnownWordMap,
+  KnownWordsStatus,
+  LookupResult,
+} from '@immersion-player/shared-types';
 import { isHiragana, toHiragana } from 'wanakana';
-import Store from 'electron-store';
 
 export class Parser {
   dictionary: JmDictionary;
+  knownWords: KnownWordMap;
   MAX_GROUPING_ATTEMPTS = 20;
-  store = new Store<UserSettings>();
 
-  constructor(path: string) {
+  constructor(path: string, knownWords: KnownWordMap) {
     this.dictionary = new JmDictionary(path);
+    this.knownWords = knownWords;
   }
 
   async parseSentence(sentence: string, scanLength = 4) {
@@ -21,7 +27,7 @@ export class Parser {
 
   async getLookupResults(morphemes: KuromojiToken[], scanLength: number): Promise<LookupResult[]> {
     const morphemeGroups = this.getMorphemeGroups(morphemes, scanLength);
-    const result: LookupResult[] = [];
+    const lookupResults: LookupResult[] = [];
 
     while (morphemeGroups.length > 0) {
       const currentGroup = morphemeGroups[0];
@@ -45,41 +51,47 @@ export class Parser {
             morphemeGroups.unshift(remainingMorphemes);
           }
 
-          result.push({
-            token: await this.getCharacters(token),
-            definitions: possibleDefinitions,
-            status: this.determineWordsStatus(terms[0]),
-          });
+          const lookupResult = await this.createLookupResult(token, terms, possibleDefinitions);
+          lookupResults.push(lookupResult);
 
           break;
         }
 
         if (currentGroup.length > 1) {
           /** Save remaining morphemes that will not be processed with this group **/
-          remainingMorphemes.push(currentGroup[currentGroup.length - 1]);
+          remainingMorphemes.unshift(currentGroup[currentGroup.length - 1]);
 
           /** remove the last morpheme from this group to find a smaller word **/
           currentGroup.pop();
         } else {
           /** we could not find a word for this item **/
           morphemeGroups.shift();
-          result.push({
-            token: await this.getCharacters(token),
-            definitions: [],
-            status: this.determineWordsStatus(terms[0]),
-          });
+
+          if(remainingMorphemes.length > 0) {
+            morphemeGroups.unshift(remainingMorphemes);
+          }
+
+          const lookupResult = await this.createLookupResult(token, terms, possibleDefinitions);
+          lookupResults.push(lookupResult);
           break;
         }
       }
     }
 
-    return result;
+    return lookupResults;
+  }
+
+  async createLookupResult(token: string, terms: string[], definitions: Definition[][]) {
+    return {
+      token: await this.getCharacters(token),
+      definitions,
+      status: this.determineWordsStatus(terms[0]),
+    };
   }
 
   determineWordsStatus(token: string): KnownWordsStatus {
-    const knownWords = this.store.get('knownWords');
-    if (knownWords[token]) {
-      return knownWords[token].status;
+    if (this.knownWords[token]) {
+      return this.knownWords[token].status;
     }
 
     return 'UNKNOWN';

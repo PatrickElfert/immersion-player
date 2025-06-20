@@ -5,7 +5,6 @@ import { useLibraryItem } from './hooks/useMedia.js';
 import { Browser } from './subtitles/browser.js';
 import { useSyncTimestamp } from './hooks/useSyncTimestamp.js';
 import { useCurrentSubtitle } from './hooks/useCurrentSubtitle.js';
-import { useRenderInfo } from '@uidotdev/usehooks';
 
 export function FeatureMediaPlayerUi() {
   return (

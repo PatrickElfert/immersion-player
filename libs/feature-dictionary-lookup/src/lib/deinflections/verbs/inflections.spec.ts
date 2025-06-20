@@ -538,7 +538,6 @@ const tests: DeinflectionTest[] = [
     output: ['取る'],
     description: 'potential る',
   },
-  //Todo: Fix this
   {
     input: 'できる',
     output: ['する'],
