@@ -26,12 +26,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # - name: Install Playwright Browsers
-      #   run: npx playwright install chromium
-           
-      # - name: Install Playwright Browsers
-      #   run: npx playwright install-deps 
-
       - name: Download JmDict
         run: |
           wget -O jmdict-all.json.zip https://github.com/scriptin/jmdict-simplified/releases/download/3.5.0%2B20240826121924/jmdict-all-3.5.0+20240826121924.json.zip
@@ -44,26 +38,6 @@ jobs:
 
       - name: Run Unit Tests
         run: npx nx run-many --target=test
-
-      - name: Build Electron App
-        run: npm run make
-
-      # - name: Create Library folder
-      #   run: mkdir -p $HOME/ImmersionPlayer
-
-      # - name: Copy Test folders
-      #   run: cp -r "./assets/Example E01" "./assets/Example E02" "$HOME/ImmersionPlayer"
-      #   shell: bash
-
-      # - name: Start Flashcard Preview Server and run E2E Tests
-      #   run: |
-      #     npx start-server-and-test 'nx serve flashcard-preview --port 5000' http://localhost:5000 'nx run flashcard-preview:e2e' 
-
-      # - name: Install xvfb 
-      #   run: sudo apt-get install -y xvfb
-
-      # - name: Run Electron E2E Tests
-      #   run: xvfb-run npx nx run immersion-player-desktop:e2e
 
 
 
