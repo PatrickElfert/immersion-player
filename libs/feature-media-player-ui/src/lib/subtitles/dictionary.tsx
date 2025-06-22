@@ -1,6 +1,7 @@
 import { cn } from '@immersion-player/shared-utils';
 import { Definition } from '@immersion-player/shared-types';
 import { PropsWithChildren, useState } from 'react';
+import { Fragment, PropsWithChildren, useState } from 'react';
 import { Button, Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
 import { useDebounce } from "@uidotdev/usehooks";
@@ -70,10 +71,10 @@ function DeinflectedTerm({
         <label data-testid="title" className="text-foreground font-normal">
           <ruby>
             {deinflectedTerm?.map((t, index) => (
-              <div key={index}>
+              <Fragment key={index}>
                 {t.original}
                 {t.furigana && <rt>{t.furigana}</rt>}
-              </div>
+              </Fragment>
             ))}
           </ruby>
         </label>
