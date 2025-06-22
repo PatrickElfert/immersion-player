@@ -1,27 +1,83 @@
 import { parseTextWithFurigana } from './utils/utils.js';
 
 export const backTemplate = `
- <div data-testid="backTemplate" style="display: flex; flex-direction: column; align-items: center">
-  <h2 data-testid="targetSentence"></h2>
-  <h4 data-testid="targetWord"></h4>
-  <img data-testid="screenshot" style="height: 400px" src="{{image}}" />
-  <audio data-testid="sentenceAudio" autoplay controls>
-   <source src="{{sentenceAudio}}" type="audio/mpeg">
-  </audio>
-  <ol data-testid="definitions" id="dynamic-fields"></ol>
- </div>
-<script>
+ <div data-testid="backTemplate" class="container">
+  <div class="answer">
+    <h2 id="targetSentence" data-testid="targetSentence"></h2id>
+    <h2 id="targetWord" data-testid="targetWord"></h2>
+  </div>
+  <img data-testid="screenshot" class="image" src="{{image}}" />
 
-const rawDefinitions = '{{definitions}}';
+  <div class="audio-wrapper">
+  <button id="customPlayButton" data-testid="playButton" aria-label="Play audio">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+  </button>
+  <audio id="sentenceAudio" data-testid="sentenceAudio">
+    <source src="{{sentenceAudio}}" type="audio/mpeg" />
+  </audio>
+</div>
+
+
+  <ol class="list" data-testid="definitions" id="dynamic-fields"></ol>
+ </div>
+<style
+>
+ * {
+    box-sizing: border-box;
+  }
+
+  .list li {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .audio-wrapper button {
+    border-radius: 25px;
+    border: none;
+    background-color: #71717A;
+  }
+
+  .audio-wrapper button:hover {
+    filter: brightness(1.2);
+  }
+
+  .image {
+   margin: 2rem;
+   height: 200px;
+   width: auto
+  }
+
+ .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #18181B;
+  color: white;
+  padding: 2rem;
+ }
+
+ .answer {
+  background-color: #3F3F46;
+  padding: 0.1rem;
+  width: 100%;
+  border-radius: 25px;
+  text-align: center;
+ }
+</style>
+
+<script>
+  const rawDefinitions = "{{definitions}}";
   ${parseTextWithFurigana.toString()}
-  const rawTargetWord = '{{targetWord}}';
-  const rawSentence = '{{sentenceBack}}'
+  const rawTargetWord = "{{targetWord}}";
+  const rawSentence = "{{sentenceBack}}";
   const processedTargetWord = parseTextWithFurigana(rawTargetWord);
   const processedSentence = parseTextWithFurigana(rawSentence);
-  const targetWordContainer = document.querySelector('h4');
-  const sentenceContainer = document.querySelector('h2')
-  targetWordContainer.innerHTML = processedTargetWord;
-  sentenceContainer.innerHTML = processedSentence;
+  const targetWordContainer = document.getElementById('targetWord');
+  const sentenceContainer = document.getElementById('targetSentence')
+  targetWordContainer.innerHTML = processedSentence;
+  sentenceContainer.innerHTML = processedTargetWord;
 
   const delimiter = '*~*';
   const definitions = rawDefinitions.split(delimiter).map(def => def.trim());
@@ -33,5 +89,19 @@ const rawDefinitions = '{{definitions}}';
     fieldElement.textContent = definition;
     container.appendChild(fieldElement);
   });
+
+
+  const playButton = document.getElementById('customPlayButton');
+  const audioElement = document.getElementById('sentenceAudio');
+
+  playButton.addEventListener('click', () => {
+    if(audioElement.paused) {
+      audioElement.play();
+    } else {
+      audioElement.currentTime = 0;
+      audioElement.pause();
+    }
+  });
+
 </script>
 `;

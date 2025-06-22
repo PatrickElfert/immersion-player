@@ -6,10 +6,7 @@ import { loadLibrary } from '@immersion-player/feature-content-provider';
 import { parseSrt } from '@immersion-player/feature-dictionary-lookup';
 import * as path from 'path';
 import {
-  AnkiFields,
   CreateFlashcardDto,
-  ModelFields,
-  SelectedModelFields,
   UpdateFieldMappingPayload
 } from '@immersion-player/shared-types';
 import { createFlashcard } from '@immersion-player/feature-flashcard-creation';
