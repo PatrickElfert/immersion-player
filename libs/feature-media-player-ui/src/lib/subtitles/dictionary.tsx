@@ -1,10 +1,9 @@
 import { cn } from '@immersion-player/shared-utils';
 import { Definition } from '@immersion-player/shared-types';
-import { PropsWithChildren, useState } from 'react';
 import { Fragment, PropsWithChildren, useState } from 'react';
 import { Button, Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
-import { useDebounce } from "@uidotdev/usehooks";
+import { useDebounce } from '@uidotdev/usehooks';
 
 function Definition({
   definition,
@@ -107,16 +106,26 @@ interface DictionaryProps {
   onCreateFlashcard: (definitions: Definition[]) => void;
 }
 
-function Dictionary(props: DictionaryProps) {
+function DictionaryShell({ children }: PropsWithChildren) {
   return (
-    <div data-testid="dictionary" className="w-full flex items-center flex-col">
-      <div className="h-60 min-w-[20rem] w-20 rounded flex flex-col text-foreground text-base font-extralight overflow-y-scroll">
-        {props.definitions.map((entry, index) => (
-          <DeinflectedTerm key={index} onCreateFlashcard={props.onCreateFlashcard} definitions={entry} />
-        ))}
-      </div>
+    <div data-testid="dictionary" className="h-60 w-[30rem] flex flex-col text-foreground text-base overflow-y-scroll">
+      {children}
     </div>
   );
+}
+
+function DictionaryEntries(props: DictionaryProps) {
+  return (
+    <>
+      {props.definitions.map((entry, index) => (
+        <DeinflectedTerm key={index} onCreateFlashcard={props.onCreateFlashcard} definitions={entry} />
+      ))}
+    </>
+  );
+}
+
+function DictionaryEmpty() {
+  return <div className="w-full text-center p-5 text-content1-foreground">No definitions found</div>;
 }
 
 export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps & { enabled: boolean }>) {
@@ -139,7 +148,13 @@ export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps & { e
       </PopoverTrigger>
       <PopoverContent>
         <div onMouseEnter={() => setIsHoveringDictionary(true)} onMouseLeave={() => setIsHoveringDictionary(false)}>
-          <Dictionary onCreateFlashcard={props.onCreateFlashcard} definitions={props.definitions} />
+          <DictionaryShell>
+            {props.definitions.length > 0 ? (
+              <DictionaryEntries definitions={props.definitions} onCreateFlashcard={props.onCreateFlashcard} />
+            ) : (
+              <DictionaryEmpty />
+            )}
+          </DictionaryShell>
         </div>
       </PopoverContent>
     </Popover>

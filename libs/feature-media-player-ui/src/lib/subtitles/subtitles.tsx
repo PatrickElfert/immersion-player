@@ -9,7 +9,6 @@ import { Fragment } from 'react';
 function JapaneseText({
   tokens,
   showFurigana,
-  showStatus,
   status,
 }: {
   tokens: Character[];

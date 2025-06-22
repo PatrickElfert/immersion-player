@@ -8,7 +8,7 @@ import { useCurrentSubtitle } from './hooks/useCurrentSubtitle.js';
 
 export function FeatureMediaPlayerUi() {
   return (
-    <div className="grid grid-cols-4 h-full gap-6">
+    <div className="grid grid-cols-4 h-full w-full">
       <div className="relative max-h-full aspect-video col-span-3">
         <Suspense fallback={null}>
           <div className="p-4">

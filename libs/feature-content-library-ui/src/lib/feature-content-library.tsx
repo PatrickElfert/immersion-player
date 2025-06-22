@@ -28,7 +28,7 @@ export function FeatureContentLibrary() {
   }
 
   return (
-    <div className="h-full gap-7 flex flex-col mx-5 min-w-[940px] max-w-[940px]">
+    <div className="h-full gap-7 flex flex-col mx-5 min-w-[940px] max-w-[940px] my-4">
       <SearchField className="w-60 self-end mr-8" onChange={handleOnChange} debounce={300} />
       <Suspense fallback={null}>
         <LibraryItems searchTerm={searchTerm} />
