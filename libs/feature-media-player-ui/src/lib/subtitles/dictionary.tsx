@@ -1,7 +1,7 @@
 import { cn } from '@immersion-player/shared-utils';
 import { Definition } from '@immersion-player/shared-types';
 import { Fragment, PropsWithChildren, useState } from 'react';
-import { Button, Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
+import { Button, Checkbox, Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
 import { useDebounce } from '@uidotdev/usehooks';
 
@@ -20,22 +20,21 @@ function Definition({
 }) {
   return (
     <div data-testid="definition" className={cn('flex flex-col', className)}>
-      <div className="relative pl-10">
-        <div className="flex absolute top-0 left-0">
-          <input
-            className="mr-2 checked:accent-primary"
-            type="checkbox"
+      <div className="flex-col">
+        <div className="flex">
+          <Checkbox
             onChange={(event) =>
               event.target.checked ? onDefinitionSelected(definition) : onDefinitionUnselected(definition)
             }
-          />
-          <div>{count}.</div>
+          ></Checkbox>
+          <label data-testid="word">{definition.text}</label>
         </div>
-        <label data-testid="word">{definition.text}</label>
+        {definition.description.length > 0 && (
+          <div data-testid="description" className="ml-8 font-light text-sm text-gray-400">
+            {definition.description}
+          </div>
+        )}
       </div>
-      <label data-testid="description" className="ml-6 font-light text-sm text-gray-400">
-        {definition.description}
-      </label>
     </div>
   );
 }
