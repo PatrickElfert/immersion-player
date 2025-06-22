@@ -135,7 +135,7 @@ export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps & { e
   const isOpen = useDebounce((isHoveringChildren || isHoveringDictionary) && props.enabled, 100);
 
   return (
-    <Popover className={'dark'} color="default" isOpen={isOpen} showArrow={true}>
+    <Popover className={'dark'} color="default" isOpen={isOpen} showArrow={false}>
       <PopoverTrigger>
         <div
           className={'hover:text-primary'}
