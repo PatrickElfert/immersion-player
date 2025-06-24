@@ -1,8 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { cn, useIsScrolling } from "@immersion-player/shared-utils";
 import { SubtitleLine } from "./subtitles.js";
 import useSubtitles from "../hooks/useSubtitles.js";
-import { useCurrentSubtitleIndex } from "../hooks/useCurrentSubtitleIndex.js";
+import { useSubtitleStore } from '../state/subtitle.store.js';
 
 const formatTime = (timecode: string) => {
     const [time] = timecode.split(',');
@@ -11,7 +11,7 @@ const formatTime = (timecode: string) => {
 };
 
 export function Browser() {
-    const currentSubtitleIndex = useCurrentSubtitleIndex();
+    const currentSubtitleIndex = useSubtitleStore((state) => state.currentSubtitleIndex);
     const { subtitles } = useSubtitles();
     const {isScrolling, ref: containerRef} = useIsScrolling()
 
