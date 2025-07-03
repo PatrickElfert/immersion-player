@@ -50,7 +50,7 @@ export function SubtitleLine({
     createFlashcard({
       sentenceFront: subtitle.text[0],
       sentenceBack: subtitle.lookupResult.flatMap((l) => l.token),
-      definitions,
+      targetWords: definitions,
       startTime: timecodeToSeconds(subtitle.startTime),
       endTime: timecodeToSeconds(subtitle.endTime),
       filePath: path,

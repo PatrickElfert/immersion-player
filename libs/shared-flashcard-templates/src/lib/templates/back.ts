@@ -1,4 +1,4 @@
-import { parseTextWithFurigana } from './utils/utils.js';
+import { parseTextWithFurigana, createTargetWordsTemplate } from './utils/utils.js';
 
 export const backTemplate = `
  <div data-testid="backTemplate" class="container">
@@ -68,28 +68,19 @@ export const backTemplate = `
 </style>
 
 <script>
-  const rawDefinitions = "{{definitions}}";
   ${parseTextWithFurigana.toString()}
-  const rawTargetWord = "{{targetWord}}";
+  ${createTargetWordsTemplate.toString()}
+
+  const rawTargetWords = "{{targetWords}}";
   const rawSentence = "{{sentenceBack}}";
-  const processedTargetWord = parseTextWithFurigana(rawTargetWord);
+  const targetWordsTemplate = createTargetWordsTemplate(JSON.parse(rawTargetWords);
   const processedSentence = parseTextWithFurigana(rawSentence);
+
   const targetWordContainer = document.getElementById('targetWord');
   const sentenceContainer = document.getElementById('targetSentence')
+
   targetWordContainer.innerHTML = processedSentence;
-  sentenceContainer.innerHTML = processedTargetWord;
-
-  const delimiter = '*~*';
-  const definitions = rawDefinitions.split(delimiter).map(def => def.trim());
-  const container = document.getElementById('dynamic-fields');
-
-
-  definitions.forEach((definition, index) => {
-    const fieldElement = document.createElement('li');
-    fieldElement.textContent = definition;
-    container.appendChild(fieldElement);
-  });
-
+  sentenceContainer.innerHTML = targetWordsTemplate;
 
   const playButton = document.getElementById('customPlayButton');
   const audioElement = document.getElementById('sentenceAudio');

@@ -1,10 +1,15 @@
 import { Character, Definition } from './lookup-result.js';
 
-export interface CreateFlashcardDto {
+export type CreateFlashcardDto = {
   sentenceBack: Character[];
   sentenceFront: string;
-  definitions: Definition[];
+  targetWords: Map<string, TargetWord[]>;
   startTime: number;
   endTime: number;
   filePath: string;
+}
+
+type TargetWord = {
+  token: Character[];
+  definitions: Definition[];
 }

@@ -1,7 +1,7 @@
 import { backTemplate, frontTemplate } from '@immersion-player/shared-flashcard-templates';
 import { stringifyCharacters } from '@immersion-player/shared-utils';
 
-type TemplateValues = { [key: string]: string };
+type TemplateValues = { [key: string]: string};
 
 function replaceTemplateValues(str: string, values: TemplateValues) {
   return Object.entries(values).reduce((updatedStr, [key, value]) => {
@@ -27,8 +27,7 @@ const sentence = [
 const values: TemplateValues = {
   image: 'src/assets/test.png',
   sentenceAudio: 'src/assets/test.mp3',
-  definitions: 'customer*~*guest; visitor',
-  targetWord: stringifyCharacters([{ original: 'お客', furigana: 'おきゃく' }]),
+  targetWords: JSON.stringify([['お客', {definitions: [], token: '' }]]),
   sentenceBack: stringifyCharacters(sentence),
   sentenceFront: 'もっと２人でお客さんせ喜ばたかったな'
 };

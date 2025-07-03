@@ -26,7 +26,7 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
           Front: frontTemplate,
         },
       ],
-      inOrderFields: ['sentenceFront', 'sentenceBack', 'definitions', 'targetWord', 'image', 'sentenceAudio'],
+      inOrderFields: ['sentenceFront', 'sentenceBack', 'targetWords', 'image', 'sentenceAudio'],
     });
   }
 
@@ -57,8 +57,15 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
       fields: {
         sentenceFront: flashcard.sentenceFront,
         sentenceBack: stringifyCharacters(flashcard.sentenceBack),
-        definitions: flashcard.definitions.map((d) => d.text).join('*~*'),
-        targetWord: stringifyCharacters(flashcard.definitions[0].token),
+        targetWords: JSON.stringify(
+          [...flashcard.targetWords].map((e) => [
+            e[0],
+            e[1].map((v) => ({
+              ...v,
+              token: stringifyCharacters(v.token),
+            })),
+          ])
+        ),
         sentenceAudio: audioStoreResult,
         image: imageStoreResult,
       },
