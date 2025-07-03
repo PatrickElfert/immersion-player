@@ -66,7 +66,7 @@ export function SubtitleLine({
               <DictionaryOverlay
                 enabled={!disableDictionary}
                 onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, subtitle, libraryItem.path)}
-                definitions={result.definitions}
+                dictionaryResults={result.dictionaryResults}
               >
                 <JapaneseText
                   status={result.status}

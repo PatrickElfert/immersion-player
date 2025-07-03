@@ -1,5 +1,5 @@
 import { cn } from '@immersion-player/shared-utils';
-import { Definition } from '@immersion-player/shared-types';
+import { Definition, DictionaryResult } from '@immersion-player/shared-types';
 import { Fragment, PropsWithChildren, useState } from 'react';
 import { Button, Checkbox, Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
@@ -40,14 +40,15 @@ function Definition({
 }
 
 function DeinflectedTerm({
-  definitions,
+  dictionaryResult,
   onCreateFlashcard,
 }: {
-  definitions: Definition[];
+  dictionaryResult: DictionaryResult;
   onCreateFlashcard: (definitions: Definition[]) => void;
+  term: string
 }) {
   const [selectedDefinitions, setSelectedDefinitions] = useState<{ [key: string]: Definition }>({});
-  const deinflectedTerm = definitions[0]?.token;
+  const deinflectedTerm = dictionaryResult.token;
 
   const addNewDefinition = (definition: Definition, key: string) => {
     setSelectedDefinitions((current) => {
@@ -86,7 +87,7 @@ function DeinflectedTerm({
           <PaperPlaneIcon></PaperPlaneIcon>
         </Button>
       </div>
-      {definitions.map((definition, index) => (
+      {dictionaryResult.definitions.map((definition, index) => (
         <Definition
           key={index}
           onDefinitionSelected={() => addNewDefinition(definition, index.toString())}
@@ -101,7 +102,7 @@ function DeinflectedTerm({
 }
 
 interface DictionaryProps {
-  definitions: Definition[][];
+  dictionaryResults: Map<string, DictionaryResult>;
   onCreateFlashcard: (definitions: Definition[]) => void;
 }
 
@@ -116,8 +117,8 @@ function DictionaryShell({ children }: PropsWithChildren) {
 function DictionaryEntries(props: DictionaryProps) {
   return (
     <>
-      {props.definitions.map((entry, index) => (
-        <DeinflectedTerm key={index} onCreateFlashcard={props.onCreateFlashcard} definitions={entry} />
+      {[...props.dictionaryResults.entries()].map(([term, result]) => (
+        <DeinflectedTerm key={term} term={term} onCreateFlashcard={props.onCreateFlashcard} dictionaryResult={result} />
       ))}
     </>
   );
@@ -148,8 +149,8 @@ export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps & { e
       <PopoverContent>
         <div onMouseEnter={() => setIsHoveringDictionary(true)} onMouseLeave={() => setIsHoveringDictionary(false)}>
           <DictionaryShell>
-            {props.definitions.length > 0 ? (
-              <DictionaryEntries definitions={props.definitions} onCreateFlashcard={props.onCreateFlashcard} />
+            {props.dictionaryResults.size > 0 ? (
+              <DictionaryEntries dictionaryResults={props.dictionaryResults} onCreateFlashcard={props.onCreateFlashcard} />
             ) : (
               <DictionaryEmpty />
             )}

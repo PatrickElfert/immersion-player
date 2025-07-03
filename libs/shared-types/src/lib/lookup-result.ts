@@ -9,14 +9,19 @@ export type LookupResult = {
   /** The part of a subtitle that got processed **/
   token: Character[];
   status: KnownWordsStatus;
-  /** All of the definitions that got found
-   * This can be more then one if multiple different deinflected version are produced**/
-  definitions: Definition[][];
+  /** Key is the deinflected term that got looked up in the dictionary
+   * **/
+  dictionaryResults: Map<string, DictionaryResult>;
 };
 
 export type Definition = {
-  /** the deinflected version that was searched for **/
-  token: Character[];
   text: string;
   description: string;
 }
+
+export type DictionaryResult = {
+  definitions: Definition[];
+  token: Character[]
+}
+
+

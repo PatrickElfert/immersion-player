@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { HeroUIProvider } from '@heroui/react';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const router = createHashRouter([
   {
@@ -57,6 +58,7 @@ root.render(
   <StrictMode>
     <HeroUIProvider>
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <RouterProvider router={router} />
       </QueryClientProvider>
     </HeroUIProvider>

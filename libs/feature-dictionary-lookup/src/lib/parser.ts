@@ -4,9 +4,10 @@ import { JmDictionary } from './dictionaries/JmDict.js';
 import {
   Character,
   Definition,
+  DictionaryResult,
   KnownWordMap,
   KnownWordsStatus,
-  LookupResult,
+  LookupResult
 } from '@immersion-player/shared-types';
 import { isHiragana, toHiragana } from 'wanakana';
 
@@ -40,9 +41,9 @@ export class Parser {
 
         /** If we don't find any deinflections we expect the word is already in its base form **/
         const terms = deinflectedTokens.length > 0 ? deinflectedTokens.map((baseForm) => baseForm) : [token];
-        const possibleDefinitions = await this.lookupTermsInDictionary(terms);
+        const dictionaryResults = await this.lookupTermsInDictionary(terms);
 
-        if (possibleDefinitions.length > 0) {
+        if (dictionaryResults.size > 0) {
           /** remove the currently processed group **/
           morphemeGroups.shift();
 
@@ -51,7 +52,7 @@ export class Parser {
             morphemeGroups.unshift(remainingMorphemes);
           }
 
-          const lookupResult = await this.createLookupResult(token, terms, possibleDefinitions);
+          const lookupResult = await this.createLookupResult(token, dictionaryResults);
           lookupResults.push(lookupResult);
 
           break;
@@ -67,11 +68,11 @@ export class Parser {
           /** we could not find a word for this item **/
           morphemeGroups.shift();
 
-          if(remainingMorphemes.length > 0) {
+          if (remainingMorphemes.length > 0) {
             morphemeGroups.unshift(remainingMorphemes);
           }
 
-          const lookupResult = await this.createLookupResult(token, terms, possibleDefinitions);
+          const lookupResult = await this.createLookupResult(token, dictionaryResults);
           lookupResults.push(lookupResult);
           break;
         }
@@ -81,11 +82,15 @@ export class Parser {
     return lookupResults;
   }
 
-  async createLookupResult(token: string, terms: string[], definitions: Definition[][]) {
+  async createLookupResult(token: string, dictionaryResults: Map<string, DictionaryResult>) {
+    /** We use the first deinflected term to determine the word status
+     * In the future there could be a more advanced way to determine this **/
+    const firstTerm = dictionaryResults.keys().next().value;
+
     return {
       token: await this.getCharacters(token),
-      definitions,
-      status: this.determineWordsStatus(terms[0]),
+      dictionaryResults,
+      status: this.determineWordsStatus(firstTerm)
     };
   }
 
@@ -97,25 +102,20 @@ export class Parser {
     return 'UNKNOWN';
   }
 
-  async lookupTermsInDictionary(terms: string[]) {
-    const definitions: Definition[][] = [];
-    for (const term of terms) {
-      const result = this.dictionary.getDefinitions(term);
-      const definitionsByTerm: Definition[] = [];
-      if (result.length > 0) {
-        for (const definition of result) {
-          const tokenCharacters = await this.getCharacters(term);
-          definitionsByTerm.push({
-            token: tokenCharacters,
-            ...definition,
-          });
-        }
-      }
-      if (definitionsByTerm.length > 0) {
-        definitions.push(definitionsByTerm);
-      }
-    }
-    return definitions;
+  async lookupTermsInDictionary(terms: string[]): Promise<Map<string, DictionaryResult>> {
+    const goodTerms = terms.filter(term =>
+      this.dictionary.getDefinitions(term).length > 0
+    );
+
+    const entries = await Promise.all(
+      goodTerms.map(async term => {
+        const token       = await this.getCharacters(term);
+        const definitions = this.dictionary.getDefinitions(term);
+        return [term, { definitions, token }] as const;
+      })
+    );
+
+    return new Map(entries);
   }
 
   /** Returns multiple groups of morphemes which could represent a dictionary entry **/
