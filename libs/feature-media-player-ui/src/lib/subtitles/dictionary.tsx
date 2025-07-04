@@ -65,6 +65,9 @@ function DeinflectedTerm({
     });
   };
 
+  const selectedDefinitionsArr = Object.values(selectedDefinitions).flatMap((definition) => definition);
+  const definitionsToCreate = selectedDefinitionsArr.length > 0 ? selectedDefinitionsArr : dictionaryResult.definitions;
+
   return (
     <div data-testid="deinflectedTerm">
       <div className="m-2 px-1 pt-0.5 pb-1 rounded bg-primary-gradient flex items-center">
@@ -86,7 +89,7 @@ function DeinflectedTerm({
             onCreateFlashcard([
               {
                 token: deinflectedTerm,
-                definitions: Object.values(selectedDefinitions).flatMap((definition) => definition),
+                definitions: definitionsToCreate,
               },
             ])
           }
