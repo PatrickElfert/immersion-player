@@ -1,14 +1,10 @@
 import { backTemplate, frontTemplate } from '@immersion-player/shared-flashcard-templates';
 import { stringifyCharacters } from '@immersion-player/shared-utils';
+import Mustache from 'mustache';
 
-type TemplateValues = { [key: string]: string};
+Mustache.escape = (text) => text;
 
-function replaceTemplateValues(str: string, values: TemplateValues) {
-  return Object.entries(values).reduce((updatedStr, [key, value]) => {
-    const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-    return updatedStr.replace(regex, value);
-  }, str);
-}
+type TemplateValues = { [key: string]: any };
 
 const sentence = [
   { original: 'もっと', furigana: null },
@@ -24,12 +20,19 @@ const sentence = [
   { original: 'な', furigana: null },
 ];
 
+const targetWords = [
+  {
+    token: stringifyCharacters([{ original: '真夏', furigana: 'まなつ' }]),
+    definitions: [{ description: '', text: 'middle of summer; height of summer; midsummer' }],
+  },
+];
+
 const values: TemplateValues = {
   image: 'src/assets/test.png',
   sentenceAudio: 'src/assets/test.mp3',
-  targetWords: JSON.stringify([['お客', {definitions: [], token: '' }]]),
+  targetWords: JSON.stringify(targetWords),
   sentenceBack: stringifyCharacters(sentence),
-  sentenceFront: 'もっと２人でお客さんせ喜ばたかったな'
+  sentenceFront: 'もっと２人でお客さんせ喜ばたかったな',
 };
 
 export class BackTemplate extends HTMLElement {
@@ -38,7 +41,7 @@ export class BackTemplate extends HTMLElement {
   }
 
   connectedCallback() {
-    this.innerHTML = replaceTemplateValues(backTemplate, values);
+    this.innerHTML = Mustache.render(backTemplate, values);
     this.querySelectorAll('script').forEach((script) => {
       const scriptElement = document.createElement('script');
       scriptElement.textContent = script.textContent;
@@ -54,7 +57,7 @@ export class FrontTemplate extends HTMLElement {
   }
 
   connectedCallback() {
-    this.innerHTML = replaceTemplateValues(frontTemplate, values);
+    this.innerHTML = Mustache.render(frontTemplate, values);
     this.querySelectorAll('script').forEach((script) => {
       const scriptElement = document.createElement('script');
       scriptElement.textContent = script.textContent;
