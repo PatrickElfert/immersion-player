@@ -2,10 +2,12 @@ import { parseTextWithFurigana, createTargetWordsTemplate } from './utils/utils.
 
 export const backTemplate = `
  <div data-testid="backTemplate" class="container">
-  <div class="answer">
+ <div class="answer">
+  <div class="answerContainer">
     <h2 id="targetSentence" data-testid="targetSentence"></h2id>
     <h2 id="targetWord" data-testid="targetWord"></h2>
   </div>
+ </div>
   <img data-testid="screenshot" class="image" src="{{image}}" />
 
   <div class="audio-wrapper">
@@ -18,19 +20,11 @@ export const backTemplate = `
     <source src="{{sentenceAudio}}" type="audio/mpeg" />
   </audio>
 </div>
-
-
-  <ol class="list" data-testid="definitions" id="dynamic-fields"></ol>
  </div>
 <style
 >
  * {
     box-sizing: border-box;
-  }
-
-  .list li {
-    font-size: 20px;
-    font-weight: bold;
   }
 
   .audio-wrapper button {
@@ -60,27 +54,33 @@ export const backTemplate = `
 
  .answer {
   background-color: #3F3F46;
-  padding: 0.1rem;
   width: 100%;
   border-radius: 25px;
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+ }
+
+ .answerContent {
+  text-align: left !important;
  }
 </style>
 
 <script>
   ${parseTextWithFurigana.toString()}
   ${createTargetWordsTemplate.toString()}
+  const rawTargetWords = '{{targetWords}}';
+  const rawSentence = '{{sentenceBack}}';
 
-  const rawTargetWords = "{{targetWords}}";
-  const rawSentence = "{{sentenceBack}}";
-  const targetWordsTemplate = createTargetWordsTemplate(JSON.parse(rawTargetWords);
+
+  const targetWordsTemplate = createTargetWordsTemplate(JSON.parse(rawTargetWords));
   const processedSentence = parseTextWithFurigana(rawSentence);
 
   const targetWordContainer = document.getElementById('targetWord');
   const sentenceContainer = document.getElementById('targetSentence')
 
-  targetWordContainer.innerHTML = processedSentence;
-  sentenceContainer.innerHTML = targetWordsTemplate;
+  targetWordContainer.innerHTML = targetWordsTemplate;
+  sentenceContainer.innerHTML = processedSentence;
 
   const playButton = document.getElementById('customPlayButton');
   const audioElement = document.getElementById('sentenceAudio');
