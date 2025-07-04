@@ -57,15 +57,7 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
       fields: {
         sentenceFront: flashcard.sentenceFront,
         sentenceBack: stringifyCharacters(flashcard.sentenceBack),
-        targetWords: JSON.stringify(
-          [...flashcard.targetWords].map((e) => [
-            e[0],
-            e[1].map((v) => ({
-              ...v,
-              token: stringifyCharacters(v.token),
-            })),
-          ])
-        ),
+        targetWords: JSON.stringify(flashcard.targetWords.map((t) => ({ ...t, token: stringifyCharacters(t.token) }))),
         sentenceAudio: audioStoreResult,
         image: imageStoreResult,
       },

@@ -13,21 +13,31 @@ export function parseTextWithFurigana(text) {
 }
 
 export function createTargetWordsTemplate(targetWords) {
-  let html = '<ul>';
+  let html = '<dl style="margin:1rem 0; padding:0;">';
 
-  for (const [word, wordEntries] of targetWords) {
-    html += `<li><strong>${parseTextWithFurigana(wordEntries[0].token)}</strong><ul>`;
-
-    for (const entry of wordEntries) {
-      for (const def of entry.definitions) {
-        html += `<li>${def.text}</li>`;
-      }
+  for (const targetWord of targetWords) {
+    html += `
+      <dt style="
+        font-weight: bold;
+        margin: 0.75rem 0 0.25rem;
+        font-size: 1.1em;
+      ">
+        ${parseTextWithFurigana(targetWord.token)}
+      </dt>
+    `;
+    for (const def of targetWord.definitions) {
+      html += `
+        <dd style="
+          font-weight: lighter;
+          margin: 0 0 0.5rem 1.5rem;
+          line-height: 1.4;
+        ">
+          • ${def.text}
+        </dd>
+      `;
     }
-
-    html += '</ul></li>';
   }
 
-  html += '</ul>';
+  html += '</dl>';
   return html;
 }
-

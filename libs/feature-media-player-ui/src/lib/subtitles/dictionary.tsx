@@ -1,5 +1,5 @@
 import { cn } from '@immersion-player/shared-utils';
-import { Definition, DictionaryResult } from '@immersion-player/shared-types';
+import { Definition, DictionaryResult, TargetWord } from '@immersion-player/shared-types';
 import { Fragment, PropsWithChildren, useState } from 'react';
 import { Button, Checkbox, Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
@@ -42,10 +42,11 @@ function Definition({
 function DeinflectedTerm({
   dictionaryResult,
   onCreateFlashcard,
+  term,
 }: {
   dictionaryResult: DictionaryResult;
-  onCreateFlashcard: (definitions: Definition[]) => void;
-  term: string
+  onCreateFlashcard: (targetWords: TargetWord[]) => void;
+  term: string;
 }) {
   const [selectedDefinitions, setSelectedDefinitions] = useState<{ [key: string]: Definition }>({});
   const deinflectedTerm = dictionaryResult.token;
@@ -81,7 +82,14 @@ function DeinflectedTerm({
           color="primary"
           isIconOnly
           aria-label="createFlashcard"
-          onPress={() => onCreateFlashcard(Object.values(selectedDefinitions).flatMap((definition) => definition))}
+          onPress={() =>
+            onCreateFlashcard([
+              {
+                token: deinflectedTerm,
+                definitions: Object.values(selectedDefinitions).flatMap((definition) => definition),
+              },
+            ])
+          }
           className="ml-auto text-foreground"
         >
           <PaperPlaneIcon></PaperPlaneIcon>
@@ -103,7 +111,7 @@ function DeinflectedTerm({
 
 interface DictionaryProps {
   dictionaryResults: Map<string, DictionaryResult>;
-  onCreateFlashcard: (definitions: Definition[]) => void;
+  onCreateFlashcard: (targetWords: TargetWord[]) => void;
 }
 
 function DictionaryShell({ children }: PropsWithChildren) {
@@ -150,7 +158,10 @@ export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps & { e
         <div onMouseEnter={() => setIsHoveringDictionary(true)} onMouseLeave={() => setIsHoveringDictionary(false)}>
           <DictionaryShell>
             {props.dictionaryResults.size > 0 ? (
-              <DictionaryEntries dictionaryResults={props.dictionaryResults} onCreateFlashcard={props.onCreateFlashcard} />
+              <DictionaryEntries
+                dictionaryResults={props.dictionaryResults}
+                onCreateFlashcard={props.onCreateFlashcard}
+              />
             ) : (
               <DictionaryEmpty />
             )}

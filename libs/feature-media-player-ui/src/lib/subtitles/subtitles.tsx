@@ -1,4 +1,11 @@
-import { Character, Definition, KnownWordsStatus, Subtitle } from '@immersion-player/shared-types';
+import {
+  Character,
+  Definition,
+  DictionaryResult,
+  KnownWordsStatus,
+  Subtitle,
+  TargetWord
+} from '@immersion-player/shared-types';
 import { DictionaryOverlay } from './dictionary.js';
 import useFlashcards from '../hooks/useFlashcards.js';
 import { cn, timecodeToSeconds } from '@immersion-player/shared-utils';
@@ -46,11 +53,11 @@ export function SubtitleLine({
   const showFurigana = false;
   const showStatus = true;
 
-  const handleCreateFlashcard = (definitions: Definition[], subtitle: Subtitle, path: string) => {
+  const handleCreateFlashcard = (targetWords: TargetWord[], subtitle: Subtitle, path: string) => {
     createFlashcard({
       sentenceFront: subtitle.text[0],
       sentenceBack: subtitle.lookupResult.flatMap((l) => l.token),
-      targetWords: definitions,
+      targetWords: targetWords,
       startTime: timecodeToSeconds(subtitle.startTime),
       endTime: timecodeToSeconds(subtitle.endTime),
       filePath: path,
@@ -65,7 +72,7 @@ export function SubtitleLine({
             <div key={index} className="inline-block">
               <DictionaryOverlay
                 enabled={!disableDictionary}
-                onCreateFlashcard={(definitions) => handleCreateFlashcard(definitions, subtitle, libraryItem.path)}
+                onCreateFlashcard={(targetWords) => handleCreateFlashcard(targetWords, subtitle, libraryItem.path)}
                 dictionaryResults={result.dictionaryResults}
               >
                 <JapaneseText

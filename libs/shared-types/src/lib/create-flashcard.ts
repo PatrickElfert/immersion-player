@@ -3,13 +3,13 @@ import { Character, Definition } from './lookup-result.js';
 export type CreateFlashcardDto = {
   sentenceBack: Character[];
   sentenceFront: string;
-  targetWords: Map<string, TargetWord[]>;
+  targetWords: TargetWord[];
   startTime: number;
   endTime: number;
   filePath: string;
 }
 
-type TargetWord = {
+export type TargetWord = {
   token: Character[];
   definitions: Definition[];
 }
