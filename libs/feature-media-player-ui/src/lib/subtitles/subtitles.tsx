@@ -1,10 +1,8 @@
 import {
   Character,
-  Definition,
-  DictionaryResult,
   KnownWordsStatus,
   Subtitle,
-  TargetWord
+  TargetWord,
 } from '@immersion-player/shared-types';
 import { DictionaryOverlay } from './dictionary.js';
 import useFlashcards from '../hooks/useFlashcards.js';

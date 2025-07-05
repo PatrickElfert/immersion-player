@@ -4,7 +4,6 @@ import ffmpeg from 'fluent-ffmpeg';
 import { fileSync } from 'tmp';
 import path from 'path';
 import { backTemplate, frontTemplate } from '@immersion-player/shared-flashcard-templates';
-import { stringifyCharacters } from '@immersion-player/shared-utils';
 
 const client = new YankiConnect();
 const MODEL_NAME = 'ImmersionPlayer';

@@ -1,6 +1,6 @@
 import { test, expect, ElectronApplication } from '@playwright/test';
-import { LibraryPage } from "./pages/library.page";
-import { launchElectron } from "./utils/electron";
+import { LibraryPage } from "./pages/library.page.js";
+import { launchElectron } from "./utils/electron.js";
 
 let electronApp: ElectronApplication;
 let libraryPage: LibraryPage;

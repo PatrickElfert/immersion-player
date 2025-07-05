@@ -13,3 +13,11 @@ export type TargetWord = {
   token: Character[];
   definitions: Definition[];
 }
+
+export type AnkiCardDto = {
+  image: string;
+  sentenceAudio: string;
+  targetWords: string;
+  sentenceBack: string;
+  sentenceFront: string;
+}

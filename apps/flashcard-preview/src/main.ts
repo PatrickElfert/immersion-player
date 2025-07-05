@@ -1,10 +1,8 @@
 import { backTemplate, frontTemplate } from '@immersion-player/shared-flashcard-templates';
-import { stringifyCharacters } from '@immersion-player/shared-utils';
 import Mustache from 'mustache';
+import { AnkiCardDto, TargetWord } from '@immersion-player/shared-types';
 
 Mustache.escape = (text) => text;
-
-type TemplateValues = { [key: string]: any };
 
 const sentence = [
   { original: 'もっと', furigana: null },
@@ -20,18 +18,18 @@ const sentence = [
   { original: 'な', furigana: null },
 ];
 
-const targetWords = [
+const targetWords: TargetWord[] = [
   {
-    token: stringifyCharacters([{ original: '真夏', furigana: 'まなつ' }]),
+    token: [{ original: '真夏', furigana: 'まなつ' }],
     definitions: [{ description: '', text: 'middle of summer; height of summer; midsummer' }],
   },
 ];
 
-const values: TemplateValues = {
+const values: AnkiCardDto = {
   image: 'src/assets/test.png',
   sentenceAudio: 'src/assets/test.mp3',
   targetWords: JSON.stringify(targetWords),
-  sentenceBack: stringifyCharacters(sentence),
+  sentenceBack: JSON.stringify(sentence),
   sentenceFront: 'もっと２人でお客さんせ喜ばたかったな',
 };
 

@@ -1,15 +1,13 @@
-export function parseTextWithFurigana(text) {
-  const regex = /([^[\]]+)(?:\[([^[\]]*)\])?/g;
-  const parsed = [];
-  let match;
-
-  while ((match = regex.exec(text)) !== null) {
-    const word = match[1];
-    const reading = match[2] || null;
-    parsed.push({ word, reading });
-  }
-
-  return parsed.map(({ word, reading }) => `<ruby>${word}<rt>${reading ?? ''}</rt></ruby>`).join('');
+export function generateFuriganaTemplate(words) {
+  return words
+    .map(({ original, furigana}) => {
+      if(furigana) {
+        return `<ruby>${original}<rt>${furigana}</rt></ruby>`;
+      } else {
+        return `<ruby>${original}</ruby>`;
+      }
+    })
+    .join('');
 }
 
 export function createTargetWordsTemplate(targetWords) {
@@ -22,7 +20,7 @@ export function createTargetWordsTemplate(targetWords) {
         margin: 0.75rem 0 0.25rem;
         font-size: 1.1em;
       ">
-        ${parseTextWithFurigana(targetWord.token)}
+        ${generateFuriganaTemplate(targetWord.token)}
       </dt>
     `;
     for (const def of targetWord.definitions) {

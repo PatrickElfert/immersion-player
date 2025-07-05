@@ -1,4 +1,4 @@
-import { parseTextWithFurigana, createTargetWordsTemplate } from './utils/utils.js';
+import { generateFuriganaTemplate, createTargetWordsTemplate } from './utils/utils.js';
 
 export const backTemplate = `
  <div data-testid="backTemplate" class="container">
@@ -67,14 +67,14 @@ export const backTemplate = `
 </style>
 
 <script>
-  ${parseTextWithFurigana.toString()}
+  ${generateFuriganaTemplate.toString()}
   ${createTargetWordsTemplate.toString()}
+
   const rawTargetWords = '{{targetWords}}';
   const rawSentence = '{{sentenceBack}}';
 
-
   const targetWordsTemplate = createTargetWordsTemplate(JSON.parse(rawTargetWords));
-  const processedSentence = parseTextWithFurigana(rawSentence);
+  const processedSentence = generateFuriganaTemplate(JSON.parse(rawSentence));
 
   const targetWordContainer = document.getElementById('targetWord');
   const sentenceContainer = document.getElementById('targetSentence')
