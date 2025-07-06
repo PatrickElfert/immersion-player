@@ -41,6 +41,9 @@ jobs:
       - name: Run Unit Tests
         run: npx nx run-many --target=test --passWithNoTests
 
+      - name: Build Electron
+        run: npx nx run immersion-player-desktop:build
+
       - name: Start dev server
         run: npx nx run immersion-player-ui:serve &
 
