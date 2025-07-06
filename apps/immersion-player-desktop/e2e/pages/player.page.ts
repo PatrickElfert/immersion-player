@@ -1,4 +1,4 @@
-import {Locator, Page} from "@playwright/test";
+import type {Locator, Page} from '@playwright/test';
 
 export class PlayerPage {
   readonly page: Page;
@@ -15,21 +15,21 @@ export class PlayerPage {
 
   async getSubtitles() {
     await this.page.locator('[data-testid="subtitles"]').waitFor({state: 'visible'});
-    return await this.subtitles.allTextContents(); 
+    return await this.subtitles.allTextContents();
   }
 
   async getDefinitions(word: string) {
     await this.subtitles.getByText(word).hover();
-    const deinflectedTerm = this.dictionary.locator('[data-testid="deinflectedTerm"]').first(); 
+    const deinflectedTerm = this.dictionary.locator('[data-testid="deinflectedTerm"]').first();
     const definitions = await deinflectedTerm.locator('[data-testid="definition"]').all();
- 
+
     const results = [];
     for (const definition of definitions) {
       const text = await definition.locator('[data-testid="word"]').textContent();
       const description = await definition.locator('[data-testid="description"]').textContent();
       results.push({ text, description });
     }
-    
+
     return results;
   }
 

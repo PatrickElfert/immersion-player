@@ -1,7 +1,8 @@
-import { test, ElectronApplication, expect } from '@playwright/test';
-import { launchElectron } from "./utils/electron";
-import { PlayerPage } from './pages/player.page';
-import { LibraryPage } from './pages/library.page';
+import { test, expect } from '@playwright/test';
+import type {ElectronApplication} from '@playwright/test';
+import { launchElectron } from "./utils/electron.js";
+import { PlayerPage } from './pages/player.page.js';
+import { LibraryPage } from './pages/library.page.js';
 
 let electronApp: ElectronApplication;
 let playerPage: PlayerPage;

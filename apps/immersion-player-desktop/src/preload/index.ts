@@ -4,7 +4,7 @@ import { CreateFlashcardDto, ModelFields, UpdateFieldMappingPayload } from '@imm
 
 // Custom APIs for renderer
 const api = {
-  getLibrary: (folderPath) => ipcRenderer.invoke('get-library', folderPath),
+  getLibrary: () => ipcRenderer.invoke('get-library'),
   parseSubtitles: (srtPath) => ipcRenderer.invoke('parse-srt', srtPath),
   createFlashcard: (flashcard: CreateFlashcardDto) => ipcRenderer.invoke('create-flashcard', flashcard),
   selectMediaFolder: () => ipcRenderer.invoke('select-media-folder'),

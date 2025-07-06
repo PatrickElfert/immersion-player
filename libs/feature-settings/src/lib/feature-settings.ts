@@ -16,7 +16,6 @@ export async function selectMediaFolder(): Promise<void> {
   const { filePaths } = await dialog.showOpenDialog({
     properties: ['openDirectory'],
   });
-
   store.set('mediaFolder', filePaths[0]);
 }
 

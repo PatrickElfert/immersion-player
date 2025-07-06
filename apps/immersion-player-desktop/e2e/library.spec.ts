@@ -1,4 +1,5 @@
-import { test, expect, ElectronApplication } from '@playwright/test';
+import { test, expect } from '@playwright/test';
+import type {ElectronApplication} from '@playwright/test';
 import { LibraryPage } from "./pages/library.page.js";
 import { launchElectron } from "./utils/electron.js";
 
@@ -7,6 +8,8 @@ let libraryPage: LibraryPage;
 
 test.beforeEach(async () => {
   electronApp = await launchElectron()
+
+
   const page = await electronApp.firstWindow()
 
   if(!page) {

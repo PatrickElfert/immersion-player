@@ -1,4 +1,5 @@
-import { test, expect, Locator } from '@playwright/test';
+import { test, expect } from '@playwright/test';
+import type { Locator } from '@playwright/test';
 
 async function validateRubyTags(target: Locator, expectedTokens: { base: string; rt: string }[]) {
   const rubyElements = await target.locator('ruby').all();

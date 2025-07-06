@@ -1,5 +1,6 @@
 import { workspaceRoot } from '@nx/devkit';
-import { _electron, ElectronApplication } from '@playwright/test';
+import { _electron } from '@playwright/test';
+import type {ElectronApplication} from '@playwright/test';
 import { existsSync } from 'node:fs';
 import * as path from 'node:path';
 
@@ -10,10 +11,10 @@ const platforms = {
 };
 
 export async function launchElectron(useBinary = false): Promise<ElectronApplication> {
-  const execPath = path.join(
+  const execPath = useBinary ? path.join(
     workspaceRoot,
     platforms[process.env.PLATFORM]
-  )
+  ) : undefined;
 
   if (useBinary && !existsSync(execPath)) {
     throw new Error(`Electron executable not found at: ${execPath}`);
@@ -23,8 +24,8 @@ export async function launchElectron(useBinary = false): Promise<ElectronApplica
     const electronApplication = await _electron.launch({
       cwd: workspaceRoot,
       args: !useBinary ? [path.join(workspaceRoot, 'dist/apps/immersion-player-desktop/main/index.js')] : [],
-      executablePath: useBinary ? execPath : undefined,
-      timeout: 60000, 
+      executablePath: execPath,
+      timeout: 60000,
       env: {
         ELECTRON_IS_DEV: '1',
         ELECTRON_RENDERER_URL: 'http://localhost:4200',
@@ -36,10 +37,23 @@ export async function launchElectron(useBinary = false): Promise<ElectronApplica
       throw Error('Electron application is undefined');
     }
 
-    return electronApplication; 
+    return withLogging(electronApplication);
 
   } catch (error) {
     console.error('Error launching Electron:', error);
     throw error;
   }
+}
+
+function withLogging(electronApplication: ElectronApplication) {
+  electronApplication.on('window', async (page) => {
+    page.on('console', (msg) => {
+      console.log(`[renderer console] ${msg.type()}: ${msg.text()}`);
+    });
+  });
+
+  electronApplication.on('console', (msg) => {
+    console.log(`[main console] ${msg.type()}: ${msg.text()}`);
+  });
+  return electronApplication;
 }
