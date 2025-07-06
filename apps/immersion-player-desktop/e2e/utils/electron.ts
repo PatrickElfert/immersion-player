@@ -23,7 +23,7 @@ export async function launchElectron(useBinary = false): Promise<ElectronApplica
   try {
     const electronApplication = await _electron.launch({
       cwd: workspaceRoot,
-      args: !useBinary ? [path.join(workspaceRoot, 'dist/apps/immersion-player-desktop/main/index.js')] : [],
+      args: !useBinary ? [path.join(workspaceRoot, 'dist/apps/immersion-player-desktop/main/index.js'), '--no-sandbox'] : ['--no-sandbox'],
       executablePath: execPath,
       timeout: 60000,
       env: {
