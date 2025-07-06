@@ -48,7 +48,7 @@ jobs:
         run: npx wait-on $ELECTRON_RENDERER_URL
 
       - name: Run E2E Tests
-        run: npx xvfb-maybe npx nx run immersion-player-desktop:e2e --verbose
+        run: npx xvfb-maybe npx nx run immersion-player-desktop:e2e -- --no-sandbox
 
 
 

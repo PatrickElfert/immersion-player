@@ -8,8 +8,6 @@ let libraryPage: LibraryPage;
 
 test.beforeEach(async () => {
   electronApp = await launchElectron()
-
-
   const page = await electronApp.firstWindow()
 
   if(!page) {
