@@ -1,22 +1,14 @@
 import { readdir, lstat } from 'fs/promises';
-import { homedir } from 'os';
 import { extname, join, parse } from 'path';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync } from 'fs';
 import ffmpeg from 'fluent-ffmpeg';
 import * as path from 'node:path';
-import {v4} from "uuid";
-import {LibraryItem} from "@immersion-player/shared-types";
+import { v4 } from 'uuid';
+import { LibraryItem, UserSettings } from '@immersion-player/shared-types';
 import Store from 'electron-store';
+import * as os from 'node:os';
 
-const videoExtensions = [
-  '.mpg',
-  '.mp2',
-  '.mpeg',
-  '.mpe',
-  '.mpv',
-  '.mp4',
-  '.mkv',
-];
+const videoExtensions = ['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4', '.mkv'];
 
 function createThumbnail(outputPath: string, videoPath: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -38,8 +30,8 @@ function createThumbnail(outputPath: string, videoPath: string): Promise<void> {
 }
 
 export async function loadLibrary(): Promise<LibraryItem[]> {
-  const store = new Store();
-  const mediaFolder = store.get('mediaFolder') as string;
+  const store = new Store<UserSettings>();
+  const mediaFolder = store.get('mediaFolder') ?? path.join(os.homedir(), 'ImmersionPlayer');
 
   const libraryFolder = await readdir(mediaFolder);
   const result: LibraryItem[] = [];
@@ -51,9 +43,7 @@ export async function loadLibrary(): Promise<LibraryItem[]> {
     if (isDirectory) {
       const folderContent = await readdir(folderPath);
 
-      const path = folderContent.filter((s) =>
-        videoExtensions.includes(extname(s))
-      );
+      const path = folderContent.filter((s) => videoExtensions.includes(extname(s)));
 
       const srtFiles = folderContent.filter((s) => extname(s) === '.srt');
 
@@ -74,7 +64,7 @@ export async function loadLibrary(): Promise<LibraryItem[]> {
             languageCode: srtFile.split('.')[1],
           })),
           thumbnail: join('media://', folderPath, 'thumbnail.png'),
-          id: v4()
+          id: v4(),
         });
       }
     }
