@@ -14,6 +14,7 @@ jobs:
       NX_SKIP_NX_CACHE: true
       PLATFORM: ${{ inputs.platform-name }}
       ELECTRON_RENDERER_URL: "http://localhost:4200"
+      DEBUG: "pw:browser*"
 
     steps:
       - name: Checkout code
