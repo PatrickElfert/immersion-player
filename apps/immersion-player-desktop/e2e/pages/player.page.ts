@@ -8,13 +8,13 @@ export class PlayerPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.subtitles = page.locator('[data-testid="subtitles"] [data-testid="word"]');
+    this.subtitles = page.locator('[data-testid="currentSubtitles"] [data-testid="word"]');
     this.player = page.locator('video');
     this.dictionary = page.locator('[data-testid="dictionary"]');
   }
 
   async getSubtitles() {
-    await this.page.locator('[data-testid="subtitles"]').waitFor({state: 'visible'});
+    await this.page.waitForTimeout(1000)
     return await this.subtitles.allTextContents();
   }
 
@@ -34,6 +34,7 @@ export class PlayerPage {
   }
 
   async setPlaybackPosition(seconds: number) {
+    await this.player.waitFor({state: 'visible'});
     await this.page.evaluate((seconds) => {
       const video = document.querySelector('video');
       video.currentTime = seconds

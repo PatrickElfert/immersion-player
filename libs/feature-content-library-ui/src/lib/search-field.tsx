@@ -17,7 +17,7 @@ export default function SearchField(props: SearchFieldProps) {
 
   return (
     <div className="flex w-full">
-      <Input onChange={handleOnInput} placeholder={'Search for...'} endContent={<MagnifyingGlassIcon />} />
+      <Input data-testid="search" onChange={handleOnInput} placeholder={'Search for...'} endContent={<MagnifyingGlassIcon />} />
     </div>
   );
 }

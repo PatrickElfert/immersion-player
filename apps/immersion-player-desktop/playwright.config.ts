@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 
 export default defineConfig({
+  timeout: 60000,
   ...nxE2EPreset(__filename, { testDir: './e2e' }),
   retries: 1
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */

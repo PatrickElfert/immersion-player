@@ -22,7 +22,9 @@ export function FeatureMediaPlayerUi() {
           </div>
         </Suspense>
         <Suspense fallback={<div className="absolute text-white bottom-[15%] right-1/2">Loading...</div>}>
-          <CurrentSubtitle />
+          <div data-testid="currentSubtitles">
+            <CurrentSubtitle />
+          </div>
         </Suspense>
       </div>
       <Suspense fallback={null}>

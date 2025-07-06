@@ -18,7 +18,7 @@ const getDictionaryPath = () => {
     : join(process.cwd(), 'extraResources', 'jmdict-all-3.5.0.json');
 };
 const store = new Store<UserSettings>();
-const parser = new Parser(getDictionaryPath(), store.get('knownWords'));
+const parser = new Parser(getDictionaryPath(), store.get('knownWords') ?? []);
 
 export async function parseSrt(path: string): Promise<Subtitle[]> {
   const srtFile = readFileSync(path, 'utf8');
