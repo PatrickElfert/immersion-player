@@ -37,6 +37,14 @@ jobs:
           mkdir -p extraResources
           cp jmdict-all-3.5.0.json extraResources/
 
+      - name: Create ImmersionPlayer folder
+        run: mkdir -p "$HOME/ImmersionPlayer"
+
+      - name: Copy example folders to ImmersionPlayer
+        run: |
+          cp -R "assets/Example E01" "$HOME/ImmersionPlayer/"
+          cp -R "assets/Example E02" "$HOME/ImmersionPlayer/"
+
       - name: Run Unit Tests
         run: npx nx run-many --target=test --passWithNoTests
 

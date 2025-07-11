@@ -3,7 +3,7 @@ import { getDeinflections } from './deinflect.js';
 import { JmDictionary } from './dictionaries/JmDict.js';
 import {
   Character,
-  DictionaryResult,
+  DictionaryResult, DictionaryResults,
   KnownWordMap,
   KnownWordsStatus,
   LookupResult
@@ -42,7 +42,7 @@ export class Parser {
         const terms = deinflectedTokens.length > 0 ? deinflectedTokens.map((baseForm) => baseForm) : [token];
         const dictionaryResults = await this.lookupTermsInDictionary(terms);
 
-        if (dictionaryResults.size > 0) {
+        if (Object.keys(dictionaryResults).length > 0) {
           /** remove the currently processed group **/
           morphemeGroups.shift();
 
@@ -81,10 +81,10 @@ export class Parser {
     return lookupResults;
   }
 
-  async createLookupResult(token: string, dictionaryResults: Map<string, DictionaryResult>) {
+  async createLookupResult(token: string, dictionaryResults: DictionaryResults) {
     /** We use the first deinflected term to determine the word status
      * In the future there could be a more advanced way to determine this **/
-    const firstTerm = dictionaryResults.keys().next().value;
+    const firstTerm = Object.keys(dictionaryResults)[0];
 
     return {
       token: await this.getCharacters(token),
@@ -101,7 +101,7 @@ export class Parser {
     return 'UNKNOWN';
   }
 
-  async lookupTermsInDictionary(terms: string[]): Promise<Map<string, DictionaryResult>> {
+  async lookupTermsInDictionary(terms: string[]): Promise<DictionaryResults> {
     const goodTerms = terms.filter(term =>
       this.dictionary.getDefinitions(term).length > 0
     );
@@ -114,7 +114,7 @@ export class Parser {
       })
     );
 
-    return new Map(entries);
+    return Object.fromEntries(entries);
   }
 
   /** Returns multiple groups of morphemes which could represent a dictionary entry **/

@@ -55,8 +55,8 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
       modelName: MODEL_NAME,
       fields: {
         sentenceFront: flashcard.sentenceFront,
-        sentenceBack: stringifyCharacters(flashcard.sentenceBack),
-        targetWords: JSON.stringify(flashcard.targetWords.map((t) => ({ ...t, token: stringifyCharacters(t.token) }))),
+        sentenceBack: JSON.stringify(flashcard.sentenceBack),
+        targetWords: JSON.stringify(flashcard.targetWords),
         sentenceAudio: audioStoreResult,
         image: imageStoreResult,
       },

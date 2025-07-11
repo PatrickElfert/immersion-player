@@ -1,5 +1,5 @@
 import { cn } from '@immersion-player/shared-utils';
-import { Definition, DictionaryResult, TargetWord } from '@immersion-player/shared-types';
+import { Definition, DictionaryResult, DictionaryResults, TargetWord } from '@immersion-player/shared-types';
 import { Fragment, PropsWithChildren, useState } from 'react';
 import { Button, Checkbox, Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
@@ -29,11 +29,9 @@ function Definition({
           ></Checkbox>
           <label data-testid="word">{definition.text}</label>
         </div>
-        {definition.description.length > 0 && (
-          <div data-testid="description" className="ml-8 font-light text-sm text-gray-400">
-            {definition.description}
-          </div>
-        )}
+        <div data-testid="description" className="ml-8 font-light text-sm text-gray-400">
+          {definition.description}
+        </div>
       </div>
     </div>
   );
@@ -113,7 +111,7 @@ function DeinflectedTerm({
 }
 
 interface DictionaryProps {
-  dictionaryResults: Map<string, DictionaryResult>;
+  dictionaryResults: DictionaryResults;
   onCreateFlashcard: (targetWords: TargetWord[]) => void;
 }
 
@@ -128,7 +126,7 @@ function DictionaryShell({ children }: PropsWithChildren) {
 function DictionaryEntries(props: DictionaryProps) {
   return (
     <>
-      {[...props.dictionaryResults.entries()].map(([term, result]) => (
+      {Object.entries(props.dictionaryResults).map(([term, result]) => (
         <DeinflectedTerm key={term} term={term} onCreateFlashcard={props.onCreateFlashcard} dictionaryResult={result} />
       ))}
     </>
@@ -160,7 +158,7 @@ export function DictionaryOverlay(props: PropsWithChildren<DictionaryProps & { e
       <PopoverContent>
         <div onMouseEnter={() => setIsHoveringDictionary(true)} onMouseLeave={() => setIsHoveringDictionary(false)}>
           <DictionaryShell>
-            {props.dictionaryResults.size > 0 ? (
+            {Object.keys(props.dictionaryResults).length > 0 ? (
               <DictionaryEntries
                 dictionaryResults={props.dictionaryResults}
                 onCreateFlashcard={props.onCreateFlashcard}

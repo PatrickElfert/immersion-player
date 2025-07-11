@@ -20,6 +20,7 @@ export class PlayerPage {
 
   async getDefinitions(word: string) {
     await this.subtitles.getByText(word).hover();
+    await this.page.waitForTimeout(1000)
     const deinflectedTerm = this.dictionary.locator('[data-testid="deinflectedTerm"]').first();
     const definitions = await deinflectedTerm.locator('[data-testid="definition"]').all();
 

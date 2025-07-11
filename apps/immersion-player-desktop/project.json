@@ -20,7 +20,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "electron-vite build --config apps/immersion-player-desktop/electron.vite.config.ts"
+        "command": "electron-vite build --config apps/immersion-player-desktop/electron.vite.config.ts --sourcemap"
       }
     }
   }

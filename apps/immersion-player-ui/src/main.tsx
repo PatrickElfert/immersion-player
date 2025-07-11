@@ -7,7 +7,7 @@ import { FeatureSettingsUi } from '@immersion-player/feature-settings-ui';
 import { FeatureMediaPlayerUi } from '@immersion-player/feature-media-player-ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { HeroUIProvider } from '@heroui/react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -44,7 +44,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const localStoragePersister = createSyncStoragePersister({
+const localStoragePersister = createAsyncStoragePersister({
   storage: window.localStorage,
 });
 

@@ -17,9 +17,9 @@ import {
   selectMediaFolder,
   updateModelFields
 } from '@immersion-player/feature-settings';
-import ffmpegPath from 'ffmpeg-static';
 import { path as ffprobePath } from 'ffprobe-static';
 import ffmpeg from 'fluent-ffmpeg';
+import ffmpegPath from 'ffmpeg-static';
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -71,6 +71,7 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   if (ffmpegPath && ffprobePath) {
+    // @ts-ignore
     ffmpeg.setFfmpegPath(ffmpegPath.replace('app.asar', 'app.asar.unpacked'));
     ffmpeg.setFfprobePath(ffprobePath.replace('app.asar', 'app.asar.unpacked'));
   }

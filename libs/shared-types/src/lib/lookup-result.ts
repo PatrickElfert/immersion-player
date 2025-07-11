@@ -11,7 +11,7 @@ export type LookupResult = {
   status: KnownWordsStatus;
   /** Key is the deinflected term that got looked up in the dictionary
    * **/
-  dictionaryResults: Map<string, DictionaryResult>;
+  dictionaryResults: DictionaryResults;
 };
 
 export type Definition = {
@@ -23,5 +23,7 @@ export type DictionaryResult = {
   definitions: Definition[];
   token: Character[]
 }
+
+export type DictionaryResults = {[key: string]: DictionaryResult}
 
 
