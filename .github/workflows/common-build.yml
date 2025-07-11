@@ -13,7 +13,7 @@ jobs:
     env:
       NX_SKIP_NX_CACHE: true
       PLATFORM: ${{ inputs.platform-name }}
-      ELECTRON_RENDERER_URL: "http://localhost:4200"
+      ELECTRON_RENDERER_URL: 'http://localhost:4200'
 
     steps:
       - name: Checkout code
@@ -23,6 +23,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: npm install
@@ -59,10 +67,3 @@ jobs:
 
       - name: Run E2E Tests
         run: npx nx run immersion-player-desktop:e2e
-
-
-
-
-
-
-
