@@ -14,8 +14,6 @@ jobs:
       NX_SKIP_NX_CACHE: true
       PLATFORM: ${{ inputs.platform-name }}
       ELECTRON_RENDERER_URL: 'http://localhost:4200'
-      FLASHCARD_TEMPLATES_BASE_URL: 'http://localhost:4201'
-
 
     steps:
       - name: Checkout code
@@ -63,9 +61,6 @@ jobs:
 
       - name: Run player E2E Tests
         run: npx nx run immersion-player-desktop:e2e
-
-      - name: Start flashcard preview dev server
-        run: npx nx run flashcard-preview:serve --port $FLASHCARD_TEMPLATES_BASE_URL &
 
       - name: Run flashcard preview E2E Tests
         run: npx nx run flashcard-preview:e2e

@@ -4,7 +4,8 @@ import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
 import { fileURLToPath } from 'node:url';
 
-const baseURL = process.env['FLASHCARD_TEMPLATES_BASE_URL'];
+const port = 4201;
+const baseURL = `http://localhost:${port}`;
 
 /**
  * Read environment variables from file.
@@ -20,6 +21,12 @@ const __filename = fileURLToPath(import.meta.url);
 export default defineConfig({
   ...nxE2EPreset(__filename, { testDir: './e2e' }),
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  webServer: {
+    command: `npx nx run flashcard-preview:serve --port ${port}`,
+    port: port,
+    timeout: 120 * 1000,
+    reuseExistingServer: !process.env.CI
+  },
   use: {
     baseURL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
