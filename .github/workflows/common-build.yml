@@ -53,12 +53,6 @@ jobs:
       - name: Build Electron
         run: npx nx run immersion-player-desktop:build
 
-      - name: Start player dev server
-        run: npx nx run immersion-player-ui:serve &
-
-      - name: Wait for player dev server
-        run: npx wait-on $ELECTRON_RENDERER_URL
-
       - name: Run player E2E Tests
         run: npx nx run immersion-player-desktop:e2e
 

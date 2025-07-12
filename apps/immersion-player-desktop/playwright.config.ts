@@ -18,6 +18,12 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 
 export default defineConfig({
+  webServer: {
+    command: `npx nx run immersion-player-ui:serve`,
+    port: 4200,
+    timeout: 120 * 1000,
+    reuseExistingServer: !process.env.CI
+  },
   timeout: 60000,
   ...nxE2EPreset(__filename, { testDir: './e2e' }),
   retries: 1,
