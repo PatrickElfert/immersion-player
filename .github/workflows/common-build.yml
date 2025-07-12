@@ -65,7 +65,7 @@ jobs:
         run: npx nx run immersion-player-desktop:e2e
 
       - name: Start flashcard preview dev server
-        run: npx nx run flashcard-preview:serve &
+        run: npx nx run flashcard-preview:serve --port $FLASHCARD_TEMPLATES_BASE_URL &
 
       - name: Run flashcard preview E2E Tests
         run: npx nx run flashcard-preview:e2e
