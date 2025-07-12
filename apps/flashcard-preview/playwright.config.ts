@@ -4,8 +4,7 @@ import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
 import { fileURLToPath } from 'node:url';
 
-// For CI, you may want to set BASE_URL to the deployed application.
-const baseURL = process.env['BASE_URL'] || 'http://localhost:5000';
+const baseURL = process.env['FLASHCARD_TEMPLATES_BASE_URL'];
 
 /**
  * Read environment variables from file.

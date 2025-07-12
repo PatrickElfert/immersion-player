@@ -14,26 +14,22 @@ jobs:
       NX_SKIP_NX_CACHE: true
       PLATFORM: ${{ inputs.platform-name }}
       ELECTRON_RENDERER_URL: 'http://localhost:4200'
+      FLASHCARD_TEMPLATES_BASE_URL: 'http://localhost:5000'
+
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
 
       - name: Download JmDict
         run: |
@@ -59,11 +55,24 @@ jobs:
       - name: Build Electron
         run: npx nx run immersion-player-desktop:build
 
-      - name: Start dev server
+      - name: Start player dev server
         run: npx nx run immersion-player-ui:serve &
 
-      - name: Wait for dev server
+      - name: Wait for player dev server
         run: npx wait-on $ELECTRON_RENDERER_URL
 
-      - name: Run E2E Tests
+      - name: Run player E2E Tests
         run: npx nx run immersion-player-desktop:e2e
+
+      - name: Start flashcard preview dev server
+        run: npx nx run flashcard-preview:serve &
+
+      - name: Run flashcard preview E2E Tests
+        run: npx nx run flashcard-preview:e2e
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

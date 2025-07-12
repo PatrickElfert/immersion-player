@@ -50,7 +50,7 @@ test('renders back template', async ({ page }) => {
   const targetWord = backTemplate.locator('[data-testid="targetWord"]');
   await expect(targetWord).toHaveCount(1);
 
-  const expectedTargetWord = [{ base: 'お客', rt: 'おきゃく' }];
+  const expectedTargetWord = [{ base: '真夏', rt: 'まなつ' }];
 
   await validateRubyTags(targetWord, expectedTargetWord);
 
@@ -58,11 +58,13 @@ test('renders back template', async ({ page }) => {
   await expect(screenshot).toBeVisible();
 
   const sentenceAudio = backTemplate.locator('[data-testid="sentenceAudio"]');
-  await expect(sentenceAudio).toBeVisible();
+  await expect(sentenceAudio).toBeAttached();
 
-  const definitions = backTemplate.locator('[data-testid="definitions"]');
-  await expect(definitions.locator('li')).toHaveCount(2);
+  const playButton= backTemplate.locator('[data-testid="playButton"]');
+  await expect(playButton).toBeVisible();
 
-  await expect(definitions.locator('li').nth(0)).toHaveText('customer');
-  await expect(definitions.locator('li').nth(1)).toHaveText('guest; visitor');
+  const definitions = backTemplate.locator('[data-testid="definition"]');
+  await expect(definitions).toHaveCount(1);
+
+  await expect(definitions.nth(0)).toHaveText('• middle of summer; height of summer; midsummer');
 });

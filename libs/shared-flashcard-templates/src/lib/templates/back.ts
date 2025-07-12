@@ -5,7 +5,7 @@ export const backTemplate = `
  <div class="answer">
   <div class="answerContainer">
     <h2 id="targetSentence" data-testid="targetSentence"></h2id>
-    <h2 id="targetWord" data-testid="targetWord"></h2>
+    <h2 id="targetWord"></h2>
   </div>
  </div>
   <img data-testid="screenshot" class="image" src="{{image}}" />

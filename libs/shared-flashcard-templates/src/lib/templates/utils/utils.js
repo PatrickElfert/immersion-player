@@ -1,13 +1,5 @@
 export function generateFuriganaTemplate(words) {
-  return words
-    .map(({ original, furigana}) => {
-      if(furigana) {
-        return `<ruby>${original}<rt>${furigana}</rt></ruby>`;
-      } else {
-        return `<ruby>${original}</ruby>`;
-      }
-    })
-    .join('');
+  return words.map(({ original, furigana }) => `<ruby>${original}<rt>${furigana ?? ''}</rt></ruby>`).join('');
 }
 
 export function createTargetWordsTemplate(targetWords) {
@@ -15,7 +7,7 @@ export function createTargetWordsTemplate(targetWords) {
 
   for (const targetWord of targetWords) {
     html += `
-      <dt style="
+      <dt data-testid="targetWord" style="
         font-weight: bold;
         margin: 0.75rem 0 0.25rem;
         font-size: 1.1em;
@@ -25,7 +17,7 @@ export function createTargetWordsTemplate(targetWords) {
     `;
     for (const def of targetWord.definitions) {
       html += `
-        <dd style="
+        <dd data-testid="definition"  style="
           font-weight: lighter;
           margin: 0 0 0.5rem 1.5rem;
           line-height: 1.4;
