@@ -38,7 +38,9 @@ export class PlayerPage {
     await this.player.waitFor({state: 'visible'});
     await this.page.evaluate((seconds) => {
       const video = document.querySelector('video');
-      video.currentTime = seconds
+      if(video) {
+        video.currentTime = seconds
+      }
     }, seconds);
   }
 

@@ -35,6 +35,12 @@ jobs:
       - name: Build UI
         run: npx nx run immersion-player-desktop:build
 
+      - name: Typecheck Electron
+        run: npx nx run immersion-player-desktop:typecheck
+
+      - name: Typecheck UI
+        run: npx nx run immersion-player-desktop:typecheck
+
       - name: Download JmDict
         run: |
           wget -O jmdict-all.json.zip https://github.com/scriptin/jmdict-simplified/releases/download/3.5.0%2B20240826121924/jmdict-all-3.5.0+20240826121924.json.zip

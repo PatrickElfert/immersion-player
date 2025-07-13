@@ -23,5 +23,12 @@
         "command": "electron-vite build --config apps/immersion-player-desktop/electron.vite.config.ts --sourcemap"
       }
     },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/immersion-player-desktop",
+        "command": "npx tsc --noEmit -p tsconfig.app.json"
+      }
+    }
   }
 }

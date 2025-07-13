@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016 - no declaration file for module
 import { generateFuriganaTemplate, createTargetWordsTemplate } from './utils/utils.js';
 
 export const backTemplate = `

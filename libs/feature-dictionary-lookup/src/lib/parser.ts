@@ -21,7 +21,7 @@ export class Parser {
   }
 
   async parseSentence(sentence: string, scanLength = 4) {
-    const morphemes = structuredClone(await this.getMorphemes(sentence));
+    const morphemes = structuredClone(await this.getMorphemes(sentence)) as KuromojiToken[];
     return await this.getLookupResults(morphemes, scanLength);
   }
 
