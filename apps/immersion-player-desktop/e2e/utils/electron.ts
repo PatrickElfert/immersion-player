@@ -11,9 +11,10 @@ const platforms = {
 };
 
 export async function launchElectron(useBinary = false): Promise<ElectronApplication> {
-  const execPath = useBinary ? path.join(workspaceRoot, platforms[process.env.PLATFORM]) : undefined;
+  const platform = process.env.PLATFORM as keyof typeof platforms;
+  const execPath = useBinary ? path.join(workspaceRoot, platforms[platform]) : undefined;
 
-  if (useBinary && !existsSync(execPath)) {
+  if (useBinary && execPath && !existsSync(execPath)) {
     throw new Error(`Electron executable not found at: ${execPath}`);
   }
 
