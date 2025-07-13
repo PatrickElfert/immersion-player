@@ -20,6 +20,7 @@ import {
 import { path as ffprobePath } from 'ffprobe-static';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegPath from 'ffmpeg-static';
+import { fileURLToPath } from 'url';
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -43,7 +44,7 @@ function createWindow(): void {
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
-      preload: join(__dirname, '../preload/index.mjs'),
+      preload: fileURLToPath(new URL('../preload/index.mjs', import.meta.url)),
       sandbox: false,
     },
   });
