@@ -1,6 +1,6 @@
 /* eslint-disable-next-line */
 import { SubtitleLine } from './subtitles/subtitles.js';
-import { Suspense, useRef } from 'react';
+import { KeyboardEvent, Suspense, useEffect, useRef } from 'react';
 import { useLibraryItem } from './hooks/useMedia.js';
 import { Browser } from './subtitles/browser.js';
 import { Kbd } from '@heroui/react';
@@ -9,7 +9,7 @@ import { VIDEO_PLAYER_SHORTCUTS } from './constant.js';
 import { Subtitle } from '@immersion-player/shared-types';
 import useSubtitles from './hooks/useSubtitles.js';
 import { useSubtitleStore } from './state/subtitle.store.js';
-import { sub } from 'date-fns';
+import { useRegisterHotkeys } from './hooks/useRegisterHotkeys.js';
 
 export function FeatureMediaPlayerUi() {
   return (
@@ -55,18 +55,11 @@ export function Shortcuts() {
 
 export function VideoPlayer() {
   const libraryItem = useLibraryItem();
-  const {subtitles} = useSubtitles();
-  const subtitleStore = useSubtitleStore();
+  const { subtitles } = useSubtitles();
+  const resetSubtitleStore = useSubtitleStore((state) => state.reset);
+  const setCurrentSubtitle = useSubtitleStore((state) => state.setCurrentSubtitle);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  const handleOnTimeUpdate = () => {
-    const timestamp = videoRef.current?.currentTime ?? 0;
-    const subtitle = getCurrentSubtitle(subtitles, timestamp);
-
-    if(subtitle) {
-      subtitleStore.setCurrentSubtitle(subtitle.value, subtitle.index);
-    }
-  };
+  useRegisterHotkeys(videoRef);
 
   const getCurrentSubtitle = (subtitles: Subtitle[], timestamp: number) => {
     const index = subtitles.findIndex((subtitle) => {
@@ -80,11 +73,30 @@ export function VideoPlayer() {
     return { value: subtitles[index], index };
   };
 
+  useEffect(() => {
+    const currentPlayer = videoRef.current;
+    const handleTimeUpdate = () => {
+      const timestamp = videoRef.current?.currentTime ?? 0;
+      const subtitle = getCurrentSubtitle(subtitles, timestamp);
+
+      if (subtitle) {
+        setCurrentSubtitle(subtitle.value, subtitle.index);
+      }
+    };
+
+    if (currentPlayer) {
+      currentPlayer.addEventListener('timeupdate', handleTimeUpdate);
+    }
+    return () => {
+      resetSubtitleStore();
+      currentPlayer?.removeEventListener('timeupdate', handleTimeUpdate);
+    };
+  }, [videoRef, subtitles, setCurrentSubtitle, resetSubtitleStore]);
+
   return (
     <video
       ref={videoRef}
       controls
-      onTimeUpdate={handleOnTimeUpdate}
       style={{ width: '100%', height: 'auto' }}
       controlsList={'nofullscreen'}
       src={libraryItem.path}
