@@ -29,6 +29,12 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
+      - name: Build Electron
+        run: npx nx run immersion-player-desktop:build
+
+      - name: Build UI
+        run: npx nx run immersion-player-desktop:build
+
       - name: Download JmDict
         run: |
           wget -O jmdict-all.json.zip https://github.com/scriptin/jmdict-simplified/releases/download/3.5.0%2B20240826121924/jmdict-all-3.5.0+20240826121924.json.zip
@@ -49,9 +55,6 @@ jobs:
 
       - name: Run Unit Tests
         run: npx nx run-many --target=test --passWithNoTests
-
-      - name: Build Electron
-        run: npx nx run immersion-player-desktop:build
 
       - name: Run player E2E Tests
         run: npx nx run immersion-player-desktop:e2e
