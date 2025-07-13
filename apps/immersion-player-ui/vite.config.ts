@@ -2,7 +2,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
   base: './',
@@ -19,7 +18,7 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [react(),svgr(), nxViteTsPaths()],
+  plugins: [react(), nxViteTsPaths()],
 
   // Uncomment this if you are using workers.
   // worker: {

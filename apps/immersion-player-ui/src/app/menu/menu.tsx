@@ -1,11 +1,10 @@
 /* eslint-disable-next-line */
-import home from '../../assets/home.svg';
-import settings from '../../assets/settings.svg';
 import { cn } from '@immersion-player/shared-utils';
 import { Link, useLocation } from 'react-router-dom';
 import React, { ReactNode } from 'react';
 import { Button } from '@heroui/react';
 import { useLayout } from '../useLayout.js';
+import { GearIcon, HomeIcon } from '@radix-ui/react-icons';
 
 function MenuItem({ label, active, icon, path }: { label: string; active: boolean; icon: ReactNode; path: string }) {
   const {toggleMenu} = useLayout();
@@ -37,12 +36,12 @@ export function Menu() {
       <div className="flex flex-col h-full">
         <MenuItem
           data-testid="item"
-          icon={home}
+          icon={<HomeIcon/>}
           path={'/Library'}
           active={pathname.includes('Library')}
           label={'Library'}
         ></MenuItem>
-        <MenuItem icon={settings} path={'/Settings'} active={pathname === '/Settings'} label={'Settings'}></MenuItem>
+        <MenuItem icon={<GearIcon/>} path={'/Settings'} active={pathname === '/Settings'} label={'Settings'}></MenuItem>
       </div>
     </div>
   );
