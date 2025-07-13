@@ -39,8 +39,14 @@ testem.log
 Thumbs.db
 
 .nx/cache
+.nx/workspace-data
 
 jmdict-all-3.5.0.json
 e2e-recordings
 .env
 extraResources/jmdict-all-3.5.0.json
+
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
