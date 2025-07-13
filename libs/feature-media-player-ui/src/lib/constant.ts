@@ -21,14 +21,14 @@ export const VIDEO_PLAYER_SHORTCUTS: { [key: string]: Shortcut[] } = {
   ],
   mac: [
     {
-      keys: ['command'],
+      keys: ['option'],
       key: 'Q',
       label: 'Create Flashcard',
     },
   ],
   other: [
     {
-      keys: ['ctrl'],
+      keys: ['alt'],
       key: 'Q',
       label: 'Create Flashcard',
     },
