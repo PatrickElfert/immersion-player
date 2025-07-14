@@ -1,15 +1,31 @@
 /* eslint-disable-next-line */
 import { SubtitleLine } from './subtitles/subtitles.js';
-import { KeyboardEvent, Suspense, useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { useLibraryItem } from './hooks/useMedia.js';
 import { Browser } from './subtitles/browser.js';
 import { Kbd } from '@heroui/react';
-import { getPlatform, timecodeToSeconds } from '@immersion-player/shared-utils';
+import { getPlatform } from '@immersion-player/shared-utils';
 import { VIDEO_PLAYER_SHORTCUTS } from './constant.js';
-import { Subtitle } from '@immersion-player/shared-types';
-import useSubtitles from './hooks/useSubtitles.js';
 import { useSubtitleStore } from './state/subtitle.store.js';
 import { useRegisterHotkeys } from './hooks/useRegisterHotkeys.js';
+import { useSubtitleTracking } from './hooks/useSubtitleTracking.js';
+import ReactPlayer from 'react-player';
+import {
+  MediaControlBar,
+  MediaController,
+  MediaMuteButton,
+  MediaPlayButton,
+  MediaTimeDisplay,
+  MediaTimeRange,
+  MediaVolumeRange,
+} from 'media-chrome/react';
+
+function setAttributes(el: HTMLElement | null, attrs: Record<string, string | number>) {
+  if (!el) return;
+  Object.entries(attrs).forEach(([key, value]) => {
+    el.setAttribute(key, value.toString());
+  });
+}
 
 export function FeatureMediaPlayerUi() {
   return (
@@ -55,52 +71,47 @@ export function Shortcuts() {
 
 export function VideoPlayer() {
   const libraryItem = useLibraryItem();
-  const { subtitles } = useSubtitles();
-  const resetSubtitleStore = useSubtitleStore((state) => state.reset);
-  const setCurrentSubtitle = useSubtitleStore((state) => state.setCurrentSubtitle);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   useRegisterHotkeys(videoRef);
+  useSubtitleTracking(videoRef);
 
-  const getCurrentSubtitle = (subtitles: Subtitle[], timestamp: number) => {
-    const index = subtitles.findIndex((subtitle) => {
-      const start = timecodeToSeconds(subtitle.startTime);
-      const end = timecodeToSeconds(subtitle.endTime);
-      return start <= timestamp && timestamp <= end;
-    });
-
-    if (index === -1) return null;
-
-    return { value: subtitles[index], index };
-  };
+  const mediaControllerRef = useRef<any>(null);
+  const timeRangeRef = useRef<any>(null);
+  const timeDisplayRef= useRef<any>(null);
+  const muteRef = useRef<any>(null);
+  const volumeRef = useRef<any>(null);
+  const playRef= useRef<any>(null);
 
   useEffect(() => {
-    const currentPlayer = videoRef.current;
-    const handleTimeUpdate = () => {
-      const timestamp = videoRef.current?.currentTime ?? 0;
-      const subtitle = getCurrentSubtitle(subtitles, timestamp);
+    const controlRefs = [mediaControllerRef,timeRangeRef, timeDisplayRef, muteRef, volumeRef, playRef];
 
-      if (subtitle) {
-        setCurrentSubtitle(subtitle.value, subtitle.index);
-      }
-    };
+    controlRefs.forEach(ref => {
+      setAttributes(ref.current, {
+        nohotkeys: '',
+        tabIndex: -1,
+        keysused: 'noarrowleft noarrowright nospace nom nok nof noc',
+      });
+    });
 
-    if (currentPlayer) {
-      currentPlayer.addEventListener('timeupdate', handleTimeUpdate);
-    }
-    return () => {
-      resetSubtitleStore();
-      currentPlayer?.removeEventListener('timeupdate', handleTimeUpdate);
-    };
-  }, [videoRef, subtitles, setCurrentSubtitle, resetSubtitleStore]);
+  }, []);
 
   return (
-    <video
-      ref={videoRef}
-      controls
-      style={{ width: '100%', height: 'auto' }}
-      controlsList={'nofullscreen'}
-      src={libraryItem.path}
-    ></video>
+    <MediaController ref={mediaControllerRef} style={{ width: '100%', aspectRatio: '16/9' }}>
+      <ReactPlayer
+        slot="media"
+        ref={videoRef}
+        controls={false}
+        style={{ width: '100%', height: '100%', outline: 'none'}}
+        src={libraryItem.path}
+      ></ReactPlayer>
+      <MediaControlBar>
+      <MediaPlayButton ref={playRef} />
+        <MediaTimeRange ref={timeRangeRef} />
+        <MediaTimeDisplay ref={timeDisplayRef} showDuration />
+        <MediaMuteButton ref={muteRef} />
+        <MediaVolumeRange ref={volumeRef} />
+      </MediaControlBar>
+    </MediaController>
   );
 }
 
