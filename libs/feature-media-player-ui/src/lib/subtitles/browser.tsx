@@ -3,7 +3,7 @@ import { cn, useIsScrolling } from '@immersion-player/shared-utils';
 import { SubtitleLine } from './subtitles.js';
 import useSubtitles from '../hooks/useSubtitles.js';
 import { useSubtitleStore } from '../state/subtitle.store.js';
-import { useDebounce, useRenderInfo } from '@uidotdev/usehooks';
+import { useDebounce} from '@uidotdev/usehooks';
 import { Subtitle } from '@immersion-player/shared-types';
 
 const formatTime = (timecode: string) => {
@@ -20,7 +20,6 @@ export function Browser() {
   //const {isScrolling, ref: containerRef} = useIsScrolling()
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useRenderInfo('Browser');
 
   useEffect(() => {
     if (debouncedSubtitleIndex && containerRef.current) {
