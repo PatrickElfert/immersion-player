@@ -29,24 +29,20 @@ function setAttributes(el: HTMLElement | null, attrs: Record<string, string | nu
 
 export function FeatureMediaPlayerUi() {
   return (
-    <div className="grid grid-cols-4 h-full w-full">
-      <div className="relative max-h-full aspect-video col-span-3">
-        <Suspense fallback={null}>
-          <div className="p-4">
+    <Suspense fallback={null}>
+      <div className="grid grid-cols-4 h-full w-full">
+        <div className="max-h-full aspect-video col-span-3 m-4">
+          <div className="relative">
             <VideoPlayer />
-            <Shortcuts />
+            <div data-testid="currentSubtitles">
+              <CurrentSubtitle />
+            </div>
           </div>
-        </Suspense>
-        <Suspense fallback={<div className="absolute text-white bottom-[15%] right-1/2">Loading...</div>}>
-          <div data-testid="currentSubtitles">
-            <CurrentSubtitle />
-          </div>
-        </Suspense>
-      </div>
-      <Suspense fallback={null}>
+          <Shortcuts />
+        </div>
         <Browser />
-      </Suspense>
-    </div>
+      </div>
+    </Suspense>
   );
 }
 
@@ -77,22 +73,21 @@ export function VideoPlayer() {
 
   const mediaControllerRef = useRef<any>(null);
   const timeRangeRef = useRef<any>(null);
-  const timeDisplayRef= useRef<any>(null);
+  const timeDisplayRef = useRef<any>(null);
   const muteRef = useRef<any>(null);
   const volumeRef = useRef<any>(null);
-  const playRef= useRef<any>(null);
+  const playRef = useRef<any>(null);
 
   useEffect(() => {
-    const controlRefs = [mediaControllerRef,timeRangeRef, timeDisplayRef, muteRef, volumeRef, playRef];
+    const controlRefs = [mediaControllerRef, timeRangeRef, timeDisplayRef, muteRef, volumeRef, playRef];
 
-    controlRefs.forEach(ref => {
+    controlRefs.forEach((ref) => {
       setAttributes(ref.current, {
         nohotkeys: '',
         tabIndex: -1,
         keysused: 'noarrowleft noarrowright nospace nom nok nof noc',
       });
     });
-
   }, []);
 
   return (
@@ -101,11 +96,11 @@ export function VideoPlayer() {
         slot="media"
         ref={videoRef}
         controls={false}
-        style={{ width: '100%', height: '100%', outline: 'none'}}
+        style={{ width: '100%', height: '100%', outline: 'none' }}
         src={libraryItem.path}
       ></ReactPlayer>
       <MediaControlBar>
-      <MediaPlayButton ref={playRef} />
+        <MediaPlayButton ref={playRef} />
         <MediaTimeRange ref={timeRangeRef} />
         <MediaTimeDisplay ref={timeDisplayRef} showDuration />
         <MediaMuteButton ref={muteRef} />
@@ -120,7 +115,7 @@ export function CurrentSubtitle() {
   return (
     <SubtitleLine
       subtitle={currentSubtitle}
-      containerClassName="absolute bottom-[15%] w-full flex justify-center"
+      containerClassName="absolute bottom-[60px] w-full flex justify-center"
       subtitleClassName="bg-content1/40 backdrop-blur-md backdrop-saturate-150 text-2xl rounded p-2"
     />
   );
