@@ -3,7 +3,7 @@ import { getDeinflections } from './deinflect.js';
 import { JmDictionary } from './dictionaries/JmDict.js';
 import {
   Character,
-  DictionaryResult, DictionaryResults,
+  DictionaryResults,
   KnownWordMap,
   KnownWordsStatus,
   LookupResult

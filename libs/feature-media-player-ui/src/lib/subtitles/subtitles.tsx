@@ -63,7 +63,7 @@ export function SubtitleLine({
   };
 
   return (
-    <div className={containerClassName}>
+    <div data-testid="subtitle" className={containerClassName}>
       {subtitle && (
         <div className={cn('flex flex-row flex-wrap text-white', subtitleClassName)}>
           {subtitle.lookupResult.map((result, index) => (

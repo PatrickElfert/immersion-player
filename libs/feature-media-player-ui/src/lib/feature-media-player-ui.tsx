@@ -34,7 +34,7 @@ export function FeatureMediaPlayerUi() {
         <div className="max-h-full aspect-video col-span-3 m-4">
           <div className="relative">
             <VideoPlayer />
-            <div data-testid="currentSubtitles">
+            <div data-testid="currentSubtitle">
               <CurrentSubtitle />
             </div>
           </div>

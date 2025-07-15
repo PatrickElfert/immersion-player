@@ -2,25 +2,20 @@ import type {Locator, Page} from '@playwright/test';
 
 export class PlayerPage {
   readonly page: Page;
-  readonly subtitles: Locator;
+  readonly currentSubtitle: Locator;
   readonly player: Locator;
   readonly dictionary: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.subtitles = page.locator('[data-testid="currentSubtitles"] [data-testid="word"]');
+    this.currentSubtitle = page.locator('[data-testid="currentSubtitle"] [data-testid="subtitle"] [data-testid="word"]');
     this.player = page.locator('video');
     this.dictionary = page.locator('[data-testid="dictionary"]');
   }
 
-  async getSubtitles() {
-    await this.page.waitForTimeout(1000)
-    return await this.subtitles.allTextContents();
-  }
-
   async getDefinitions(word: string) {
-    await this.subtitles.getByText(word).hover();
-    await this.page.waitForTimeout(1000)
+    await this.currentSubtitle.getByText(word).hover()
+    await this.dictionary.waitFor({state: 'visible'});
     const deinflectedTerm = this.dictionary.locator('[data-testid="deinflectedTerm"]').first();
     const definitions = await deinflectedTerm.locator('[data-testid="definition"]').all();
 
@@ -32,6 +27,18 @@ export class PlayerPage {
     }
 
     return results;
+  }
+
+  async nextSubtitle() {
+    await this.page.keyboard.press('ArrowRight');
+  }
+
+  async previousSubtitle() {
+    await this.page.keyboard.press('ArrowLeft');
+  }
+
+  async play() {
+    await this.page.keyboard.press(' ')
   }
 
   async setPlaybackPosition(seconds: number) {
