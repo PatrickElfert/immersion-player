@@ -11,6 +11,7 @@ function MenuItem({ label, active, icon, path }: { label: string; active: boolea
   return (
     <Link className="m-2" to={path}>
       <Button
+        data-testid="menu-item"
         onPress={() => toggleMenu(false)}
         startContent={icon}
         variant={active ? 'flat' : 'light'}
@@ -35,7 +36,6 @@ export function Menu() {
     >
       <div className="flex flex-col h-full">
         <MenuItem
-          data-testid="item"
           icon={<HomeIcon/>}
           path={'/Library'}
           active={pathname.includes('Library')}

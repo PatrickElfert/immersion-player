@@ -93,6 +93,7 @@ export function VideoPlayer() {
   return (
     <MediaController ref={mediaControllerRef} style={{ width: '100%', aspectRatio: '16/9' }}>
       <ReactPlayer
+        data-testid="video-player"
         slot="media"
         ref={videoRef}
         controls={false}

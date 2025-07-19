@@ -1,24 +1,10 @@
-import type {Locator, Page} from "@playwright/test";
-import { Menu } from '../components/menu.js';
+import { By, PageElement, PageElements, Text } from '@serenity-js/web';
+import { equals } from '@serenity-js/assertions';
 
 export class LibraryPage {
-  readonly page: Page;
-  readonly media: Locator;
-  readonly search: Locator;
-  readonly menu: Menu;
+  static mediaItemWithTitle = (title: string) =>
+    LibraryPage.mediaItems.where(Text, equals(title)).first().describedAs(`media item with text "${title}"`);
 
-  constructor(page: Page) {
-    this.page = page;
-    this.media = page.locator('[data-testid="media"]')
-    this.search = page.locator('[data-testid="search"]');
-    this.menu = new Menu(page);
-  }
-
-  async open(): Promise<void> {
-   await this.menu.selectItem('Library');
-  }
-
-  async searchFor(text: string): Promise<void> {
-    await this.search.fill(text);
-  }
+  static mediaItems = PageElements.located(By.css(`[data-testid="media"]`));
+  static searchField = PageElement.located(By.css(`[data-testid="search"]`));
 }

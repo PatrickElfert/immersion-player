@@ -14,7 +14,7 @@ export function Navbar() {
       <NavbarContent justify="start">
         <NavbarItem>
           <Button
-            data-testid={"navbar-menu-button"}
+            data-testid="navbar-menu-icon"
             onPress={() => toggleMenu()}
             isIconOnly
             variant="light"
