@@ -31,6 +31,7 @@ test.afterEach(async () => {
 
 test('Load and display existing media', async () => {
   await actor.attemptsTo(NavigateByMenu.toPage('Library'))
+  await actor.attemptsTo(Wait.until(LibraryPage.mediaItems.count(), equals(2)));
   await actor.attemptsTo(Ensure.that(MediaItemIsVisible.withTitle('Example E01'), equals(true)));
   await actor.attemptsTo(Ensure.that(MediaItemIsVisible.withTitle('Example E02'), equals(true)));
 });
