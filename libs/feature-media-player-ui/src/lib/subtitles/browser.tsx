@@ -43,7 +43,7 @@ export function Browser() {
 const BrowserRow = memo(
   ({ subtitle, index, isActive }: { subtitle: Subtitle; index: number; isActive: boolean }) => {
     return (
-      <div key={index} className={cn('p-2 border-l-primary rounded', { 'border-l-4': isActive })}>
+      <div key={index} className={cn('p-2 border-l-transparent border-l-4 rounded', { 'border-l-primary': isActive })}>
         <SubtitleLine disableDictionary={false} subtitle={subtitle} />
         <small className="opacity-50">
           {formatTime(subtitle.startTime)} - {formatTime(subtitle.endTime)}
