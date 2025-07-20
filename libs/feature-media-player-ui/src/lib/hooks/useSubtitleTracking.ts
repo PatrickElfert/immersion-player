@@ -31,7 +31,7 @@ export function useSubtitleTracking(videoRef: RefObject<HTMLVideoElement>) {
   }, [videoRef, subtitles, setCurrentSubtitle, resetSubtitleStore]);
 }
 
-const getCurrentSubtitle = (subtitles: Subtitle[], timestamp: number) => {
+export const getCurrentSubtitle = (subtitles: Subtitle[], timestamp: number) => {
   const index = subtitles.findIndex((subtitle) => {
     const start = timecodeToSeconds(subtitle.startTime);
     const end = timecodeToSeconds(subtitle.endTime);
