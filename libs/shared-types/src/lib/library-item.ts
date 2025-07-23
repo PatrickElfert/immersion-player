@@ -7,6 +7,6 @@ export interface LibraryItem {
   name: string;
   path: string;
   language: LanguageFile[];
-  thumbnail: string;
+  thumbnail: string | null;
   id: string;
 }

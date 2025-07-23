@@ -54,15 +54,11 @@ export async function loadLibrary(): Promise<LibraryItem[]> {
         const videoPath = join(folderPath, mediaPath);
         const thumbnailPath = join(folderPath, 'thumbnail.png');
 
-        // Use placeholder thumbnail if real one doesn't exist
-        let thumbnailUrl: string;
+        let thumbnailUrl: string | null;
         if (existsSync(thumbnailPath)) {
           thumbnailUrl = join('media://', thumbnailPath);
         } else {
-          // Use a video-themed placeholder SVG
-          thumbnailUrl = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjE2OSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjVmNWY1IiBzdHJva2U9IiNkZGQiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjE1MCIgY3k9Ijg0LjUiIHI9IjMwIiBmaWxsPSIjOTk5Ii8+PHBvbHlnb24gcG9pbnRzPSIxNDAsNzQgMTQwLDk1IDE2NSw4NC41IiBmaWxsPSIjZmZmIi8+PHRleHQgeD0iMTUwIiB5PSIxNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+R2VuZXJhdGluZyB0aHVtYm5haWwuLi48L3RleHQ+PC9zdmc+';
-          
-          // Create thumbnail in background without blocking
+          thumbnailUrl = null;
           createThumbnail(folderPath, videoPath).catch((err) => {
             console.warn('Failed to create thumbnail for', videoPath, err);
           });
