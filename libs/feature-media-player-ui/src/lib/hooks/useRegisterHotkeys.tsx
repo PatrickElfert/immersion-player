@@ -4,9 +4,35 @@ import { useSubtitleStore } from '../state/subtitle.store.js';
 import { timecodeToSeconds } from '@immersion-player/shared-utils';
 import useSubtitles from './useSubtitles.js';
 import { Subtitle } from '@immersion-player/shared-types';
+import useFlashcards from './useFlashcards.js';
+import { useLibraryItem } from './useMedia.js';
 
 export function useRegisterHotkeys(videoRef: RefObject<HTMLVideoElement>) {
   const { subtitles } = useSubtitles();
+  const { createFlashcard } = useFlashcards();
+  const libraryItem = useLibraryItem();
+
+  function createFlashcardForUnknownWords() {
+    const currentSubtitle = useSubtitleStore.getState().currentSubtitle;
+    if (!currentSubtitle || !libraryItem) {
+      return;
+    }
+
+    const unknownWords = currentSubtitle.lookupResult
+      .filter((lookup) => lookup.status === 'UNKNOWN')
+      .map((lookup) => {
+        return Object.values(lookup.dictionaryResults)[0];
+      });
+
+    createFlashcard({
+      sentenceFront: currentSubtitle.text[0],
+      sentenceBack: currentSubtitle.lookupResult.flatMap((l) => l.token),
+      targetWords: unknownWords,
+      startTime: timecodeToSeconds(currentSubtitle.startTime),
+      endTime: timecodeToSeconds(currentSubtitle.endTime),
+      filePath: libraryItem.path,
+    });
+  }
 
   function seekToSubtitle(direction: 'forward' | 'backward') {
     const currentSubtitleIndex = useSubtitleStore.getState().currentSubtitleIndex;
@@ -33,6 +59,7 @@ export function useRegisterHotkeys(videoRef: RefObject<HTMLVideoElement>) {
   useHotkeys('left', () => seekToSubtitle('backward'));
   useHotkeys('right', () => seekToSubtitle('forward'));
   useHotkeys('space', () => togglePlay());
+  useHotkeys('q', () => createFlashcardForUnknownWords())
 }
 
 export function getSubtitleByDirection(
