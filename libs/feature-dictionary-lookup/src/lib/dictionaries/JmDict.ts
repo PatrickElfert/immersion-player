@@ -2,10 +2,12 @@ import { Dictionary, DictionaryModel } from '../dictionary.js';
 import { JMdict, JMdictWord } from '@scriptin/jmdict-simplified-types';
 
 function getDefinitions(entry: JMdictWord) {
-  return entry.sense.filter(s => s.gloss[0].lang === 'eng').map((s) => ({
-    description: s.info.join('; '),
-    text: s.gloss.map(g => g.text).join('; '),
-  }));
+  return entry.sense
+    .filter((s) => s.gloss[0].lang === 'eng')
+    .map((s) => ({
+      description: s.info.join('; '),
+      text: s.gloss.map((g) => g.text).join('; '),
+    }));
 }
 
 export class JmDictionary extends Dictionary<JMdict> {
@@ -24,13 +26,11 @@ export class JmDictionary extends Dictionary<JMdict> {
         kanjiAdded = true;
       }
 
-      if (!kanjiAdded) {
-        for (const kana of entry.kana) {
-          if (!map[kana.text]) {
-            map[kana.text] = { definitions: [], sense: [] };
-            map[kana.text].definitions.push(...getDefinitions(entry));
-            map[kana.text].sense = entry.sense;
-          }
+      for (const kana of entry.kana) {
+        if (!map[kana.text]) {
+          map[kana.text] = { definitions: [], sense: [] };
+          map[kana.text].definitions.push(...getDefinitions(entry));
+          map[kana.text].sense = entry.sense;
         }
       }
     }

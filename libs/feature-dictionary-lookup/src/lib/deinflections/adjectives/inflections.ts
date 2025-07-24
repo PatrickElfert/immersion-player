@@ -30,29 +30,6 @@ export const pastNegative: Ruleset = {
   ],
 };
 
-
-const U_VERB_ENDINGS = ['す', 'く', 'ぐ', 'ぶ', 'つ', 'む', 'う', 'る', 'ぬ'];
-const STEM_ENDINGS = ['し', 'き', 'ぎ', 'び', 'ち', 'み', 'い', 'り', 'に'];
-
-const godanDesire: Rule[] = STEM_ENDINGS.map((stem_verbEnding, i) => ({
-  replace: `${stem_verbEnding}たい`,
-  with: U_VERB_ENDINGS[i],
-  applyTo: ['VERB_DESIRE'],
-}));
-
-export const desire: Ruleset = {
-  description: '',
-  produces: ['VERB_BASE'],
-  rules: [
-    ...godanDesire,
-    {
-      replace: 'たい',
-      with: 'る',
-      applyTo: ['VERB_DESIRE'],
-    },
-  ],
-};
-
 export const adverb: Ruleset = {
   description: '',
   produces: ['ADJECTIVE_BASE'],

@@ -4,7 +4,7 @@ import * as path from 'node:path';
 
 const parser = new Parser(join(path.resolve(__dirname, '../../../../extraResources'), 'jmdict-all-3.5.0.json'), {});
 
-describe('featureDictionaryLookup', () => {
+describe('featureDictionaryLookup', async () => {
   it('parses a sentence', async () => {
     const result = await parser.parseSentence('今日は友達と学校に行きます');
     expect(result.map((r) => r.token.map((t) => t.original).join(''))).toEqual([
@@ -34,13 +34,9 @@ describe('featureDictionaryLookup', () => {
     ]);
   });
 
-it('should process remaining morphemes even if there was no definition found for the last word in a group', async () => {
-  const wordWithoutDefinitions = 'やっと';
-  const result = await parser.parseSentence(`${wordWithoutDefinitions}着いた。`);
-  expect(result.map((r) => r.token.map((t) => t.original).join(''))).toEqual([
-    'やっと',
-    '着いた',
-    '。',
-  ]);
-});
+  it('should process remaining morphemes even if there was no definition found for the last word in a group', async () => {
+    const wordWithoutDefinitions = 'やっと';
+    const result = await parser.parseSentence(`${wordWithoutDefinitions}着いた。`);
+    expect(result.map((r) => r.token.map((t) => t.original).join(''))).toEqual(['やっと', '着いた', '。']);
+  });
 });
