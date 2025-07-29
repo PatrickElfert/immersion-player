@@ -1,4 +1,4 @@
-import { Rule, Ruleset } from '../../deinflect.js';
+import { Ruleset } from '../../deinflect.js';
 
 export const negative: Ruleset = {
   description: '',
@@ -42,5 +42,5 @@ export const adverb: Ruleset = {
   ],
 };
 
-export const rulesets = [pastNegative, past, negative, desire, adverb];
+export const rulesets = [pastNegative, past, negative, adverb];
 

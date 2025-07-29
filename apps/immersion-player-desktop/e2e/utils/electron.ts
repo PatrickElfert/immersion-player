@@ -27,6 +27,7 @@ export async function launchElectron(useBinary = false): Promise<ElectronApplica
       executablePath: execPath,
       timeout: 60000,
       env: {
+        DISPLAY: ':99',
         ELECTRON_IS_DEV: '1',
         ELECTRON_RENDERER_URL: 'http://localhost:4200',
         ELECTRON_ENABLE_LOGGING: 'true',
