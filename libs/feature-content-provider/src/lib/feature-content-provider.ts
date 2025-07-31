@@ -59,10 +59,6 @@ export async function loadLibrary(): Promise<LibraryItem[]> {
         result.push({
           name: parse(mediaPath).name,
           path: join('media://', videoPath),
-          language: srtFiles.map((srtFile) => ({
-            path: join(folderPath, srtFile),
-            languageCode: srtFile.split('.')[1],
-          })),
           thumbnail: join('media://', folderPath, 'thumbnail.png'),
           id: v4(),
         });

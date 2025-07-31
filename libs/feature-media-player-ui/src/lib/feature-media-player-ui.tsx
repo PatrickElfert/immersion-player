@@ -2,6 +2,7 @@
 import { SubtitleLine } from './subtitles/subtitles.js';
 import { Suspense, useEffect, useRef } from 'react';
 import { useLibraryItem } from './hooks/useMedia.js';
+import useSubtitles from './hooks/useSubtitles.js';
 import { Browser } from './subtitles/browser.js';
 import { Kbd } from '@heroui/react';
 import { getPlatform } from '@immersion-player/shared-utils';
@@ -113,12 +114,30 @@ export function VideoPlayer() {
 
 export function CurrentSubtitle() {
   const currentSubtitle = useSubtitleStore((state) => state.currentSubtitle);
+  const currentSubtitleIndex = useSubtitleStore((state) => state.currentSubtitleIndex);
+  const { subtitles } = useSubtitles();
+  
+  // Find corresponding secondary subtitle based on index
+  const currentSecondarySubtitle = currentSubtitleIndex !== null && subtitles.secondary.length > currentSubtitleIndex 
+    ? subtitles.secondary[currentSubtitleIndex] 
+    : null;
+  
   return (
-    <SubtitleLine
-      subtitle={currentSubtitle}
-      containerClassName="absolute bottom-[60px] w-full flex justify-center"
-      subtitleClassName="bg-content1/40 backdrop-blur-md backdrop-saturate-150 text-2xl rounded p-2"
-    />
+    <div className="absolute bottom-[60px] w-full flex flex-col items-center gap-2">
+      <SubtitleLine
+        subtitle={currentSubtitle}
+        containerClassName="flex justify-center"
+        subtitleClassName="bg-content1/40 backdrop-blur-md backdrop-saturate-150 text-2xl rounded p-2"
+      />
+      {currentSecondarySubtitle && (
+        <SubtitleLine
+          subtitle={currentSecondarySubtitle}
+          containerClassName="flex justify-center"
+          subtitleClassName="bg-content1/20 backdrop-blur-md backdrop-saturate-150 text-lg rounded p-1 opacity-80"
+          disableDictionary={true}
+        />
+      )}
+    </div>
   );
 }
 

@@ -3,7 +3,7 @@ import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import { rendererAppName } from './constants.js';
 import { loadLibrary } from '@immersion-player/feature-content-provider';
-import { parseSrt } from '@immersion-player/feature-dictionary-lookup';
+import { parseSrt, getSubtitlesByLibraryItem } from '@immersion-player/feature-dictionary-lookup';
 import * as path from 'path';
 import {
   CreateFlashcardDto,
@@ -100,6 +100,10 @@ app.whenReady().then(() => {
 
   ipcMain.handle('parse-srt', async (event, srtPath: string) => {
     return parseSrt(srtPath);
+  });
+
+  ipcMain.handle('get-subtitles-by-library-item', async (event, libraryItemPath: string) => {
+    return getSubtitlesByLibraryItem(libraryItemPath);
   });
 
   ipcMain.handle('create-flashcard', async (event, flashcard: CreateFlashcardDto) => {

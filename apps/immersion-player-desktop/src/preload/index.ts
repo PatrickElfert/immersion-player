@@ -5,6 +5,7 @@ import { CreateFlashcardDto, UpdateFieldMappingPayload } from '@immersion-player
 const api = {
   getLibrary: () => ipcRenderer.invoke('get-library'),
   parseSubtitles: (srtPath: string) => ipcRenderer.invoke('parse-srt', srtPath),
+  getSubtitlesByLibraryItem: (libraryItemPath: string) => ipcRenderer.invoke('get-subtitles-by-library-item', libraryItemPath),
   createFlashcard: (flashcard: CreateFlashcardDto) => ipcRenderer.invoke('create-flashcard', flashcard),
   selectMediaFolder: () => ipcRenderer.invoke('select-media-folder'),
   getUserSettings: () => ipcRenderer.invoke('get-user-settings'),

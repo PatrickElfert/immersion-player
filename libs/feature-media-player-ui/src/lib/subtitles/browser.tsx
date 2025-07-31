@@ -33,7 +33,7 @@ export function Browser() {
 
   return (
     <div ref={containerRef} className="rounded bg-content2 text-white overflow-y-scroll p-3">
-      {subtitles.map((subtitle, index) => (
+      {subtitles.primary.map((subtitle, index) => (
         <BrowserRow subtitle={subtitle} index={index} isActive={currentSubtitleIndex === index}></BrowserRow>
       ))}
     </div>

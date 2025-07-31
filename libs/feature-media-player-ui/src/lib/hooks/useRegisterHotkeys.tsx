@@ -37,7 +37,7 @@ export function useRegisterHotkeys(videoRef: RefObject<HTMLVideoElement>) {
   function seekToSubtitle(direction: 'forward' | 'backward') {
     const currentSubtitleIndex = useSubtitleStore.getState().currentSubtitleIndex;
     if (!videoRef.current) return;
-    const nextSubtitle = getSubtitleByDirection(currentSubtitleIndex, direction, subtitles);
+    const nextSubtitle = getSubtitleByDirection(currentSubtitleIndex, direction, subtitles.primary);
 
     if (!nextSubtitle) {
       return;

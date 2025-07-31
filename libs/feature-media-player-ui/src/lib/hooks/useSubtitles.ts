@@ -1,23 +1,23 @@
 import { Subtitle } from "@immersion-player/shared-types";
+import type { SubtitlesByLibraryItem } from "@immersion-player/feature-dictionary-lookup";
 import { useLibraryItem } from "./useMedia.js";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 export default function useSubtitles() {
   const libraryItem = useLibraryItem();
-  const languageFile = libraryItem.language.find((l) => l.languageCode === 'ja');
 
-  if(!languageFile) {
-    throw Error(`Subtitles for ${libraryItem.name} not found!`)
-  }
-
-  const { data, error } = useSuspenseQuery<Subtitle[]>(
+  const { data, error } = useSuspenseQuery<SubtitlesByLibraryItem>(
     {
-      queryKey: ['subtitles', languageFile?.path],
+      queryKey: ['subtitles', libraryItem.path],
       queryFn:
         // @ts-expect-error window.electron is not typed
         () => window.api
-          .parseSubtitles(languageFile?.path),
+          .getSubtitlesByLibraryItem(libraryItem.path),
     }
   )
-  return { subtitles: data ?? [], subtitleFilePath: languageFile?.path, error };
+  return { 
+    subtitles: data ?? { primary: [], secondary: [] }, 
+    subtitleFilePath: libraryItem.path, 
+    error 
+  };
 }

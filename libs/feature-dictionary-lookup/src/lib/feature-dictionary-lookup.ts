@@ -1,6 +1,6 @@
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import { Parser } from './parser.js';
-import { join } from "path";
+import { join, extname } from "path";
 import { Subtitle, UserSettings } from '@immersion-player/shared-types';
 import { app } from 'electron';
 import Store from 'electron-store';
@@ -10,6 +10,11 @@ type SRT = {
   startTime: string;
   endTime: string;
   text: string[];
+};
+
+export type SubtitlesByLibraryItem = {
+  primary: Subtitle[];
+  secondary: Subtitle[];
 };
 
 const getDictionaryPath = () => {
@@ -35,6 +40,45 @@ export async function parseSrt(path: string): Promise<Subtitle[]> {
   }
 
   return parsedSentences;
+}
+
+export async function getSubtitlesByLibraryItem(libraryItemPath: string): Promise<SubtitlesByLibraryItem> {
+  // Extract the directory path from the library item path (remove media:// protocol and filename)
+  const cleanPath = libraryItemPath.replace('media://', '');
+  const folderPath = cleanPath.substring(0, cleanPath.lastIndexOf('/'));
+  
+  // Find all .srt files in the directory
+  const files = readdirSync(folderPath);
+  const srtFiles = files.filter(file => extname(file) === '.srt');
+  
+  let primarySubtitles: Subtitle[] = [];
+  let secondarySubtitles: Subtitle[] = [];
+  
+  // Find Japanese subtitle file (primary)
+  const japaneseFile = srtFiles.find(file => file.includes('.ja.'));
+  if (japaneseFile) {
+    const japaneseFilePath = join(folderPath, japaneseFile);
+    primarySubtitles = await parseSrt(japaneseFilePath);
+  }
+  
+  // Find first non-Japanese subtitle file (secondary)
+  const secondaryFile = srtFiles.find(file => !file.includes('.ja.'));
+  if (secondaryFile) {
+    const secondaryFilePath = join(folderPath, secondaryFile);
+    const srtFile = readFileSync(secondaryFilePath, 'utf8');
+    const result = readSrt(srtFile);
+    
+    // Secondary subtitles don't need dictionary lookup, so lookupResult is empty
+    secondarySubtitles = result.map(sentence => ({
+      ...sentence,
+      lookupResult: [],
+    }));
+  }
+  
+  return {
+    primary: primarySubtitles,
+    secondary: secondarySubtitles,
+  };
 }
 
 function readSrt(srt: string) {
