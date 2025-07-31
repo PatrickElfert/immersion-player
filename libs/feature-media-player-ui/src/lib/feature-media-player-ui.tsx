@@ -35,9 +35,7 @@ export function FeatureMediaPlayerUi() {
         <div className="max-h-full aspect-video col-span-3 m-4">
           <div className="relative">
             <VideoPlayer />
-            <div data-testid="currentSubtitle">
-              <CurrentSubtitle />
-            </div>
+            <CurrentSubtitle />
           </div>
           <Shortcuts />
         </div>
@@ -117,13 +115,31 @@ export function CurrentSubtitle() {
   const currentSubtitleIndex = useSubtitleStore((state) => state.currentSubtitleIndex);
   const { subtitles } = useSubtitles();
   
-  // Find corresponding secondary subtitle based on index
-  const currentSecondarySubtitle = currentSubtitleIndex !== null && subtitles.secondary.length > currentSubtitleIndex 
-    ? subtitles.secondary[currentSubtitleIndex] 
-    : null;
+  // Find corresponding secondary subtitle by time range for better accuracy
+  const findSecondarySubtitleByTime = (primarySubtitle: any) => {
+    if (!primarySubtitle || subtitles.secondary.length === 0) return null;
+    
+    // Try to find by index first (fastest)
+    if (currentSubtitleIndex !== null && subtitles.secondary.length > currentSubtitleIndex) {
+      return subtitles.secondary[currentSubtitleIndex];
+    }
+    
+    // If index doesn't work, find by time range (more accurate but slower)
+    const primaryStart = primarySubtitle.startTime;
+    const primaryEnd = primarySubtitle.endTime;
+    
+    return subtitles.secondary.find(secondary => {
+      // Check if time ranges overlap
+      return secondary.startTime === primaryStart || secondary.endTime === primaryEnd ||
+             (secondary.startTime <= primaryStart && secondary.endTime >= primaryStart) ||
+             (secondary.startTime <= primaryEnd && secondary.endTime >= primaryEnd);
+    }) || null;
+  };
+  
+  const currentSecondarySubtitle = findSecondarySubtitleByTime(currentSubtitle);
   
   return (
-    <div className="absolute bottom-[60px] w-full flex flex-col items-center gap-2">
+    <div data-testid="currentSubtitle" className="absolute bottom-[60px] w-full flex flex-col items-center gap-2">
       <SubtitleLine
         subtitle={currentSubtitle}
         containerClassName="flex justify-center"
