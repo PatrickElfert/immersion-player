@@ -21,6 +21,7 @@ import { path as ffprobePath } from 'ffprobe-static';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegPath from 'ffmpeg-static';
 import { fileURLToPath } from 'url';
+import log from 'electron-log/main.js';
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -76,6 +77,11 @@ app.whenReady().then(() => {
     ffmpeg.setFfmpegPath(ffmpegPath.replace('app.asar', 'app.asar.unpacked'));
     ffmpeg.setFfprobePath(ffprobePath.replace('app.asar', 'app.asar.unpacked'));
   }
+
+  // Initialize electron log for renderer process
+  log.initialize();
+  log.info('Starting Logging for Immersion Player');
+
 
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron');

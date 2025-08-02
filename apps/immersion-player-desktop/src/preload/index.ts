@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { CreateFlashcardDto, UpdateFieldMappingPayload } from '@immersion-player/shared-types';
+import log from 'electron-log/renderer.js';
 
 // Custom APIs for renderer
 const api = {
@@ -16,10 +17,12 @@ const api = {
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.
+log.info('Preload script running');
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('api', api);
   } catch (error) {
+    log.error(error);
     console.error(error);
   }
 } else {

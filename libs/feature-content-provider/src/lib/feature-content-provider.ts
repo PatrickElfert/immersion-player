@@ -7,6 +7,7 @@ import { v4 } from 'uuid';
 import { LibraryItem, UserSettings } from '@immersion-player/shared-types';
 import Store from 'electron-store';
 import * as os from 'node:os';
+import log from 'electron-log/main.js';
 
 const videoExtensions = ['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4', '.mkv'];
 
@@ -32,6 +33,8 @@ function createThumbnail(outputPath: string, videoPath: string): Promise<void> {
 export async function loadLibrary(): Promise<LibraryItem[]> {
   const store = new Store<UserSettings>();
   const mediaFolder = store.get('mediaFolder') ?? path.join(os.homedir(), 'ImmersionPlayer');
+
+  log.info(mediaFolder, 'Reading files from media folder');
 
   const libraryFolder = await readdir(mediaFolder);
   const result: LibraryItem[] = [];
