@@ -37,7 +37,23 @@ test('Display subtitles at specific playback position', async () => {
 });
 
 test('Display definitions in overlay', async () => {
-  await actor.attemptsTo(forwardPlayerToPlaybackPosition(3), ensureDefinitionsForWordInActiveSubtitles('は', 'は'));
+  await actor.attemptsTo(
+    forwardPlayerToPlaybackPosition(3),
+    ensureDefinitionsForWordInActiveSubtitles('は', [
+      {
+        text: 'indicates sentence topic',
+        description: 'pronounced わ in modern Japanese',
+      },
+      {
+        text: 'indicates contrast with another option (stated or unstated)',
+        description: '',
+      },
+      {
+        text: 'adds emphasis',
+        description: '',
+      },
+    ])
+  );
 });
 
 test('Navigating between subtitles with keyboard shortcuts', async () => {
@@ -52,3 +68,5 @@ test('Navigating between subtitles with keyboard shortcuts', async () => {
     ensureSubtitlesAreVisible(['電車', 'で', '行く', '予定', 'です'])
   );
 });
+
+test('Creating flashcards for multiple unknown words', async () => {});
