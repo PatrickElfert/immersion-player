@@ -22,10 +22,13 @@ export async function launchElectron(useBinary = false): Promise<ElectronApplica
     const electronApplication = await _electron.launch({
       cwd: workspaceRoot,
       args: !useBinary
-        ? ['dist/apps/immersion-player-desktop/main/index.js', '--no-sandbox', '--inspect=9229']
+        ? ['dist/apps/immersion-player-desktop/main/index.js', '--no-sandbox']
         : ['--no-sandbox'],
       executablePath: execPath,
       timeout: 60000,
+      recordVideo: {
+        dir: path.join(workspaceRoot, '/videos')
+      },
       env: {
         DISPLAY: ':99',
         ELECTRON_IS_DEV: '1',
