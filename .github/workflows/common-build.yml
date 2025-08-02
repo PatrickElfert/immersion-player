@@ -26,51 +26,29 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
 
-      - name: Build Electron
-        run: npx nx run immersion-player-desktop:build
-
-      - name: Build UI
-        run: npx nx run immersion-player-desktop:build
-
-      - name: Typecheck Electron
+      - name: Typecheck
         run: npx nx run immersion-player-desktop:typecheck
 
-      - name: Typecheck UI
-        run: npx nx run immersion-player-desktop:typecheck
+      - name: Build Docker image
+        run: docker build -t immersion-player-app .
 
-      - name: Download JmDict
+      - name: Run Unit and E2E Tests in Docker
         run: |
-          wget -O jmdict-all.json.zip https://github.com/scriptin/jmdict-simplified/releases/download/3.5.0%2B20240826121924/jmdict-all-3.5.0+20240826121924.json.zip
-
-      - name: Extract JMdict ZIP and Copy to extraResources
-        run: |
-          unzip jmdict-all.json.zip
-          mkdir -p extraResources
-          cp jmdict-all-3.5.0.json extraResources/
-
-      - name: Create ImmersionPlayer folder
-        run: mkdir -p "$HOME/ImmersionPlayer"
-
-      - name: Copy example folders to ImmersionPlayer
-        run: |
-          cp -R "assets/Example E01" "$HOME/ImmersionPlayer/"
-          cp -R "assets/Example E02" "$HOME/ImmersionPlayer/"
-
-      - name: Run Unit Tests
-        run: npx nx run-many --target=test --passWithNoTests
-
-      - name: Run player E2E Tests
-        run: npx nx run immersion-player-desktop:e2e
-
-      - name: Run flashcard preview E2E Tests
-        run: npx nx run flashcard-preview:e2e
+          docker run --name test-container immersion-player-app /bin/bash -c "npx nx run-many --target=test --passWithNoTests && npx nx run immersion-player-desktop:e2e --workers 1 && npx nx run flashcard-preview:e2e"
+          docker cp test-container:/app/playwright-report ./playwright-report
+          docker cp test-container:/app/videos ./videos
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
           path: playwright-report/
+          retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: e2e-videos
+          path: videos/
           retention-days: 30
