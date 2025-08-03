@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-   test-macos:
+   ubuntu:
      uses: ./.github/workflows/common-build.yml
      with:
        platform-name: ubuntu-latest
