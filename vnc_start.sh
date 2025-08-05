@@ -1,7 +1,4 @@
 #!/bin/bash
-# Set USER environment variable
-export USER=root
-
 # Set VNC password (no prompt)
 mkdir -p /root/.vnc
 echo "password" | vncpasswd -f > /root/.vnc/passwd
