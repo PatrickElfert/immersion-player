@@ -4,6 +4,7 @@ import ffmpeg from 'fluent-ffmpeg';
 import { fileSync } from 'tmp';
 import path from 'path';
 import { backTemplate, frontTemplate } from '@immersion-player/shared-flashcard-templates';
+import { readFileSync } from 'fs';
 
 const client = new YankiConnect();
 const MODEL_NAME = 'ImmersionPlayer';
@@ -40,12 +41,12 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
   );
 
   const imageStoreResult = await client.media.storeMediaFile({
-    path: tempImageFilePath,
+    data: fileToBase64(tempImageFilePath),
     filename: path.basename(tempImageFilePath),
   });
 
   const audioStoreResult = await client.media.storeMediaFile({
-    path: tempAudioFilePath,
+    data: fileToBase64(tempAudioFilePath),
     filename: path.basename(tempAudioFilePath),
   });
 
@@ -67,6 +68,11 @@ export async function createFlashcard(flashcard: CreateFlashcardDto) {
   });
 
   cleanup();
+}
+
+function fileToBase64(filePath: string): string {
+  const fileBuffer = readFileSync(filePath);
+  return fileBuffer.toString('base64');
 }
 
 function extractFlashcardMedia(
