@@ -1,37 +1,15 @@
 import { Rule, Ruleset } from '../../deinflect.js';
-
-const GODAN_U_ROW_ENDINGS = ['す', 'く', 'ぐ', 'ぶ', 'つ', 'む', 'う', 'る', 'ぬ'];
-const GODAN_A_ROW_ENDINGS = ['さ', 'か', 'が', 'ば', 'た', 'ま', 'わ', 'ら', 'な'];
-const GODAN_E_ROW_ENDINGS = ['せ', 'け', 'げ', 'べ', 'て', 'め', 'え', 'れ', 'ね'];
-const GODAN_O_ROW_ENDINGS = ['そ', 'こ', 'ご', 'ぼ', 'と', 'も', 'お', 'ろ', 'の'];
-const GODAN_I_ROW_ENDINGS = ['し', 'き', 'ぎ', 'び', 'ち', 'み', 'い', 'り', 'に'];
-const GODAN_TE_FORM_ENDINGS = ['して', 'いて', 'いで', 'んで', 'って', 'んで', 'って', 'って', 'んで'];
-
-const godanNegative: Rule[] = GODAN_A_ROW_ENDINGS.map((a_verbEnding, i) => ({
-  replace: `${a_verbEnding}ない`,
-  with: GODAN_U_ROW_ENDINGS[i],
-  applyTo: ['VERB_NEGATIVE'],
-}));
-
-const ichidanNegative: Rule[] = [
-  { replace: 'ない', with: 'る', applyTo: ['VERB_NEGATIVE'] },
-];
-
-const irregularNegative: Rule[] = [
-  { replace: 'しない', with: 'する', applyTo: ['VERB_NEGATIVE'] },
-  { replace: 'こない', with: 'くる', applyTo: ['VERB_NEGATIVE'] },
-  { replace: 'ない', with: 'ある', applyTo: ['VERB_NEGATIVE'] },
-];
-
-export const negative: Ruleset = {
-  description: '',
-  produces: ['VERB_BASE'],
-  rules: [
-    ...godanNegative,
-    ...ichidanNegative,
-    ...irregularNegative,
-  ],
-};
+import {
+  GODAN_A_ROW_ENDINGS,
+  GODAN_E_ROW_ENDINGS,
+  GODAN_I_ROW_ENDINGS,
+  GODAN_TE_FORM_ENDINGS,
+  GODAN_U_ROW_ENDINGS
+} from './utils.js';
+import { negative } from '../adjectives/inflections.js';
+import { polite } from './02_polite_verbs.js';
+import { negative_verbs } from './01_negative_verbs.js';
+import { desire_volitional } from './03_desire_volition.js';
 
 const godanTe: Rule[] = GODAN_TE_FORM_ENDINGS.map((te_verbEnding, i) => ({
   replace: te_verbEnding,
@@ -64,31 +42,6 @@ export const pastNegative: Ruleset = {
   rules: [{ replace: 'かった', with: 'い', applyTo: ['VERB_PAST_NEGATIVE'] }],
 };
 
-const godanPolite: Rule[] = GODAN_I_ROW_ENDINGS.map((stem_verbEnding, i) => ({
-  applyTo: ['VERB_POLITE'],
-  replace: `${stem_verbEnding}ます`,
-  with: GODAN_U_ROW_ENDINGS[i],
-}));
-
-const ichidanPolite: Rule[] = [
-  { replace: 'ます', with: 'る', applyTo: ['VERB_POLITE'] },
-];
-
-const irregularPolite: Rule[] = [
-  { replace: 'きます', with: 'くる', applyTo: ['VERB_POLITE'] },
-  { replace: 'します', with: 'する', applyTo: ['VERB_POLITE'] },
-];
-
-export const polite: Ruleset = {
-  description: '',
-  produces: ['VERB_BASE'],
-  rules: [
-    ...godanPolite,
-    ...ichidanPolite,
-    ...irregularPolite,
-  ],
-};
-
 const godanPolitePast: Rule[] = GODAN_I_ROW_ENDINGS.map((stem_verbEnding, i) => ({
   applyTo: ['VERB_PAST_POLITE'],
   replace: `${stem_verbEnding}ました`,
@@ -111,31 +64,6 @@ export const politePast: Ruleset = {
     ...godanPolitePast,
     ...ichidanPolitePast,
     ...irregularPolitePast,
-  ],
-};
-
-const godanPoliteNegative: Rule[] = GODAN_I_ROW_ENDINGS.map((stem_verbEnding, i) => ({
-  applyTo: ['VERB_POLITE_NEGATIVE'],
-  replace: `${stem_verbEnding}ません`,
-  with: GODAN_U_ROW_ENDINGS[i],
-}));
-
-const ichidanPoliteNegative: Rule[] = [
-  { replace: 'ません', with: 'る', applyTo: ['VERB_POLITE_NEGATIVE'] },
-];
-
-const irregularPoliteNegative: Rule[] = [
-  { replace: 'きません', with: 'くる', applyTo: ['VERB_POLITE_NEGATIVE'] },
-  { replace: 'しません', with: 'する', applyTo: ['VERB_POLITE_NEGATIVE'] },
-];
-
-export const politeNegative: Ruleset = {
-  description: '',
-  produces: ['VERB_BASE'],
-  rules: [
-    ...godanPoliteNegative,
-    ...ichidanPoliteNegative,
-    ...irregularPoliteNegative,
   ],
 };
 
@@ -164,55 +92,6 @@ export const politePastNegative: Ruleset = {
   ],
 };
 
-const godanVolitional: Rule[] = GODAN_O_ROW_ENDINGS.map((o_verbEnding, i) => ({
-  replace: `${o_verbEnding}う`,
-  with: GODAN_U_ROW_ENDINGS[i],
-  applyTo: ['VERB_VOLITIONAL'],
-}));
-
-const ichidanVolitional: Rule[] = [
-  { replace: 'よう', with: 'る', applyTo: ['VERB_VOLITIONAL'] },
-];
-
-const irregularVolitional: Rule[] = [
-  { replace: 'しよう', with: 'する', applyTo: ['VERB_VOLITIONAL'] },
-  { replace: 'きょう', with: 'くる', applyTo: ['VERB_VOLITIONAL'] },
-];
-
-export const volitional: Ruleset = {
-  description: '',
-  produces: ['VERB_BASE'],
-  rules: [
-    ...godanVolitional,
-    ...ichidanVolitional,
-    ...irregularVolitional,
-  ],
-};
-
-const godanPoliteVolitional: Rule[] = GODAN_I_ROW_ENDINGS.map((stem_verbEnding, i) => ({
-  replace: `${stem_verbEnding}ましょう`,
-  with: GODAN_U_ROW_ENDINGS[i],
-  applyTo: ['VERB_VOLITIONAL_POLITE'],
-}));
-
-const ichidanPoliteVolitional: Rule[] = [
-  { replace: 'ましょう', with: 'る', applyTo: ['VERB_VOLITIONAL'] },
-];
-
-const irregularPoliteVolitional: Rule[] = [
-  { replace: 'しましょう', with: 'する', applyTo: ['VERB_VOLITIONAL'] },
-  { replace: 'きましょう', with: 'くる', applyTo: ['VERB_VOLITIONAL'] },
-];
-
-export const politeVolitional: Ruleset = {
-  description: '',
-  produces: ['VERB_BASE'],
-  rules: [
-    ...godanPoliteVolitional,
-    ...ichidanPoliteVolitional,
-    ...irregularPoliteVolitional,
-  ],
-};
 
 const ichidanProgressive: Rule[] = [
   { replace: 'ている', with: 'て', applyTo: ['VERB_PROGRESSIVE'] },
@@ -288,14 +167,13 @@ export const desire: Ruleset = {
 };
 
 export const rulesets = [
+  negative_verbs,
+  polite,
+  desire_volitional,
   pastNegative,
   past,
   te,
   negative,
-  polite,
-  politeNegative,
-  volitional,
-  politeVolitional,
   politePast,
   politePastNegative,
   progressive,

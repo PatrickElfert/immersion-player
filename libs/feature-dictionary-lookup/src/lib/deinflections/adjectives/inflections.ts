@@ -1,5 +1,6 @@
 import { Ruleset } from '../../deinflect.js';
 
+//https://guidetojapanese.org/learn/complete/negative_stateofbeing
 export const negative: Ruleset = {
   description: '',
   produces: ['ADJECTIVE_BASE', 'VERB_DESIRE'],
