@@ -10,37 +10,9 @@ import { negative } from '../adjectives/inflections.js';
 import { polite } from './02_polite_verbs.js';
 import { negative_verbs } from './01_negative_verbs.js';
 import { desire_volitional } from './03_desire_volition.js';
+import { progressive_tense } from './04_progressive_tense.js';
+import { verb_past } from './05_verb_past.js';
 
-const godanTe: Rule[] = GODAN_TE_FORM_ENDINGS.map((te_verbEnding, i) => ({
-  replace: te_verbEnding,
-  with: GODAN_U_ROW_ENDINGS[i],
-  applyTo: ['VERB_TE_FORM'],
-}));
-
-const ichidanTe: Rule[] = [
-  { replace: 'て', with: 'る', applyTo: ['VERB_TE_FORM'] },
-];
-
-export const te: Ruleset = {
-  description: '',
-  produces: ['VERB_BASE'],
-  rules: [...godanTe, ...ichidanTe],
-};
-
-export const past: Ruleset = {
-  description: '',
-  produces: ['VERB_TE_FORM'],
-  rules: [
-    { replace: 'た', with: 'て', applyTo: ['VERB_PAST'] },
-    { replace: 'だ', with: 'で', applyTo: ['VERB_PAST'] },
-  ],
-};
-
-export const pastNegative: Ruleset = {
-  description: '',
-  produces: ['VERB_NEGATIVE'],
-  rules: [{ replace: 'かった', with: 'い', applyTo: ['VERB_PAST_NEGATIVE'] }],
-};
 
 const godanPolitePast: Rule[] = GODAN_I_ROW_ENDINGS.map((stem_verbEnding, i) => ({
   applyTo: ['VERB_PAST_POLITE'],
@@ -92,24 +64,6 @@ export const politePastNegative: Ruleset = {
   ],
 };
 
-
-const ichidanProgressive: Rule[] = [
-  { replace: 'ている', with: 'て', applyTo: ['VERB_PROGRESSIVE'] },
-];
-
-const godanProgressive: Rule[] = [
-  { replace: 'でいる', with: 'で', applyTo: ['VERB_PROGRESSIVE'] },
-];
-
-export const progressive: Ruleset = {
-  description: '',
-  produces: ['VERB_TE_FORM'],
-  rules: [
-    ...ichidanProgressive,
-    ...godanProgressive,
-  ],
-};
-
 export const godanPotential_u_ending: Rule[] = GODAN_E_ROW_ENDINGS.map((e_verbEnding, i) => ({
   replace: `${e_verbEnding}る`,
   with: GODAN_U_ROW_ENDINGS[i],
@@ -151,12 +105,10 @@ export const rulesets = [
   negative_verbs,
   polite,
   desire_volitional,
-  pastNegative,
-  past,
-  te,
+  progressive_tense,
+  verb_past,
   negative,
   politePast,
   politePastNegative,
-  progressive,
   potential,
 ];

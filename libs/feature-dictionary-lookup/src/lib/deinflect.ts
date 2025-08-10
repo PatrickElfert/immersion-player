@@ -4,7 +4,6 @@ import { rulesets as adjectiveRuleset } from './deinflections/adjectives/inflect
 type Types =
   | 'NEW'
   | 'UNKNOWN'
-  | 'VERB_TE_FORM'
   | 'VERB_NEGATIVE'
   | 'VERB_BASE'
   | 'VERB_PAST'
@@ -22,6 +21,9 @@ type Types =
   | 'ADJECTIVE_PAST_NEGATIVE'
   | 'ADVERB'
   | 'VERB_PROGRESSIVE'
+  | 'VERB_PROGRESSIVE_NEGATIVE'
+  | 'VERB_PROGRESSIVE_POLITE'
+  | 'VERB_PROGRESSIVE_POLITE_NEGATIVE'
   | 'VERB_POTENTIAL';
 
 export type Rule = {
