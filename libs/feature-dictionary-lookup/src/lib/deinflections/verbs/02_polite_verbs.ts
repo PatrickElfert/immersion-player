@@ -9,7 +9,7 @@ const godanPolite: Rule[] = GODAN_I_ROW_ENDINGS.map((i_verbEnding, i) => ({
 }));
 
 const ichidanPolite: Rule[] = [
-  { replace: 'ます', with: 'る', applyTo: ['VERB_POLITE'] },
+  { replace: 'ます', with: 'る', applyTo: ['VERB_POLITE', 'VERB_PROGRESSIVE'] },
 ];
 
 const irregularPolite: Rule[] = [
@@ -24,7 +24,7 @@ const godanPoliteNegative: Rule[] = GODAN_I_ROW_ENDINGS.map((i_verbEnding, i) =>
 }));
 
 const ichidanPoliteNegative: Rule[] = [
-  { replace: 'ません', with: 'る', applyTo: ['VERB_POLITE_NEGATIVE'] },
+  { replace: 'ません', with: 'る', applyTo: ['VERB_POLITE_NEGATIVE', 'VERB_PROGRESSIVE'] },
 ];
 
 const irregularPoliteNegative: Rule[] = [

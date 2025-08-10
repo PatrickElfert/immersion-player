@@ -147,25 +147,6 @@ export const potential: Ruleset = {
   ],
 }
 
-const godanDesire: Rule[] = GODAN_I_ROW_ENDINGS.map((stem_verbEnding, i) => ({
-  replace: `${stem_verbEnding}たい`,
-  with: GODAN_U_ROW_ENDINGS[i],
-  applyTo: ['VERB_DESIRE'],
-}));
-
-const ichidanDesire: Rule[] = [
-  { replace: 'たい', with: 'る', applyTo: ['VERB_DESIRE'] },
-];
-
-export const desire: Ruleset = {
-  description: '',
-  produces: ['VERB_BASE'],
-  rules: [
-    ...godanDesire,
-    ...ichidanDesire,
-  ],
-};
-
 export const rulesets = [
   negative_verbs,
   polite,
@@ -178,5 +159,4 @@ export const rulesets = [
   politePastNegative,
   progressive,
   potential,
-  desire,
 ];

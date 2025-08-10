@@ -2,7 +2,15 @@
 import { GODAN_I_ROW_ENDINGS, GODAN_O_ROW_ENDINGS, GODAN_U_ROW_ENDINGS } from './utils.js';
 import { Rule, Ruleset } from '../../deinflect.js';
 
-// Todo add desire inflections
+const godanDesire: Rule[] = GODAN_I_ROW_ENDINGS.map((stem_verbEnding, i) => ({
+  replace: `${stem_verbEnding}たい`,
+  with: GODAN_U_ROW_ENDINGS[i],
+  applyTo: ['VERB_DESIRE'],
+}));
+
+const ichidanDesire: Rule[] = [
+  { replace: 'たい', with: 'る', applyTo: ['VERB_DESIRE'] },
+];
 
 const godanVolitional: Rule[] = GODAN_O_ROW_ENDINGS.map((o_verbEnding, i) => ({
   replace: `${o_verbEnding}う`,
@@ -38,6 +46,8 @@ export const desire_volitional: Ruleset = {
   description: '',
   produces: ['VERB_BASE'],
   rules: [
+    ...godanDesire,
+    ...ichidanDesire,
     ...godanVolitional,
     ...ichidanVolitional,
     ...irregularVolitional,
